@@ -1,9 +1,11 @@
 import express from "express";
 import { engine } from "express-handlebars";
-import { dirname } from "path";
+import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
+// const path = require("path");
+app.use(express.static(join(__dirname, "public")));
 app.use(
   express.urlencoded({
     extended: true,
@@ -14,6 +16,8 @@ app.engine(
   engine({
     extname: "hbs",
     defaultLayout: "main",
+    layoutsDir: join(__dirname, "/views/layouts/"),
+    partialsDir: join(__dirname, "/views/partials/"),
   })
 );
 app.set("view engine", "hbs");

@@ -1,0 +1,12 @@
+#content{
+    display :flex;
+    gap: 20px;
+    height: 100vh;
+}
+#container{
+    height: 100vh;
+}
+
+#sidebar{
+    background: linear-gradient(to bottom, #F0F8FF, #BDF3FF);
+}

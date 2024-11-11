@@ -1,7 +1,6 @@
 import express from "express";
 import { engine } from "express-handlebars";
 import { dirname, join } from "path";
-import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -25,6 +24,7 @@ app.engine(
 app.set("view engine", "hbs");
 app.set("views", "./views");
 app.use(express.static("public"));
+app.use(express.static("img"));
 
 app.get("/", function (req, res) {
   res.render("home");

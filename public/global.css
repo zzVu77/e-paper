@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+body {
+  margin: 0;
+  display: flex; /* This makes the body a flex container */
+  flex-direction: column; /* Sets the flex container to have a vertical column layout. */
+  min-height: 100vh; /* Ensures that the body takes up at least the full height of the viewport. */
+  box-sizing: inherit;
+  height: 5000px;
+}

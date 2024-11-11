@@ -10,7 +10,7 @@
 }
 .client-header-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   margin-top: 0.5%;
 }
@@ -29,7 +29,7 @@
   margin-top: 0.5%;
 }
 .client-header-navigation-menu > .menu {
-  margin-right: 55px;
+  margin-right: 25px;
   position: relative;
   cursor: pointer;
   padding-bottom: 10px;

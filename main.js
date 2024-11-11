@@ -25,8 +25,8 @@ app.set("view engine", "hbs");
 app.set("views", "./views/pages");
 app.use(express.static("public"));
 
-app.get("/", function (req, res) {
-  res.render("home");
+app.get("/all-posts", function (req, res) {
+  res.render("posts");
 });
 
 app.get("/features", function (req, res) {

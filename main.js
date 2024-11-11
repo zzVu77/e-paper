@@ -18,6 +18,8 @@ app.engine(
     defaultLayout: "main",
     layoutsDir: join(__dirname, "/views/layouts/"),
     partialsDir: join(__dirname, "/views/partials/"),
+    layoutsDir: join(__dirname, "/views/layouts/"),
+    partialsDir: join(__dirname, "/views/partials/"),
   })
 );
 

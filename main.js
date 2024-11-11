@@ -5,7 +5,7 @@ import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 // const path = require("path");
-app.use(express.static(join(__dirname, "public")));
+
 app.use(
   express.urlencoded({
     extended: true,
@@ -22,6 +22,7 @@ app.engine(
 );
 app.set("view engine", "hbs");
 app.set("views", "./views");
+app.use(express.static("public"));
 
 app.get("/", function (req, res) {
   res.render("home");

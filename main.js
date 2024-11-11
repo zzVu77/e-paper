@@ -17,12 +17,12 @@ app.engine(
     extname: "hbs",
     defaultLayout: "main",
     layoutsDir: join(__dirname, "/views/layouts/"),
-    partialsDir: join(__dirname, "/views/partials/"),
+    partialsDir: join(__dirname, "/views/components/"),
   })
 );
 
 app.set("view engine", "hbs");
-app.set("views", "./views");
+app.set("views", "./views/pages");
 app.use(express.static("public"));
 
 app.get("/", function (req, res) {

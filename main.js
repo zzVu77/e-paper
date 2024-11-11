@@ -1,6 +1,7 @@
 import express from "express";
 import { engine } from "express-handlebars";
 import { dirname, join } from "path";
+import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -20,6 +21,7 @@ app.engine(
     partialsDir: join(__dirname, "/views/partials/"),
   })
 );
+
 app.set("view engine", "hbs");
 app.set("views", "./views");
 app.use(express.static("public"));
@@ -33,6 +35,10 @@ app.get("/features", function (req, res) {
 });
 app.get("/about", function (req, res) {
   res.render("about");
+});
+
+app.get("/admin", function (req, res) {
+  res.render("admin/dashboard", { layout: "admin", title: "Admin Dashboard" });
 });
 
 app.listen(3000, function () {

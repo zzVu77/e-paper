@@ -18,15 +18,12 @@ app.engine(
     defaultLayout: "main",
     layoutsDir: join(__dirname, "/views/layouts/"),
     partialsDir: join(__dirname, "/views/partials/"),
-    layoutsDir: join(__dirname, "/views/layouts/"),
-    partialsDir: join(__dirname, "/views/partials/"),
   })
 );
 
 app.set("view engine", "hbs");
 app.set("views", "./views");
 app.use(express.static("public"));
-app.use(express.static("img"));
 
 app.get("/", function (req, res) {
   res.render("home");

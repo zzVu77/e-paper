@@ -1,20 +1,11 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 16px;
   color: white;
   text-decoration: none;
   list-style-type: none;
 }
-body {
-  margin: 0;
-  display: flex; /* This makes the body a flex container */
-  flex-direction: column; /* Sets the flex container to have a vertical column layout. */
-  min-height: 100vh; /* Ensures that the body takes up at least the full height of the viewport. */
-  box-sizing: inherit;
-  height: 10000px;
-}
+
 .client-footer {
   margin-top: auto;
   width: 100%; /* Push the footer to the bottom */

@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer utilities {
+  .tw-line-clamp-3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3; /* Giới hạn số dòng */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.5; /* Điều chỉnh chiều cao dòng */
+    max-height: calc(1.5em * 3); /* Giới hạn chiều cao */
+  }
+}
+body {
+  margin: 0;
+  display: flex; /* This makes the body a flex container */
+  flex-direction: column; /* Sets the flex container to have a vertical column layout. */
+  min-height: 100vh; /* Ensures that the body takes up at least the full height of the viewport. */
+  box-sizing: inherit;
+}

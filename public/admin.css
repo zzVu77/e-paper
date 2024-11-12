@@ -1,0 +1,21 @@
+#admin-content{
+    display :flex;
+    gap: 20px;
+    height: 100vh;
+}
+#admin-container{
+    height: 100vh;
+}
+#admin-header{
+    background: linear-gradient(to bottom, white, #F0F8FF);
+}
+#admin-sidebar{
+    background: linear-gradient(to bottom, #F0F8FF, #BDF3FF);
+}
+#admin-footer
+{
+    background: linear-gradient(to bottom,  #BDF3FF, #87CEEB);  
+}
+#admin-sidebar {
+    width: auto;
+}

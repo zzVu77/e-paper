@@ -1,0 +1,43 @@
+<link rel="stylesheet" href="/css/comment.css" />
+<div
+  class="comment-container tw-w-[700px] tw-h-[180px] tw-flex tw-justify-start tw-items-center tw-border-[1.5px] tw-border-solid tw-border-gray-300 tw-rounded-lg tw-mb-5 tw-ml-5"
+>
+  {{! User avatar }}
+  <div class="user-avatar tw-w-[15%] tw-ml-5">
+    <img
+      class="tw-object-cover tw-object-top tw-w-[100px] tw-h-[100px] tw-block tw-rounded-[100%]"
+      src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+      alt=""
+    />
+  </div>
+  {{! Comment detail }}
+  <div class="comment-detail tw-ml-2 tw-mt-2 flex tw-flex-col tw-w-[80%]">
+    {{! User info and posted time }}
+    <div class="flex tw-justify-between tw-items-center">
+      <span
+        class="user-name tw-font-bold tw-text-lg tw-text-center"
+      >Elizabeth</span>
+      <span
+        class="datetime tw-text-gray-600 tw-font-normal tw-text-sm text- tw-text-center"
+      >12/11/2024</span>
+    </div>
+    {{! Comment content }}
+    <textarea
+      class="tw-w-full tw-h-[100px] tw-border-none tw-overflow-y-auto tw-mt-3 tw-font-light"
+      name=""
+      readonly
+      id=""
+    >
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus id
+      iste, natus quisquam voluptates sequi ab eligendi adipisci recusandae.
+      Totam laborum saepe perferendis tempore illo voluptatem minima quaerat
+      veritatis repudiandae. Lorem, ipsum dolor sit amet consectetur adipisicing
+      elit. Ab recusandae, neque rem, qui tempore incidunt totam aut alias illum
+      sequi laboriosam libero ipsam aliquid nihil in, commodi vel dicta
+      explicabo? Lorem ipsum dolor sit amet consectetur adipisicing elit.
+      Recusandae vitae repellendus, quas mollitia soluta cumque facilis deserunt
+      rerum labore veritatis error eligendi qui dolorem sunt ea provident nisi
+      hic optio!
+    </textarea>
+  </div>
+</div>

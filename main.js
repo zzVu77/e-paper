@@ -28,6 +28,7 @@ app.use(express.static('public'));
 app.get('/posts', function (req, res) {
   res.render('posts');
 });
+
 app.get('/article', function (req, res) {
   res.render('article-detail');
 });
@@ -35,12 +36,21 @@ app.get('/article', function (req, res) {
 app.get('/features', function (req, res) {
   res.render('features');
 });
+
 app.get('/about', function (req, res) {
   res.render('about');
 });
 
 app.get('/admin', function (req, res) {
   res.render('admin/dashboard', { layout: 'admin', title: 'Admin Dashboard' });
+});
+
+app.get('/login', function (req, res) {
+  res.render('login', { layout: 'default' });
+});
+
+app.get('/signup', function (req, res) {
+  res.render('signup', { layout: 'default' });
 });
 
 app.listen(3000, function () {

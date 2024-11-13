@@ -227,6 +227,10 @@
   margin-top: 60px !important;
 }
 
+.tw-mb-2 {
+  margin-bottom: 0.5rem !important;
+}
+
 .tw-line-clamp-3 {
   overflow: hidden !important;
   display: -webkit-box !important;
@@ -360,6 +364,10 @@
 
 .tw-w-full {
   width: 100% !important;
+}
+
+.tw-flex-grow {
+  flex-grow: 1 !important;
 }
 
 .tw-cursor-pointer {
@@ -496,6 +504,10 @@
 
 .tw-border-r-2 {
   border-right-width: 2px !important;
+}
+
+.tw-border-t {
+  border-top-width: 1px !important;
 }
 
 .tw-border-solid {
@@ -644,6 +656,11 @@
   padding-bottom: 1.5rem !important;
 }
 
+.tw-px-4 {
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+
 .tw-pb-16 {
   padding-bottom: 4rem !important;
 }
@@ -717,6 +734,14 @@
 .tw-text-xs {
   font-size: 0.75rem !important;
   line-height: 1rem !important;
+}
+
+.tw-text-\[100px\] {
+  font-size: 100px !important;
+}
+
+.tw-text-\[50px\] {
+  font-size: 50px !important;
 }
 
 .tw-font-black {
@@ -824,6 +849,11 @@
 .tw-text-purple-600 {
   --tw-text-opacity: 1 !important;
   color: rgb(147 51 234 / var(--tw-text-opacity)) !important;
+}
+
+.tw-text-purple-500 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(168 85 247 / var(--tw-text-opacity)) !important;
 }
 
 .tw-no-underline {

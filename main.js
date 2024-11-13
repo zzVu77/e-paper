@@ -42,6 +42,9 @@ app.get('/about', function (req, res) {
 app.get('/admin', function (req, res) {
   res.render('admin/dashboard', { layout: 'admin', title: 'Admin Dashboard' });
 });
+app.get('/login', function (req, res) {
+  res.render('login', { layout: 'default' });
+});
 
 app.listen(3000, function () {
   console.log('ecApp is running at http://localhost:3000');

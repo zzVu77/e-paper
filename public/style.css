@@ -231,6 +231,10 @@
   margin-bottom: 0.5rem !important;
 }
 
+.tw-mt-\[30px\] {
+  margin-top: 30px !important;
+}
+
 .tw-line-clamp-3 {
   overflow: hidden !important;
   display: -webkit-box !important;
@@ -586,6 +590,21 @@
   background-color: rgb(255 255 255 / var(--tw-bg-opacity)) !important;
 }
 
+.tw-bg-yellow-400 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(250 204 21 / var(--tw-bg-opacity)) !important;
+}
+
+.tw-bg-gray-100 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity)) !important;
+}
+
+.tw-bg-gray-300 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(209 213 219 / var(--tw-bg-opacity)) !important;
+}
+
 .tw-bg-gradient-to-br {
   background-image: linear-gradient(to bottom right, var(--tw-gradient-stops)) !important;
 }
@@ -742,6 +761,14 @@
 
 .tw-text-\[50px\] {
   font-size: 50px !important;
+}
+
+.tw-text-\[20px\] {
+  font-size: 20px !important;
+}
+
+.tw-text-\[15px\] {
+  font-size: 15px !important;
 }
 
 .tw-font-black {

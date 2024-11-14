@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+.article-editor-container {
+  width: 90%;
+  margin: 30px auto;
+}
+.article-editor-tagInput ul {
+  display: flex;
+  flex-wrap: wrap;
+}
+.article-editor-tagInput {
+  height: 50px;
+  padding: 7px;
+  border-radius: 5px;
+  border: 1px solid #a6a6a6;
+  width: 70%;
+}
+.article-editor-tagInput ul li {
+  position: relative;
+  list-style-type: none;
+  background: #f2f2f2;
+  padding: 7px 15px 5px 15px;
+  margin-right: 5px;
+  border-radius: 5px;
+  border: 1px solid #e3d1e1;
+}
+.article-editor-tagInput input {
+  border: none;
+  outline: none;
+  width: 250px;
+}
+.article-editor-tagInput ul li svg {
+  position: absolute;
+  top: 0px;
+  left: 1px;
+}
+.article-editor-tagsDetail{
+    display: flex;
+    justify-content: space-between;
+    align-items:stretch;
+}
+.article-editor-tagsDetail button{
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 9px 15px;
+    border-radius: 5px;
+    background: #5372F0;
+    transition: background 0.3s ease;
+}
+.article-editor-tagsDetail button:hover{
+    background: #2c52ed;
+}

@@ -1,0 +1,108 @@
+
+<div class="tw-relative tw-overflow-x-auto tw-shadow-md tw-sm:rounded-lg tw-w-[80rem]">
+     
+    <div class="tw-mt-4 tw-ml-4 tw-flex tw-items-center tw-justify-between tw-flex-column tw-flex-wrap tw-md:flex-row tw-space-y-4 tw-md:space-y-0 tw-pb-4 tw-bg-white tw-dark:bg-gray-900">
+        <div class="tw-mt-4 tw-ml-4">
+            <div class="tw-text-base tw-font-semibold">{{title}}</div>
+            <div class="tw-font-normal tw-text-gray-500">Active {{title}}</div>
+        </div> 
+    
+        <div class="tw-relative">
+            <div class="tw-absolute tw-inset-y-0 tw-rtl:inset-r-0 tw-start-0 tw-flex tw-items-center tw-ps-3 tw-pointer-events-none">
+                <svg class="tw-w-4 tw-h-4 tw-text-gray-500 tw-dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                </svg>
+            </div>
+            <input type="text" id="table-search-tags" class="tw-block tw-p-2 tw-ps-10 tw-text-sm tw-text-gray-900 tw-border tw-border-gray-300 tw-rounded-lg tw-w-80 tw-bg-gray-50 tw-focus:ring-blue-500 tw-focus:border-blue-500 tw-dark:bg-gray-700 tw-dark:border-gray-600 tw-dark:placeholder-gray-400 tw-dark:text-white tw-dark:focus:ring-blue-500 tw-dark:focus:border-blue-500" placeholder="Search for users">
+        </div>
+        <div>
+            <button id="dropdownActionButton" data-dropdown-toggle="dropdownAction" class="tw-inline-flex tw-items-center tw-text-gray-500 tw-bg-white tw-border tw-border-gray-300 tw-focus:outline-none tw-hover:bg-gray-100 tw-focus:ring-4 tw-focus:ring-gray-100 tw-font-medium tw-rounded-lg tw-text-sm tw-px-3 tw-py-1.5 tw-dark:bg-gray-800 tw-dark:text-gray-400 tw-dark:border-gray-600 tw-dark:hover:bg-gray-700 tw-dark:hover:border-gray-600 tw-dark:focus:ring-gray-700" type="button">
+                <span class="tw-sr-only">Action button</span>
+                Newest
+                <svg class="tw-w-2.5 tw-h-2.5 tw-ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                </svg>
+            </button>
+            <!-- Dropdown menu -->
+            <div id="dropdownAction" class="tw-z-10 tw-hidden tw-bg-white tw-divide-y tw-divide-gray-100 tw-rounded-lg tw-shadow tw-w-44 tw-dark:bg-gray-700 tw-dark:divide-gray-600">
+                <ul class="tw-py-1 tw-text-sm tw-text-gray-700 tw-dark:text-gray-200" aria-labelledby="dropdownActionButton">
+                    <li>
+                        <a href="#" class="tw-block tw-px-4 tw-py-2 tw-hover:bg-gray-100 tw-dark:hover:bg-gray-600 tw-dark:hover:text-white">Reward</a>
+                    </li>
+                    <li>
+                        <a href="#" class="tw-block tw-px-4 tw-py-2 tw-hover:bg-gray-100 tw-dark:hover:bg-gray-600 tw-dark:hover:text-white">Promote</a>
+                    </li>
+                    <li>
+                        <a href="#" class="tw-block tw-px-4 tw-py-2 tw-hover:bg-gray-100 tw-dark:hover:bg-gray-600 tw-dark:hover:text-white">Activate account</a>
+                    </li>
+                </ul>
+                <div class="tw-py-1">
+                    <a href="#" class="tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-hover:bg-gray-100 tw-dark:hover:bg-gray-600 tw-dark:text-gray-200 tw-dark:hover:text-white">Delete User</a>
+                </div>
+            </div>
+        </div>
+        <div>
+            <button class="tw-border-none tw-bg-sky-400 tw-hover:bg-sky-700 tw-text-white tw-font-bold tw-py-2 tw-px-4 tw-rounded">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+                Thêm TAG
+            </button>
+        </div>
+    </div>
+    <table class="tw-mt-4 tw-ml-4 tw-w-full tw-text-sm tw-text-left tw-rtl:text-right tw-text-gray-500 tw-dark:text-gray-400">
+        <thead class="tw-text-xs tw-text-gray-700 tw-uppercase tw-bg-gray-50 tw-dark:bg-gray-700 tw-dark:text-gray-400">
+            <tr>
+                <th scope="col" class="tw-p-4 ">
+                    ID
+                </th>
+                <th scope="col" class="tw-px-6 tw-py-3">
+                    Tên tag
+                </th>
+                <th scope="col" class="tw-px-6 tw-py-3">
+                    Ngày tạo
+                </th>
+                <th scope="col" class="tw-px-6 tw-py-3">
+                    Ngày chỉnh sửa
+                </th>
+                <th scope="col" class="tw-px-6 tw-py-3">
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr id="admin-tags-row" class="tw-bg-white tw-border-b tw-dark:bg-gray-800 tw-dark:border-gray-700 tw-hover:bg-gray-50 tw-dark:hover:bg-gray-600">
+                <td class="tw-px-6 tw-py-4">
+                    <div class="tw-flex tw-items-center">
+                        1
+                    </div>
+                </td>
+                <td  class="tw-px-6 tw-py-4">
+                    <div class="">
+                        <div class="tw-text-base ">Thủy sản</div>
+                        {{!-- <div class="tw-font-normal tw-text-gray-500">neil.sims@flowbite.com</div> --}}
+                    </div>  
+                </td>
+                <td class="tw-px-6 tw-py-4">
+                    20/10/2024
+                </td>
+                <td class="tw-px-6 tw-py-4">
+                    <div class="tw-flex tw-items-center">
+                    21/10/2024
+                    </div>
+                </td>
+                <td class="tw-px-6 tw-py-4 tw-justify-center">
+                    <a href="#" class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 48 48">
+                        <path d="M 36 5.0097656 C 34.205301 5.0097656 32.410791 5.6901377 31.050781 7.0507812 L 8.9160156 29.183594 C 8.4960384 29.603571 8.1884588 30.12585 8.0253906 30.699219 L 5.0585938 41.087891 A 1.50015 1.50015 0 0 0 6.9121094 42.941406 L 17.302734 39.974609 A 1.50015 1.50015 0 0 0 17.304688 39.972656 C 17.874212 39.808939 18.39521 39.50518 18.816406 39.083984 L 40.949219 16.949219 C 43.670344 14.228094 43.670344 9.7719064 40.949219 7.0507812 C 39.589209 5.6901377 37.794699 5.0097656 36 5.0097656 z M 36 7.9921875 C 37.020801 7.9921875 38.040182 8.3855186 38.826172 9.171875 A 1.50015 1.50015 0 0 0 38.828125 9.171875 C 40.403 10.74675 40.403 13.25325 38.828125 14.828125 L 36.888672 16.767578 L 31.232422 11.111328 L 33.171875 9.171875 C 33.957865 8.3855186 34.979199 7.9921875 36 7.9921875 z M 29.111328 13.232422 L 34.767578 18.888672 L 16.693359 36.962891 C 16.634729 37.021121 16.560472 37.065723 16.476562 37.089844 L 8.6835938 39.316406 L 10.910156 31.521484 A 1.50015 1.50015 0 0 0 10.910156 31.519531 C 10.933086 31.438901 10.975086 31.366709 11.037109 31.304688 L 29.111328 13.232422 z"></path>
+                        </svg>
+                    </a>
+                    <a href="#" class="">
+                        <svg  width="25" height="25"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z"/></svg>
+                    </a>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>

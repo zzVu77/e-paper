@@ -39,8 +39,17 @@ app.get('/about', function (req, res) {
   res.render('about');
 });
 
-app.get('/admin', function (req, res) {
-  res.render('admin/dashboard', { layout: 'admin', title: 'Admin Dashboard' });
+app.get('/admin/tags', function (req, res) {
+  res.render('admin/tags', { layout: 'admin', title: 'Tags' });
+});
+app.get('/admin/articles', function (req, res) {
+  res.render('admin/articles', { layout: 'admin', title: 'Articles' });
+});
+app.get('/admin/categories', function (req, res) {
+  res.render('admin/categories', { layout: 'admin', title: 'Categories' });
+});
+app.get('/editor', function (req, res) {
+  res.render('editor', { layout: 'admin', title: 'Editor' });
 });
 
 app.listen(3000, function () {

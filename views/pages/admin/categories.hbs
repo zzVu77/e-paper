@@ -1,22 +1,19 @@
-
-<div class="tw-relative tw-overflow-x-auto tw-shadow-md tw-sm:rounded-lg tw-w-[80rem]">
-     
-    <div class="tw-mt-4 tw-ml-4 tw-flex tw-items-center tw-justify-between tw-flex-column tw-flex-wrap tw-md:flex-row tw-space-y-4 tw-md:space-y-0 tw-pb-4 tw-bg-white tw-dark:bg-gray-900">
-        <div class="tw-mt-4 tw-ml-4">
-            <div class="tw-text-base tw-font-semibold">{{title}}</div>
+<div class="tw-p-4  tw-relative tw-overflow-x-auto tw-shadow-md sm:tw-rounded-lg tw-w-[80rem]">
+    <div class="tw-mt-4 tw-ml-4 tw-flex tw-items-center tw-justify-between tw-flex-column tw-flex-wrap md:tw-flex-row tw-space-y-4 md:tw-space-y-0 tw-pb-4 tw-bg-white dark:tw-bg-white">
+        <div class="tw-ml-4">
+            <div class=" tw-font-semibold tw-text-lg">{{title}}</div>
             <div class="tw-font-normal tw-text-gray-500">Active {{title}}</div>
         </div> 
-    
         <div class="tw-relative">
-            <div class="tw-absolute tw-inset-y-0 tw-rtl:inset-r-0 tw-start-0 tw-flex tw-items-center tw-ps-3 tw-pointer-events-none">
-                <svg class="tw-w-4 tw-h-4 tw-text-gray-500 tw-dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+            <div class="tw-absolute tw-inset-y-0 rtl:tw-inset-r-0 tw-start-0 tw-flex tw-items-center tw-ps-3 tw-pointer-events-none">
+                <svg class="tw-w-4 tw-h-4 tw-text-gray-500 dark:tw-text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                 </svg>
             </div>
-            <input type="text" id="table-search-tags" class="tw-block tw-p-2 tw-ps-10 tw-text-sm tw-text-gray-900 tw-border tw-border-gray-300 tw-rounded-lg tw-w-80 tw-bg-gray-50 tw-focus:ring-blue-500 tw-focus:border-blue-500 tw-dark:bg-gray-700 tw-dark:border-gray-600 tw-dark:placeholder-gray-400 tw-dark:text-white tw-dark:focus:ring-blue-500 tw-dark:focus:border-blue-500" placeholder="Search for users">
+            <input type="text" id="table-search-tags" class="tw-block tw-p-2 tw-ps-10 tw-text-sm tw-text-gray-900 tw-border tw-border-gray-300 tw-rounded-lg tw-w-80 tw-bg-gray-5 dark:tw-bg-gray-50 dark:tw-border-gray-600 dark:tw-placeholder-gray-400 dark:tw-text-black" placeholder="Search for users">
         </div>
         <div>
-            <button id="dropdownActionButton" data-dropdown-toggle="dropdownAction" class="tw-inline-flex tw-items-center tw-text-gray-500 tw-bg-white tw-border tw-border-gray-300 tw-focus:outline-none tw-hover:bg-gray-100 tw-focus:ring-4 tw-focus:ring-gray-100 tw-font-medium tw-rounded-lg tw-text-sm tw-px-3 tw-py-1.5 tw-dark:bg-gray-800 tw-dark:text-gray-400 tw-dark:border-gray-600 tw-dark:hover:bg-gray-700 tw-dark:hover:border-gray-600 tw-dark:focus:ring-gray-700" type="button">
+            <button id="dropdownActionButton" data-tw-dropdown-toggle="dropdownAction" class="tw-inline-flex tw-items-center tw-text-gray-500 tw-bg-white tw-border tw-border-gray-300 focus:tw-outline-none hover:tw-bg-gray-100 focus:tw-ring-4 focus:tw-ring-gray-100 tw-font-medium tw-rounded-lg tw-text-sm tw-px-3 tw-py-1.5 dark:tw-bg-gray-100 dark:tw-text-gray-400 dark:tw-border-blue-300 hover:dark:tw-bg-blue-500 hover:dark:tw-border-blue-300 focus:dark:tw-ring-blue-300" type="button">
                 <span class="tw-sr-only">Action button</span>
                 Newest
                 <svg class="tw-w-2.5 tw-h-2.5 tw-ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -24,79 +21,59 @@
                 </svg>
             </button>
             <!-- Dropdown menu -->
-            <div id="dropdownAction" class="tw-z-10 tw-hidden tw-bg-white tw-divide-y tw-divide-gray-100 tw-rounded-lg tw-shadow tw-w-44 tw-dark:bg-gray-700 tw-dark:divide-gray-600">
-                <ul class="tw-py-1 tw-text-sm tw-text-gray-700 tw-dark:text-gray-200" aria-labelledby="dropdownActionButton">
+            <div id="dropdownAction" class="tw-z-10 tw-hidden tw-bg-white tw-divide-y tw-divide-gray-100 tw-rounded-lg tw-shadow tw-w-44 dark:tw-bg-blue-700 dark:tw-divide-blue-600">
+                <ul class="tw-py-1 tw-text-sm tw-text-gray-700 dark:tw-text-gray-200" aria-labelledby="dropdownActionButton">
                     <li>
-                        <a href="#" class="tw-block tw-px-4 tw-py-2 tw-hover:bg-gray-100 tw-dark:hover:bg-gray-600 tw-dark:hover:text-white">Reward</a>
+                        <a href="#" class="tw-block tw-px-4 tw-py-2 hover:tw-bg-gray-100 dark:hover:tw-bg-gray-600 dark:hover:tw-text-white">Reward</a>
                     </li>
                     <li>
-                        <a href="#" class="tw-block tw-px-4 tw-py-2 tw-hover:bg-gray-100 tw-dark:hover:bg-gray-600 tw-dark:hover:text-white">Promote</a>
+                        <a href="#" class="tw-block tw-px-4 tw-py-2 hover:tw-bg-gray-100 dark:hover:tw-bg-gray-600 dark:hover:tw-text-white">Reward</a>
                     </li>
                     <li>
-                        <a href="#" class="tw-block tw-px-4 tw-py-2 tw-hover:bg-gray-100 tw-dark:hover:bg-gray-600 tw-dark:hover:text-white">Activate account</a>
+                        <a href="#" class="tw-block tw-px-4 tw-py-2 hover:tw-bg-gray-100 dark:hover:tw-bg-gray-600 dark:hover:tw-text-white">Reward</a>
                     </li>
                 </ul>
                 <div class="tw-py-1">
-                    <a href="#" class="tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-hover:bg-gray-100 tw-dark:hover:bg-gray-600 tw-dark:text-gray-200 tw-dark:hover:text-white">Delete User</a>
+                    <a href="#" class="tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 hover:tw-bg-gray-100 dark:hover:tw-bg-gray-600 dark:tw-text-gray-200 dark:hover:tw-text-white">Delete User</a>
                 </div>
             </div>
         </div>
         <div>
-            <button class="tw-border-none tw-bg-sky-400 tw-hover:bg-sky-700 tw-text-white tw-font-bold tw-py-2 tw-px-4 tw-rounded">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="">
+            <button class="tw-border-none tw-bg-sky-400 hover:tw-bg-sky-700 tw-text-white tw-font-bold tw-py-2 tw-px-4 tw-rounded">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
                 Thêm TAG
             </button>
         </div>
     </div>
-    <table class="tw-mt-4 tw-ml-4 tw-w-full tw-text-sm tw-text-left tw-rtl:text-right tw-text-gray-500 tw-dark:text-gray-400">
-        <thead class="tw-text-xs tw-text-gray-700 tw-uppercase tw-bg-gray-50 tw-dark:bg-gray-700 tw-dark:text-gray-400">
+    <table class="tw-mt-4 tw-ml-4 tw-w-full tw-text-sm tw-text-left rtl:tw-text-right tw-text-gray-500 dark:tw-text-gray-400">
+        <thead class="tw-text-xs tw-text-gray-700 tw-uppercase tw-bg-gray-50 dark:tw-bg-gray-700 dark:tw-text-gray-400">
             <tr>
-                <th scope="col" class="tw-p-4 ">
-                    ID
-                </th>
-                <th scope="col" class="tw-px-6 tw-py-3">
-                    Tên tag
-                </th>
-                <th scope="col" class="tw-px-6 tw-py-3">
-                    Thuộc
-                </th>
-                <th scope="col" class="tw-px-6 tw-py-3">
-                    Ngày tạo
-                </th>
-                <th scope="col" class="tw-px-6 tw-py-3">
-                    Ngày chỉnh sửa
-                </th>
-                <th scope="col" class="tw-px-8 tw-py-3 tw-text-left">
-                    Action
-                </th>
+                <th scope="col" class="tw-p-4">ID</th>
+                <th scope="col" class="tw-px-6 tw-py-3">Tên </th>
+                <th scope="col" class="tw-px-6 tw-py-3">Thuộc</th>
+                <th scope="col" class="tw-px-6 tw-py-3">Ngày tạo</th>
+                <th scope="col" class="tw-px-6 tw-py-3">Ngày chỉnh sửa</th>
+                <th scope="col" class="tw-px-8 tw-py-3 tw-text-left">Action</th>
             </tr>
         </thead>
         <tbody>
-            <tr id="admin-article-row" class="tw-bg-white tw-border-b tw-dark:bg-gray-800 tw-dark:border-gray-700 tw-hover:bg-gray-50 tw-dark:hover:bg-gray-600">
+            <tr id="admin-categories-row" class="tw-bg-white tw-border-b dark:tw-bg-cyan-50	 dark:tw-border-cyan-300 hover:tw-bg-gray-50 dark:hover:tw-bg-cyan-200">
                 <td class="tw-px-6 tw-py-4">
-                    <div class="tw-flex tw-items-center">
-                        1
-                    </div>
+                    <div class="tw-flex tw-items-center">1</div>
                 </td>
                 <td class="tw-px-6 tw-py-4">
-                    <div class="">
-                        <div class="tw-text-base ">Thủy sản</div>
-                        {{!-- <div class="tw-font-normal tw-text-gray-500">neil.sims@flowbite.com</div> --}}
+                    <div>
+                        <div class="tw-text-base">Thủy sản</div>
                     </div>  
                 </td>
+                <td class="tw-px-6 tw-py-4">NaN</td>
+                <td class="tw-px-6 tw-py-4">20/10/2024</td>
                 <td class="tw-px-6 tw-py-4">
-                    NaN
+                    <div class="tw-flex tw-items-center">21/10/2024</div>
                 </td>
-                <td class="tw-px-6 tw-py-4">
-                    20/10/2024
-                </td>
-                <td class="tw-px-6 tw-py-4">
-                    <div class="tw-flex tw-items-center">
-                    21/10/2024
-                    </div>
-                </td>
+     
                 <td class="tw-px-6 tw-py-4 tw-justify-center">
                     <a href="#" class="">
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 48 48">

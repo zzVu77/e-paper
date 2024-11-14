@@ -38,7 +38,9 @@ app.get('/features', function (req, res) {
 app.get('/about', function (req, res) {
   res.render('about');
 });
-
+app.get('/article-editor', function (req, res) {
+  res.render('article-editor');
+});
 app.get('/admin', function (req, res) {
   res.render('admin/dashboard', { layout: 'admin', title: 'Admin Dashboard' });
 });

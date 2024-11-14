@@ -1,0 +1,38 @@
+.accountsetting-security-container{
+    margin-left: 106px ;
+    margin-top:50px;
+    display: flex;
+    flex-direction: column;
+}
+.accountsetting-security-header{
+    color: #141A28;
+    font-size: 36px;
+    font-family: Montserrat;
+    font-weight: 800;
+    line-height: 32px;
+    word-wrap: break-word;
+    margin-bottom: 48px;
+}
+.accountsetting-security-header2{
+    color: #141A28;
+    font-size: 16px;
+    font-family: Montserrat;
+    font-weight: 600;
+    line-height: 16px;
+    word-wrap: break-word;
+    margin-bottom: 16px;
+}
+.accountsetting-save-changes{
+    background: #53AA51; 
+    border-radius: 50px;
+    border: none;
+    margin-top: 30px;
+    width: 470px;
+    height: 50px;
+    padding: 18px;
+    color: white;
+}
+.accountsetting-save-changes:hover{
+    background-color: #61c560;
+    color: #f0f0f0; /* Màu nền khi hover */
+}

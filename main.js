@@ -2,6 +2,10 @@ import express from 'express';
 import { engine } from 'express-handlebars';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
+
+import  categoriesmanagementRouter from './routes/admin/categories.route.js';
+import  tagsmanagementRouter from './routes/admin/tags.route.js';
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 // const path = require("path");
@@ -39,15 +43,16 @@ app.get('/about', function (req, res) {
   res.render('about');
 });
 
-app.get('/admin/tags', function (req, res) {
-  res.render('admin/tags', { layout: 'admin', title: 'Tags' });
-});
+// app.get('/admin/tags', function (req, res) {
+//   res.render('admin/tags', { layout: 'admin', title: 'Tags' });
+// });
 app.get('/admin/articles', function (req, res) {
   res.render('admin/articles', { layout: 'admin', title: 'Articles' });
 });
-app.get('/admin/categories', function (req, res) {
-  res.render('admin/categories', { layout: 'admin', title: 'Categories' });
-});
+
+app.use('/admin/categories', categoriesmanagementRouter);
+app.use('/admin/tags', tagsmanagementRouter);
+
 app.get('/editor', function (req, res) {
   res.render('editor', { layout: 'admin', title: 'Editor' });
 });

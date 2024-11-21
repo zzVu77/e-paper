@@ -1,4 +1,54 @@
 <link rel="stylesheet" href="/css/article-detail.css">
+{{!-- Article info  --}}
+{{!-- Cover image --}}
+<div class="tw-text-center ">
+    <img class="tw-h-[410px] tw-w-full tw-object-cover tw-object-center " src="https://images.unsplash.com/photo-1495020689067-958852a7765e?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
+</div>
+{{!-- Title and Category --}}
+<div class="tw-font-extrabold tw-text-2xl tw-m-5 tw-underline tw-text-[#53aa51]">Chính trị</div>
+<div class="tw-font-semibold tw-text-[40px] tw-tracking-wide tw-leading-[1.1]  tw-text-left tw-m-5  ">Việt Nam khuyến cáo công  công   công  công dân ở Ukraine sẵn sàng sơ tán khỏi thành phố lớn</div>
+{{!-- Tags, Author, Date --}}
+ <div class="tw-flex tw-items-baseline tw-justify-start tw-px-10 tw-pl-5 tw-my-5 ">
+     <div
+          class="tw-bg-gray-200 tw-mr-3 tw-cursor-pointer tw-min-w-[100px] tw-w-[auto] tw-h-[30px] tw-border-red-600 tw-rounded-[50px] tw-text-center tw-p-1 tw-text-gray-600"
+        >
+          Economy
+    </div>
+    <div
+          class="tw-bg-gray-200 tw-mr-3 tw-cursor-pointer tw-min-w-[100px] tw-w-[auto] tw-h-[30px] tw-border-red-600 tw-rounded-[50px] tw-text-center tw-p-1 tw-text-gray-600"
+        >
+          Economy
+    </div>
+    <div class="post-card-info tw-mt-3 ">
+        <span class="post-card-info-author tw-mr-2 tw-font-normal">By Gabie Sheber
+        </span>
+        <span class="post-card-info-datetime tw-text-gray-500">May 22, 2020</span>
+    </div>
+      
+ </div>
+{{!-- Article content --}}
+<div class="tw-ml-12">
+
+    <div class="blog-content">
+                <p>Chào bạn, hôm nay chúng ta sẽ cùng tìm hiểu về cách xây dựng một bài viết đơn giản trong HTML. Dưới đây là một ví dụ dễ hiểu để bắt đầu với blog cơ bản của bạn.</p>
+                <div class="tw-text-center tw-mt-5"><img src="https://via.placeholder.com/800x400" class="tw-m-auto" alt="Ảnh minh họa"></div>
+                <p>Bạn có thể thêm nội dung, hình ảnh, và các liên kết để làm bài viết của mình phong phú hơn. Đừng quên tối ưu hóa trải nghiệm người đọc bằng cách sử dụng font chữ và màu sắc dễ nhìn.</p>
+                <h2>Một số lưu ý khi viết blog</h2>
+                <ul>
+                    <li>Sử dụng tiêu đề rõ ràng và hấp dẫn.</li>
+                    <li>Chia nội dung thành các đoạn nhỏ, dễ đọc.</li>
+                    <li>Thêm hình ảnh hoặc video để bài viết sinh động hơn.</li>
+                </ul>
+                <p>Nếu bạn thấy bài viết này hữu ích, hãy để lại bình luận hoặc chia sẻ với bạn bè nhé!</p>
+                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Non illum minima nemo veritatis, id atque dolore maxime quis rem error placeat labore veniam consectetur quam accusantium ratione pariatur amet beatae.</p>
+                
+                <div class="blog-footer">
+                <p>Cảm ơn bạn đã đọc bài viết này! Hẹn gặp lại bạn ở bài viết tiếp theo.</p>
+                <p><a href="#">Quay lại trang chủ</a></p>
+            </div>
+    </div>
+
+</div>         
 {{!-- Comment section --}}
 <div class=" comment-section tw-w-[850px] tw-h-[550px] tw-border-2 tw-border-solid tw-border-gray-300 tw-rounded-lg tw-m-auto tw-mt-7 tw-mb-14">
 {{!-- Place for user comment --}}
@@ -16,8 +66,6 @@
         placeholder="Share your opinion here..."></textarea> 
     </div>
 </form>
-
-
 
 {{>article-detail/comment}}
 {{>article-detail/comment}}

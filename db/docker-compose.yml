@@ -7,7 +7,7 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: admin123
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: e_paper
       MYSQL_USER: user
       MYSQL_PASSWORD: user123
@@ -23,4 +23,4 @@ volumes:
 networks:
   mysql_network:
 
-# DATABASE_URL=mysql://user:user123@mysql:3306/e_paper
+# DATABASE_URL=mysql://root:root@localhost:3306/e_paper

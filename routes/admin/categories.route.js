@@ -45,8 +45,7 @@ const router = express.Router();
 
 
 router.get('/', function (req, res) {
-
-  res.render('admin/categories', { layout: 'admin', title: 'Categories' ,data: jsonData.data});
+  res.render('admin/categories', { layout: 'admin', title: 'Thể loại' ,data: jsonData.data});
 });
 
 router.get('/del', (req, res) => {
@@ -64,6 +63,10 @@ router.get('/del', (req, res) => {
   jsonData.data.splice(categoryIndex, 1);
   // 
 
+  res.redirect('/admin/categories');
+});
+
+router.get('/add', (req,res) => {
   res.redirect('/admin/categories');
 });
 

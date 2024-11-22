@@ -41,7 +41,7 @@ const router = express.Router();
 
 router.get('/', function (req, res) {
   
-    res.render('admin/tags', { layout: 'admin', title: 'Tags', data: dataJson.data });
+    res.render('admin/tags', { layout: 'admin', title: 'Nhãn', data: dataJson.data });
   });
 
 export default router;

@@ -1,0 +1,3 @@
+.comment-detail > textarea::-webkit-scrollbar {
+  display: none;
+}

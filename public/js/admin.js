@@ -6,14 +6,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const headerdropdownMenu = document.getElementById('admin-header-dropdownAction');  // Fixed typo
 
     // Toggle visibility for the first dropdown
-    dropdownButton.addEventListener('click', function (event) {
-        event.stopPropagation();  // Prevent click event from propagating to document
-        if (dropdownMenu.classList.contains('tw-hidden')) {
-            dropdownMenu.classList.remove('tw-hidden');
-        } else {
-            dropdownMenu.classList.add('tw-hidden');
-        }
-    });
+    if (dropdownButton && dropdownMenu){
+        dropdownButton.addEventListener('click', function (event) {
+            event.stopPropagation();  // Prevent click event from propagating to document
+            if (dropdownMenu.classList.contains('tw-hidden')) {
+                dropdownMenu.classList.remove('tw-hidden');
+            } else {
+                dropdownMenu.classList.add('tw-hidden');
+            }
+        });
+    };
 
     // Toggle visibility for the header dropdown
     headerdropdownButton.addEventListener('click', function (event) {

@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 
 import  categoriesmanagementRouter from './routes/admin/categories.route.js';
 import  tagsmanagementRouter from './routes/admin/tags.route.js';
+import  personsmanagementRouter from './routes/admin/persons.route.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -52,6 +53,7 @@ app.get('/admin/articles', function (req, res) {
 
 app.use('/admin/categories', categoriesmanagementRouter);
 app.use('/admin/tags', tagsmanagementRouter);
+app.use('/admin/persons', personsmanagementRouter);
 
 app.get('/editor', function (req, res) {
   res.render('editor', { layout: 'admin', title: 'Editor' });

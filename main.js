@@ -155,6 +155,19 @@ app.get("/signup", function (req, res) {
   res.render("signup", { layout: "default" });
 });
 
+app.get("/account-setting-myprofile", function (req, res) {
+  res.render("account-setting-myprofile");
+});
+app.get("/account-setting-security", function (req, res) {
+  res.render("account-setting-security");
+});
+app.get("/account-setting-upgrade", function (req, res) {
+  res.render("account-setting-upgrade");
+});
+app.get("/admin", function (req, res) {
+  res.render("admin/dashboard", { layout: "admin", title: "Admin Dashboard" });
+});
+
 app.listen(3000, function () {
   console.log("ecApp is running at http://localhost:3000");
 });

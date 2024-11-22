@@ -1,0 +1,65 @@
+.accountsetting-upgrade-container{
+    margin-left: 106px ;
+    margin-top:50px;
+    display: flex;
+    flex-direction: column;
+}
+.accountsetting-upgrade-header{
+    color: #141A28;
+    font-size: 36px;
+    font-family: Montserrat;
+    font-weight: 800;
+    line-height: 32px;
+    word-wrap: break-word;
+    margin-bottom: 16px;
+}
+.accountsetting-security-header2{
+    color: #292929;
+    font-size: 18px;
+    font-family: Montserrat;
+    font-weight: 600;
+    line-height: 22.50px;
+    word-wrap: break-word;
+    margin-top: 56px;
+    margin-bottom: 16px;
+}
+.accountsetting-security-header3{
+    color: #7E7F81;
+    font-size: 16px;
+    font-family: Open Sans;
+    font-weight: 400;
+    line-height: 24px;
+    word-wrap: break-word;
+}
+.accountsetting-upgrade-button{
+    background: #53AA51; 
+    border-radius: 50px;
+    border: none;
+    margin-top: 80px;
+    width: 470px;
+    height: 50px;
+    padding: 18px;
+    color: white;
+}
+.accountsetting-upgrade-button:hover{
+    background-color: #61c560;
+    color: #f0f0f0; /* Màu nền khi hover */
+}
+.accountsetting-upgrade-container ul li p{
+    color: #7D8389;
+    font-size: 16px;
+    font-family: Open Sans;
+    font-weight: 400;
+    line-height: 18px;
+    word-wrap: break-word;
+    margin-bottom: 12px;
+    display: inline;
+}
+.accountsetting-upgrade-container ul li{
+    list-style-position: inside;
+}
+
+.accountsetting-upgrade-container ul li::marker {
+    color: #7D8389; /* Màu sắc của dấu đầu dòng */
+    font-size: 0.8em; /* Kích thước của dấu đầu dòng */
+}

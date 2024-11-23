@@ -1,12 +1,12 @@
-import knexObj from 'knex';
+import knexObj from "knex";
 const knex = knexObj({
-  client: 'mysql2',
+  client: "mysql2",
   connection: {
-    host: 'localhost',
+    host: "localhost",
     port: 3306,
-    user: 'root',
-    password: '',
-    database: 'e_paper',
+    user: "root",
+    password: "root",
+    database: "e_paper",
   },
   pool: { min: 0, max: 7 },
 });

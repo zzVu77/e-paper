@@ -1,7 +1,8 @@
-import express from 'express';
-import { engine } from 'express-handlebars';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import express from "express";
+import { engine } from "express-handlebars";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
+import categoryService from "./services/category.service.js";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 // const path = require("path");
@@ -12,37 +13,39 @@ app.use(
   })
 );
 app.engine(
-  'hbs',
+  "hbs",
   engine({
-    extname: 'hbs',
-    defaultLayout: 'main',
-    layoutsDir: join(__dirname, '/views/layouts/'),
-    partialsDir: join(__dirname, '/views/components/'),
+    extname: "hbs",
+    defaultLayout: "main",
+    layoutsDir: join(__dirname, "/views/layouts/"),
+    partialsDir: join(__dirname, "/views/components/"),
   })
 );
 
-app.set('view engine', 'hbs');
-app.set('views', './views/pages');
-app.use(express.static('public'));
+app.set("view engine", "hbs");
+app.set("views", "./views/pages");
+app.use(express.static("public"));
 
-app.get('/posts', function (req, res) {
-  res.render('posts');
+app.get("/posts", async function (req, res) {
+  const list = await categoryService.findAll();
+  console.log(list);
+  res.render("posts");
 });
-app.get('/article', function (req, res) {
-  res.render('article-detail');
-});
-
-app.get('/features', function (req, res) {
-  res.render('features');
-});
-app.get('/about', function (req, res) {
-  res.render('about');
+app.get("/article", function (req, res) {
+  res.render("article-detail");
 });
 
-app.get('/admin', function (req, res) {
-  res.render('admin/dashboard', { layout: 'admin', title: 'Admin Dashboard' });
+app.get("/features", function (req, res) {
+  res.render("features");
+});
+app.get("/about", function (req, res) {
+  res.render("about");
+});
+
+app.get("/admin", function (req, res) {
+  res.render("admin/dashboard", { layout: "admin", title: "Admin Dashboard" });
 });
 
 app.listen(3000, function () {
-  console.log('ecApp is running at http://localhost:3000');
+  console.log("ecApp is running at http://localhost:3000");
 });

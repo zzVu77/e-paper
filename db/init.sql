@@ -1,6 +1,5 @@
 CREATE DATABASE IF NOT EXISTS e_paper;
 USE e_paper;
-
 -- Table: users
 CREATE TABLE users (
     id CHAR(36) NOT NULL PRIMARY KEY,
@@ -14,7 +13,6 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-
 -- Table: categories
 CREATE TABLE categories (
     id CHAR(36) NOT NULL PRIMARY KEY,
@@ -22,55 +20,8 @@ CREATE TABLE categories (
     parent_id CHAR(36),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (parent_id) REFERENCES categories(id) ON DELETE CASCADE
+    FOREIGN KEY (parent_id) REFERENCES categories(id) ON DELETE SET NULL
 );
-
--- Dummy data for parent categories
-INSERT INTO categories (id, name, parent_id, created_at, updated_at)
-VALUES
-    -- Parent categories
-    ('cat-tech-001', 'Technology', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('cat-sci-001', 'Science', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('cat-health-001', 'Health', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('cat-edu-001', 'Education', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('cat-ent-001', 'Entertainment', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('cat-travel-001', 'Travel', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('cat-bus-001', 'Business', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('cat-life-001', 'Lifestyle', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('cat-sports-001', 'Sports', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('cat-food-001', 'Food', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-
-    -- Child categories
-    ('cat-tech-002', 'Programming', 'cat-tech-001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('cat-tech-003', 'Gadgets', 'cat-tech-001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    
-    ('cat-sci-002', 'Physics', 'cat-sci-001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('cat-sci-003', 'Biology', 'cat-sci-001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    
-    ('cat-health-002', 'Nutrition', 'cat-health-001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('cat-health-003', 'Mental Health', 'cat-health-001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    
-    ('cat-edu-002', 'E-Learning', 'cat-edu-001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('cat-edu-003', 'Online Courses', 'cat-edu-001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    
-    ('cat-ent-002', 'Movies', 'cat-ent-001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('cat-ent-003', 'Music', 'cat-ent-001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    
-    ('cat-travel-002', 'Destinations', 'cat-travel-001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('cat-travel-003', 'Travel Tips', 'cat-travel-001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    
-    ('cat-bus-002', 'Startups', 'cat-bus-001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('cat-bus-003', 'Marketing', 'cat-bus-001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    
-    ('cat-life-002', 'Fashion', 'cat-life-001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('cat-life-003', 'Wellness', 'cat-life-001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    
-    ('cat-sports-002', 'Football', 'cat-sports-001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('cat-sports-003', 'Basketball', 'cat-sports-001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    
-    ('cat-food-002', 'Recipes', 'cat-food-001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('cat-food-003', 'Restaurants', 'cat-food-001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-
 -- Table: tags
 CREATE TABLE tags (
     id CHAR(36) NOT NULL PRIMARY KEY,
@@ -78,7 +29,6 @@ CREATE TABLE tags (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-
 -- Table: articles
 CREATE TABLE articles (
     id CHAR(36) NOT NULL PRIMARY KEY,
@@ -97,7 +47,6 @@ CREATE TABLE articles (
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE,
     FOREIGN KEY (author) REFERENCES users(id) ON DELETE CASCADE
 );
-
 -- Table: article_tags
 CREATE TABLE article_tags (
     article_id CHAR(36) NOT NULL,
@@ -106,7 +55,6 @@ CREATE TABLE article_tags (
     FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE,
     FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
 );
-
 -- Table: comments
 CREATE TABLE comments (
     id CHAR(36) NOT NULL PRIMARY KEY,
@@ -117,7 +65,6 @@ CREATE TABLE comments (
     FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
-
 -- Table: rejection_notes
 CREATE TABLE rejection_notes (
     id CHAR(36) NOT NULL PRIMARY KEY,
@@ -128,7 +75,6 @@ CREATE TABLE rejection_notes (
     FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE,
     FOREIGN KEY (editor_id) REFERENCES users(id) ON DELETE CASCADE
 );
-
 -- Table: editor_assignments
 CREATE TABLE editor_assignments (
     id CHAR(36) NOT NULL PRIMARY KEY,
@@ -137,45 +83,117 @@ CREATE TABLE editor_assignments (
     FOREIGN KEY (editor_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
 );
-
 -- Dummy data for users
 INSERT INTO users (id, name, pen_name, email, password, birthdate, role, subscription_expiry)
 VALUES
-    ('usr-001', 'Alice Johnson', 'AliceJ', 'alice@example.com', 'password123', '1990-05-20', 'subscriber', '2024-12-31 23:59:59'),
-    ('usr-002', 'Bob Smith', NULL, 'bob@example.com', 'securepass', '1985-10-15', 'writer', NULL),
-    ('usr-003', 'Charlie Brown', 'CharlieB', 'charlie@example.com', 'charliepass', '1975-03-05', 'editor', NULL);
+    (UUID(), 'Alice Johnson', 'AliceJ', 'alice@example.com', 'password123', '1990-05-20', 'subscriber', '2024-12-31 23:59:59'),
+    (UUID(), 'Bob Smith', NULL, 'bob@example.com', 'securepass', '1985-10-15', 'writer', NULL),
+    (UUID(), 'Charlie Brown', 'CharlieB', 'charlie@example.com', 'charliepass', '1975-03-05', 'editor', NULL);
+-- Dummy data for categories
+INSERT INTO categories (id, name, parent_id)
+VALUES
+    (UUID(), 'Technology', NULL),
+    (UUID(), 'Programming', NULL),
+    (UUID(), 'Web Development', NULL),
+    (UUID(), 'Science', NULL),
+    (UUID(), 'Mathematics', NULL),
+    (UUID(), 'Engineering', NULL),
+    (UUID(), 'Health', NULL),
+    (UUID(), 'Education', NULL),
+    (UUID(), 'Finance', NULL),
+    (UUID(), 'Arts', NULL);
+
+-- Set ID of parent categories to temporary values
+SET @tech_id = (SELECT id FROM categories WHERE name = 'Technology');
+
+SET @prog_id = (SELECT id FROM categories WHERE name = 'Programming');
+
+SET @web_id = (SELECT id FROM categories WHERE name = 'Web Development');
+
+SET @sci_id = (SELECT id FROM categories WHERE name = 'Science');
+
+SET @math_id = (SELECT id FROM categories WHERE name = 'Mathematics');
+
+SET @eng_id = (SELECT id FROM categories WHERE name = 'Engineering');
+
+SET @health_id = (SELECT id FROM categories WHERE name = 'Health');
+
+SET @edu_id = (SELECT id FROM categories WHERE name = 'Education');
+
+SET @finance_id = (SELECT id FROM categories WHERE name = 'Finance');
+
+SET @arts_id = (SELECT id FROM categories WHERE name = 'Arts');
+
+-- Insert child categories
+INSERT INTO categories (id, name, parent_id)
+VALUES
+    -- Child categories for 'Technology'
+    (UUID(), 'Gadgets', @tech_id),
+    (UUID(), 'Artificial Intelligence', @tech_id),
+
+    -- Child categories for 'Programming'
+    (UUID(), 'Python', @prog_id),
+    (UUID(), 'JavaScript', @prog_id),
+
+    -- Child categories for 'Web Development'
+    (UUID(), 'Frontend Development', @web_id),
+    (UUID(), 'Backend Development', @web_id),
+
+    -- Child categories for 'Science'
+    (UUID(), 'Physics', @sci_id),
+    (UUID(), 'Chemistry', @sci_id),
+
+    -- Child categories for 'Mathematics'
+    (UUID(), 'Algebra', @math_id),
+    (UUID(), 'Geometry', @math_id),
+
+    -- Child categories for 'Engineering'
+    (UUID(), 'Civil Engineering', @eng_id),
+    (UUID(), 'Mechanical Engineering', @eng_id),
+
+    -- Child categories for 'Health'
+    (UUID(), 'Nutrition', @health_id),
+    (UUID(), 'Mental Health', @health_id),
+
+    -- Child categories for 'Education'
+    (UUID(), 'Online Courses', @edu_id),
+    (UUID(), 'Classroom Learning', @edu_id),
+
+    -- Child categories for 'Finance'
+    (UUID(), 'Investing', @finance_id),
+    (UUID(), 'Personal Finance', @finance_id),
+
+    -- Child categories for 'Arts'
+    (UUID(), 'Painting', @arts_id),
+    (UUID(), 'Music', @arts_id);
+
 
 -- Dummy data for tags
 INSERT INTO tags (id, name)
 VALUES
-    ('tag-001', 'JavaScript'),
-    ('tag-002', 'MySQL'),
-    ('tag-003', 'Docker');
-
+    (UUID(), 'JavaScript'),
+    (UUID(), 'MySQL'),
+    (UUID(), 'Docker');
 -- Dummy data for articles
 INSERT INTO articles (id, title, abstract, content, image_url, status, category_id, is_premium, views, publish_date, author)
 VALUES
-    ('art-001', 'Understanding Docker', 'A beginner-friendly guide to Docker.', 'Detailed content about Docker...', 'https://example.com/docker.jpg', 'published', 'cat-tech-001', TRUE, 123, '2024-01-15 10:00:00', 'usr-002'),
-    ('art-002', 'MySQL Tips and Tricks', 'Optimize your database queries.', 'Detailed content about MySQL...', 'https://example.com/mysql.jpg', 'published', 'cat-tech-002', FALSE, 89, '2024-02-01 14:00:00', 'usr-001');
-
+    (UUID(), 'Understanding Docker', 'A beginner-friendly guide to Docker.', 'Detailed content about Docker...', 'https://example.com/docker.jpg', 'published', (SELECT id FROM categories WHERE name = 'Technology'), TRUE, 123, '2024-01-15 10:00:00', (SELECT id FROM users WHERE name = 'Bob Smith')),
+    (UUID(), 'MySQL Tips and Tricks', 'Optimize your database queries.', 'Detailed content about MySQL...', 'https://example.com/mysql.jpg', 'published', (SELECT id FROM categories WHERE name = 'Programming'), FALSE, 89, '2024-02-01 14:00:00', (SELECT id FROM users WHERE name = 'Alice Johnson'));
 -- Dummy data for article_tags
 INSERT INTO article_tags (article_id, tag_id)
 VALUES
-    ('art-001', 'tag-003'),
-    ('art-002', 'tag-002');
-
+    ((SELECT id FROM articles WHERE title = 'Understanding Docker'), (SELECT id FROM tags WHERE name = 'Docker')),
+    ((SELECT id FROM articles WHERE title = 'MySQL Tips and Tricks'), (SELECT id FROM tags WHERE name = 'MySQL'));
 -- Dummy data for comments
 INSERT INTO comments (id, article_id, user_id, content)
 VALUES
-    ('com-001', 'art-001', 'usr-001', 'Great article on Docker!'),
-    ('com-002', 'art-002', 'usr-003', 'Very informative!');
-
+    (UUID(), (SELECT id FROM articles WHERE title = 'Understanding Docker'), (SELECT id FROM users WHERE name = 'Alice Johnson'), 'Great article on Docker!'),
+    (UUID(), (SELECT id FROM articles WHERE title = 'MySQL Tips and Tricks'), (SELECT id FROM users WHERE name = 'Charlie Brown'), 'Very informative!');
 -- Dummy data for rejection_notes
 INSERT INTO rejection_notes (id, article_id, editor_id, note)
 VALUES
-    ('rej-001', 'art-001', 'usr-003', 'Consider simplifying the introduction.');
-
+    (UUID(), (SELECT id FROM articles WHERE title = 'Understanding Docker'), (SELECT id FROM users WHERE name = 'Charlie Brown'), 'Consider simplifying the introduction.');
 -- Dummy data for editor_assignments
 INSERT INTO editor_assignments (id, editor_id, category_id)
 VALUES
-    ('asg-001', 'usr-003', 'cat-tech-001');
+    (UUID(), (SELECT id FROM users WHERE name = 'Charlie Brown'), (SELECT id FROM categories WHERE name = 'Technology'));

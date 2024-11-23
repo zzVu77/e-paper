@@ -20,7 +20,9 @@
     ```sh
     docker-compose up -d
     ```
-
+## If your Database Management Software ( like DBeaver or Workbench ) support to use URL, so here is the URL :
+```mysql://root:root@localhost:3306/e_paper```
+# Or
 ## Scan Database in MySQL Workbench
 
 1. Open MySQL Workbench.
@@ -30,7 +32,8 @@
     - Hostname: `localhost`
     - Port: `3306`
     - Username: `root`
-    - Password: `admin123`
+    - Password: `root`
+    - Default_schema: e_paper 
 4. Click `Test Connection`.
 
 Another way is click on `Rescan for Local MySQL Instances` at the Welcome page of Workbench.

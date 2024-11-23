@@ -52,6 +52,12 @@ app.get('/login', function (req, res) {
 app.get('/signup', function (req, res) {
   res.render('signup', { layout: 'default' });
 });
+app.get('/forgot-password', function (req, res) {
+  res.render('forgotPassword', { layout: 'default' });
+});
+app.get('/verify-otp', function (req, res) {
+  res.render('verify-otp', { layout: 'default' });
+});
 
 app.listen(3000, function () {
   console.log('ecApp is running at http://localhost:3000');

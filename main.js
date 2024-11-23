@@ -2,6 +2,7 @@ import express from "express";
 import { engine } from "express-handlebars";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
+import categoryService from "./services/category.service.js";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 // const path = require("path");
@@ -25,7 +26,9 @@ app.set("view engine", "hbs");
 app.set("views", "./views/pages");
 app.use(express.static("public"));
 
-app.get("/posts", function (req, res) {
+app.get("/posts", async function (req, res) {
+  const list = await categoryService.findAll();
+  console.log(list);
   res.render("posts");
 });
 

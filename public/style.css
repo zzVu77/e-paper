@@ -542,11 +542,6 @@
   background-color: rgb(255 255 255 / var(--tw-bg-opacity)) !important;
 }
 
-.tw-bg-gray-400 {
-  --tw-bg-opacity: 1 !important;
-  background-color: rgb(156 163 175 / var(--tw-bg-opacity)) !important;
-}
-
 .tw-object-cover {
   -o-object-fit: cover !important;
      object-fit: cover !important;
@@ -562,6 +557,11 @@
 
 .tw-p-4 {
   padding: 1rem !important;
+}
+
+.tw-px-14 {
+  padding-left: 3.5rem !important;
+  padding-right: 3.5rem !important;
 }
 
 .tw-px-3 {
@@ -612,16 +612,6 @@
 .tw-py-4 {
   padding-top: 1rem !important;
   padding-bottom: 1rem !important;
-}
-
-.tw-px-20 {
-  padding-left: 5rem !important;
-  padding-right: 5rem !important;
-}
-
-.tw-px-14 {
-  padding-left: 3.5rem !important;
-  padding-right: 3.5rem !important;
 }
 
 .tw-pb-16 {
@@ -749,14 +739,14 @@
   color: rgb(17 24 39 / var(--tw-text-opacity)) !important;
 }
 
-.tw-text-white {
-  --tw-text-opacity: 1 !important;
-  color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
-}
-
 .tw-text-red-400 {
   --tw-text-opacity: 1 !important;
   color: rgb(248 113 113 / var(--tw-text-opacity)) !important;
+}
+
+.tw-text-white {
+  --tw-text-opacity: 1 !important;
+  color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
 }
 
 .tw-shadow {
@@ -886,16 +876,6 @@ body {
     border-color: rgb(147 197 253 / var(--tw-border-opacity)) !important;
   }
 
-  .dark\:tw-border-cyan-300 {
-    --tw-border-opacity: 1 !important;
-    border-color: rgb(103 232 249 / var(--tw-border-opacity)) !important;
-  }
-
-  .dark\:tw-border-gray-500 {
-    --tw-border-opacity: 1 !important;
-    border-color: rgb(107 114 128 / var(--tw-border-opacity)) !important;
-  }
-
   .dark\:tw-border-cyan-100 {
     --tw-border-opacity: 1 !important;
     border-color: rgb(207 250 254 / var(--tw-border-opacity)) !important;
@@ -904,6 +884,11 @@ body {
   .dark\:tw-border-cyan-200 {
     --tw-border-opacity: 1 !important;
     border-color: rgb(165 243 252 / var(--tw-border-opacity)) !important;
+  }
+
+  .dark\:tw-border-cyan-300 {
+    --tw-border-opacity: 1 !important;
+    border-color: rgb(103 232 249 / var(--tw-border-opacity)) !important;
   }
 
   .dark\:tw-bg-blue-200 {
@@ -936,11 +921,6 @@ body {
     background-color: rgb(243 244 246 / var(--tw-bg-opacity)) !important;
   }
 
-  .dark\:tw-bg-gray-600 {
-    --tw-bg-opacity: 1 !important;
-    background-color: rgb(75 85 99 / var(--tw-bg-opacity)) !important;
-  }
-
   .dark\:tw-bg-gray-700 {
     --tw-bg-opacity: 1 !important;
     background-color: rgb(55 65 81 / var(--tw-bg-opacity)) !important;
@@ -961,59 +941,14 @@ body {
     color: rgb(156 163 175 / var(--tw-text-opacity)) !important;
   }
 
-  .dark\:tw-text-slate-800 {
-    --tw-text-opacity: 1 !important;
-    color: rgb(30 41 59 / var(--tw-text-opacity)) !important;
-  }
-
-  .dark\:tw-text-white {
-    --tw-text-opacity: 1 !important;
-    color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
-  }
-
   .dark\:tw-text-gray-700 {
     --tw-text-opacity: 1 !important;
     color: rgb(55 65 81 / var(--tw-text-opacity)) !important;
   }
 
-  .dark\:tw-placeholder-gray-400::-moz-placeholder {
-    --tw-placeholder-opacity: 1 !important;
-    color: rgb(156 163 175 / var(--tw-placeholder-opacity)) !important;
-  }
-
-  .dark\:tw-placeholder-gray-400::placeholder {
-    --tw-placeholder-opacity: 1 !important;
-    color: rgb(156 163 175 / var(--tw-placeholder-opacity)) !important;
-  }
-
-  .dark\:tw-placeholder-cyan-100::-moz-placeholder {
-    --tw-placeholder-opacity: 1 !important;
-    color: rgb(207 250 254 / var(--tw-placeholder-opacity)) !important;
-  }
-
-  .dark\:tw-placeholder-cyan-100::placeholder {
-    --tw-placeholder-opacity: 1 !important;
-    color: rgb(207 250 254 / var(--tw-placeholder-opacity)) !important;
-  }
-
-  .dark\:tw-placeholder-gray-100::-moz-placeholder {
-    --tw-placeholder-opacity: 1 !important;
-    color: rgb(243 244 246 / var(--tw-placeholder-opacity)) !important;
-  }
-
-  .dark\:tw-placeholder-gray-100::placeholder {
-    --tw-placeholder-opacity: 1 !important;
-    color: rgb(243 244 246 / var(--tw-placeholder-opacity)) !important;
-  }
-
-  .dark\:tw-placeholder-gray-500::-moz-placeholder {
-    --tw-placeholder-opacity: 1 !important;
-    color: rgb(107 114 128 / var(--tw-placeholder-opacity)) !important;
-  }
-
-  .dark\:tw-placeholder-gray-500::placeholder {
-    --tw-placeholder-opacity: 1 !important;
-    color: rgb(107 114 128 / var(--tw-placeholder-opacity)) !important;
+  .dark\:tw-text-slate-800 {
+    --tw-text-opacity: 1 !important;
+    color: rgb(30 41 59 / var(--tw-text-opacity)) !important;
   }
 
   .dark\:tw-placeholder-gray-300::-moz-placeholder {

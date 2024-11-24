@@ -4,33 +4,6 @@
             <div class="tw-font-semibold tw-text-lg">{{title}}</div>
             <div class="tw-font-normal tw-text-gray-500">Active {{title}}</div>
         </div> 
-        <div class="tw-relative">
-    
-        </div>
-        {{!-- Filter --}}
-        <div>
-            <button id="dropdownActionButton" data-tw-dropdown-toggle="dropdownAction" class="tw-inline-flex tw-items-center tw-text-gray-500 tw-bg-white tw-border tw-border-gray-300 focus:tw-outline-none hover:tw-bg-gray-100 focus:tw-ring-4 focus:tw-ring-gray-100 tw-font-medium tw-rounded-lg tw-text-sm tw-px-3 tw-py-1.5 dark:tw-bg-gray-100 dark:tw-text-gray-400 dark:tw-border-blue-300 hover:dark:tw-bg-blue-500 hover:dark:tw-border-blue-300 focus:dark:tw-ring-blue-300" type="button">
-                <span class="tw-sr-only">Action button</span>
-                Newest
-                <svg class="tw-w-2.5 tw-h-2.5 tw-ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                </svg>
-            </button>
-            <!-- Dropdown menu -->
-            <div id="dropdownAction" class="tw-absolute tw-z-10 tw-hidden tw-bg-white tw-divide-y tw-divide-gray-100 tw-rounded-lg tw-shadow tw-w-44 dark:tw-bg-blue-200 dark:tw-divide-blue-300">
-                <a href="#" class="tw-block tw-px-4 tw-py-2 hover:tw-bg-gray-100 dark:hover:tw-bg-cyan-200 dark:hover:tw-text-white">Reward</a>
-                <a href="#" class="tw-block tw-px-4 tw-py-2 hover:tw-bg-gray-100 dark:hover:tw-bg-cyan-200 dark:hover:tw-text-white">Reward</a>
-            </div>
-        </div>
-        {{!-- Add button --}}
-        <div>
-            <button class="tw-border-none tw-bg-sky-400 hover:tw-bg-sky-700 tw-text-white tw-font-bold tw-py-2 tw-px-4 tw-rounded">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                </svg>
-                Thêm {{title}}
-            </button>
-        </div>
 
     </div>
     {{!-- Table --}}
@@ -43,6 +16,7 @@
                 <th scope="col" class="tw-px-6 tw-py-3">Chuyên mục</th>
                 <th scope="col" class="tw-px-6 tw-py-3">Nhãn</th>
                 <th scope="col" class="tw-px-6 tw-py-3">Trạng thái</th>
+                <th scope="col" class="tw-px-6 tw-py-3">Lí do</th>
                 <th scope="col" class="tw-px-8 tw-py-3 tw-text-left">Hành động</th>
             </tr>
         </thead>
@@ -64,12 +38,14 @@
                 </td>
                 <td class="tw-px-6 tw-py-4">{{this.category}}</td>
                 <td class="tw-px-6 tw-py-4">{{this.tags}}</td>
+
+                <td class="tw-px-6 tw-py-4">Lí do từ chối</td>
                 <td class="tw-px-6 tw-py-4">
                     <button onclick="toggleStatus(this, '{{this.id}}')" class="{{this.buttonClass}} tw-border-none  tw-rounded-md">
                         {{this.status}}
                     </button>
                 </td>
- 
+
                 <td class="tw-px-14 tw-py-4 tw-items-center ">
                     <a href="#" class="tw-items-center">
                         <i class="fa fa-eye" aria-hidden="true"></i>

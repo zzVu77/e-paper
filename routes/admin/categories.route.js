@@ -45,7 +45,7 @@ const router = express.Router();
 
 
 router.get('/', function (req, res) {
-  res.render('admin/categories', { layout: 'admin', title: 'Thể loại' ,data: jsonData.data});
+  res.render('admin/categories', { layout: 'admin', title: 'Chuyên mục' ,data: jsonData.data});
 });
 
 router.get('/del', (req, res) => {

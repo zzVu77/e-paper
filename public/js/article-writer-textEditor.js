@@ -1,6 +1,8 @@
-const ulTags = document.querySelector('.article-editor-tagInput ul'),
-  tagInput = document.querySelector('.article-editor-tagInput input');
-tagNumb = document.querySelector('.article-editor-tagsDetail span');
+const ulTags = document.querySelector('.article-writer-textEditor-tagInput ul'),
+  tagInput = document.querySelector(
+    '.article-writer-textEditor-tagInput input'
+  );
+tagNumb = document.querySelector('.article-writer-textEditor-tagsDetail span');
 
 let maxTags = 5;
 let tags = [];
@@ -28,17 +30,19 @@ function remove(element, tag) {
   countTags();
 }
 function addTag(e) {
-  if (e.key == 'Enter') {
-    let tag = e.target.value.replace(/\s+/g, ' ');
-    if (tag.length > 1 && !tags.includes(tag)) {
-      if (tags.length < 10) {
-        tag.split(',').forEach((tag) => {
-          tags.push(tag);
-          createTag();
-        });
+  if (tags.length < 5) {
+    if (e.key == 'Enter') {
+      let tag = e.target.value.replace(/\s+/g, ' ');
+      if (tag.length > 1 && !tags.includes(tag)) {
+        if (tags.length < 10) {
+          tag.split(',').forEach((tag) => {
+            tags.push(tag);
+            createTag();
+          });
+        }
       }
+      e.target.value = '';
     }
-    e.target.value = '';
   }
 }
 tagInput.addEventListener('keyup', addTag);

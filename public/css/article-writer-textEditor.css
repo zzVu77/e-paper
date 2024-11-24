@@ -1,21 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
-.article-editor-container {
+.article-writer-textEditor-container {
   width: 90%;
   margin: 30px auto;
 }
-.article-editor-tagInput ul {
+.article-writer-textEditor-tagInput ul {
   display: flex;
   flex-wrap: wrap;
 }
-.article-editor-tagInput {
+.article-writer-textEditor-tagInput {
   height: 50px;
   padding: 7px;
   border-radius: 5px;
   border: 1px solid #a6a6a6;
   width: 70%;
 }
-.article-editor-tagInput ul li {
+.article-writer-textEditor-tagInput ul li {
   position: relative;
   list-style-type: none;
   background: #f2f2f2;
@@ -24,22 +24,22 @@
   border-radius: 5px;
   border: 1px solid #e3d1e1;
 }
-.article-editor-tagInput input {
+.article-writer-textEditor-tagInput input {
   border: none;
   outline: none;
   width: 250px;
 }
-.article-editor-tagInput ul li svg {
+.article-writer-textEditor-tagInput ul li svg {
   position: absolute;
   top: 0px;
   left: 1px;
 }
-.article-editor-tagsDetail{
+.article-writer-textEditor-tagsDetail{
     display: flex;
     justify-content: space-between;
     align-items:stretch;
 }
-.article-editor-tagsDetail button{
+.article-writer-textEditor-tagsDetail button{
     border: none;
     outline: none;
     color: #fff;
@@ -50,6 +50,6 @@
     background: #5372F0;
     transition: background 0.3s ease;
 }
-.article-editor-tagsDetail button:hover{
+.article-writer-textEditor-tagsDetail button:hover{
     background: #2c52ed;
 }

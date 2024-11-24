@@ -25,10 +25,17 @@ app.engine(
 app.set("view engine", "hbs");
 app.set("views", "./views/pages");
 app.use(express.static("public"));
+// setup local data for navigation
+app.use(async function (req, res, next) {
+  const categories = await categoryService.getCategoryName();
+  console.log(categories);
+  res.locals.categories = categories;
+  next();
+});
 
 app.get("/posts", async function (req, res) {
-  const list = await categoryService.findAll();
-  console.log(list);
+  // const list = await categoryService.getCategoryName();
+  // console.log(list);
   res.render("posts");
 });
 

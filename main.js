@@ -174,6 +174,254 @@ app.get("/verify-otp", function (req, res) {
   res.render("verify-otp", { layout: "default" });
 });
 
+app.get("/", function (req, res) {
+  const data = {
+    popularPosts: [
+      {
+        title: "Popular Post 1",
+        image: "https://via.placeholder.com/800x400",
+        description: "Description for popular post 1",
+        link: "/article/1"
+      },
+      {
+        title: "Popular Post 2",
+        image: "https://via.placeholder.com/800x400",
+        description: "Description for popular post 2",
+        link: "/article/2"
+      },
+      {
+        title: "Popular Post 3",
+        image: "https://via.placeholder.com/800x400",
+        description: "Description for popular post 3",
+        link: "/article/3"
+      },
+      {
+        title: "Popular Post 4",
+        image: "https://via.placeholder.com/800x400",
+        description: "Description for popular post 4",
+        link: "/article/4"
+      }
+    ],
+    mostViewed: [
+      {
+        title: "Most Viewed Article 1",
+        image: "https://via.placeholder.com/800x400",
+        description: "Description for most viewed article 1",
+        link: "/article/5"
+      },
+      {
+        title: "Most Viewed Article 2",
+        image: "https://via.placeholder.com/800x400",
+        description: "Description for most viewed article 2",
+        link: "/article/6"
+      },
+      {
+        title: "Most Viewed Article 3",
+        image: "https://via.placeholder.com/800x400",
+        description: "Description for most viewed article 3",
+        link: "/article/7"
+      },
+      {
+        title: "Most Viewed Article 4",
+        image: "https://via.placeholder.com/800x400",
+        description: "Description for most viewed article 4",
+        link: "/article/8"
+      },
+      {
+        title: "Most Viewed Article 5",
+        image: "https://via.placeholder.com/800x400",
+        description: "Description for most viewed article 5",
+        link: "/article/9"
+      },
+      {
+        title: "Most Viewed Article 6",
+        image: "https://via.placeholder.com/800x400",
+        description: "Description for most viewed article 6",
+        link: "/article/10"
+      },
+      {
+        title: "Most Viewed Article 7",
+        image: "https://via.placeholder.com/800x400",
+        description: "Description for most viewed article 7",
+        link: "/article/11"
+      },
+      {
+        title: "Most Viewed Article 8",
+        image: "https://via.placeholder.com/800x400",
+        description: "Description for most viewed article 8",
+        link: "/article/12"
+      },
+      {
+        title: "Most Viewed Article 9",
+        image: "https://via.placeholder.com/800x400",
+        description: "Description for most viewed article 9",
+        link: "/article/13"
+      },
+      {
+        title: "Most Viewed Article 10",
+        image: "https://via.placeholder.com/800x400",
+        description: "Description for most viewed article 10",
+        link: "/article/14"
+      }
+    ],
+    latestPosts: [
+      {
+        title: "Latest Post 1",
+        image: "https://via.placeholder.com/800x400",
+        description: "Description for latest post 1",
+        link: "/article/15"
+      },
+      {
+        title: "Latest Post 2",
+        image: "https://via.placeholder.com/800x400",
+        description: "Description for latest post 2",
+        link: "/article/16"
+      },
+      {
+        title: "Latest Post 3",
+        image: "https://via.placeholder.com/800x400",
+        description: "Description for latest post 3",
+        link: "/article/17"
+      },
+      {
+        title: "Latest Post 4",
+        image: "https://via.placeholder.com/800x400",
+        description: "Description for latest post 4",
+        link: "/article/18"
+      },
+      {
+        title: "Latest Post 5",
+        image: "https://via.placeholder.com/800x400",
+        description: "Description for latest post 5",
+        link: "/article/19"
+      },
+      {
+        title: "Latest Post 6",
+        image: "https://via.placeholder.com/800x400",
+        description: "Description for latest post 6",
+        link: "/article/20"
+      },
+      {
+        title: "Latest Post 7",
+        image: "https://via.placeholder.com/800x400",
+        description: "Description for latest post 7",
+        link: "/article/21"
+      },
+      {
+        title: "Latest Post 8",
+        image: "https://via.placeholder.com/800x400",
+        description: "Description for latest post 8",
+        link: "/article/22"
+      },
+      {
+        title: "Latest Post 9",
+        image: "https://via.placeholder.com/800x400",
+        description: "Description for latest post 9",
+        link: "/article/23"
+      },
+      {
+        title: "Latest Post 10",
+        image: "https://via.placeholder.com/800x400",
+        description: "Description for latest post 10",
+        link: "/article/24"
+      }
+    ],
+    topCategories: [
+      {
+        category: "Category 1",
+        newestPost: {
+          title: "Newest Post in Category 1",
+          image: "https://via.placeholder.com/800x400",
+          description: "Description for newest post in category 1",
+          link: "/article/25"
+        }
+      },
+      {
+        category: "Category 2",
+        newestPost: {
+          title: "Newest Post in Category 2",
+          image: "https://via.placeholder.com/800x400",
+          description: "Description for newest post in category 2",
+          link: "/article/26"
+        }
+      },
+      {
+        category: "Category 3",
+        newestPost: {
+          title: "Newest Post in Category 3",
+          image: "https://via.placeholder.com/800x400",
+          description: "Description for newest post in category 3",
+          link: "/article/27"
+        }
+      },
+      {
+        category: "Category 4",
+        newestPost: {
+          title: "Newest Post in Category 4",
+          image: "https://via.placeholder.com/800x400",
+          description: "Description for newest post in category 4",
+          link: "/article/28"
+        }
+      },
+      {
+        category: "Category 5",
+        newestPost: {
+          title: "Newest Post in Category 5",
+          image: "https://via.placeholder.com/800x400",
+          description: "Description for newest post in category 5",
+          link: "/article/29"
+        }
+      },
+      {
+        category: "Category 6",
+        newestPost: {
+          title: "Newest Post in Category 6",
+          image: "https://via.placeholder.com/800x400",
+          description: "Description for newest post in category 6",
+          link: "/article/30"
+        }
+      },
+      {
+        category: "Category 7",
+        newestPost: {
+          title: "Newest Post in Category 7",
+          image: "https://via.placeholder.com/800x400",
+          description: "Description for newest post in category 7",
+          link: "/article/31"
+        }
+      },
+      {
+        category: "Category 8",
+        newestPost: {
+          title: "Newest Post in Category 8",
+          image: "https://via.placeholder.com/800x400",
+          description: "Description for newest post in category 8",
+          link: "/article/32"
+        }
+      },
+      {
+        category: "Category 9",
+        newestPost: {
+          title: "Newest Post in Category 9",
+          image: "https://via.placeholder.com/800x400",
+          description: "Description for newest post in category 9",
+          link: "/article/33"
+        }
+      },
+      {
+        category: "Category 10",
+        newestPost: {
+          title: "Newest Post in Category 10",
+          image: "https://via.placeholder.com/800x400",
+          description: "Description for newest post in category 10",
+          link: "/article/34"
+        }
+      }
+    ]
+  };
+  res.render("home", data);
+});
+
 app.listen(3000, function () {
   console.log("ecApp is running at http://localhost:3000");
 });

@@ -6,6 +6,8 @@ import { fileURLToPath } from 'url';
 import  categoriesmanagementRouter from './routes/admin/categories.route.js';
 import  tagsmanagementRouter from './routes/admin/tags.route.js';
 import  personsmanagementRouter from './routes/admin/persons.route.js';
+import  articlesmanagementRouter from './routes/admin/articles.route.js';
+
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -47,13 +49,13 @@ app.get('/about', function (req, res) {
 // app.get('/admin/tags', function (req, res) {
 //   res.render('admin/tags', { layout: 'admin', title: 'Tags' });
 // });
-app.get('/admin/articles', function (req, res) {
-  res.render('admin/articles', { layout: 'admin', title: 'Articles' });
-});
+
 
 app.use('/admin/categories', categoriesmanagementRouter);
 app.use('/admin/tags', tagsmanagementRouter);
 app.use('/admin/persons', personsmanagementRouter);
+app.use('/admin/articles', articlesmanagementRouter);
+
 
 app.get('/editor', function (req, res) {
   res.render('editor', { layout: 'admin', title: 'Editor' });

@@ -69,6 +69,9 @@ router.get('/del', (req, res) => {
 router.get('/add', (req,res) => {
   res.redirect('/admin/categories');
 });
+router.get('/update', (req,res) => {
+  res.redirect('/admin/categories');
+});
 
 
 export default router;

@@ -126,7 +126,6 @@ const router = express.Router();
 
 router.get('/', function (req, res) {
   const role = req.query.role || 'subscriber'; // Get role from URL parameter
-  console.log(role);
 
   const filteredUsers = users.filter(user => user.role === role);
 
@@ -139,14 +138,13 @@ router.get('/', function (req, res) {
 
   let tableHeaders = [];
   if (role === 'subscriber') {
-    tableHeaders = ['Tên', 'Email', 'Ngày sinh', 'Ngày hết hạn', 'Chức vụ'];
+    tableHeaders = ['Tên', 'Email', 'Ngày sinh', 'Ngày hết hạn', 'Chức vụ','Gia Hạn'];
   } else if (role === 'writer') {
     tableHeaders = ['Tên', 'Bút danh', 'Email', 'Ngày sinh', 'Chức vụ'];
   } else if (role === 'editor') {
-    tableHeaders = ['Tên', 'Email', 'Ngày sinh', 'Chuyên mục quản lý', 'Chức vụ'];
+    tableHeaders = ['Tên', 'Email', 'Ngày sinh', 'Chuyên mục quản lý', 'Chức vụ','Phân Công'];
   }
 
-  console.log(filteredUsers); // Check the data with flags
 
   res.render('admin/persons', {
     layout: 'admin',

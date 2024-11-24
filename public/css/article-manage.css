@@ -1,0 +1,15 @@
+.article-manage-container{
+    display: flex;
+    margin: 32px auto;
+    height: 100vh;
+    max-width: 95%;
+}
+.article-manage-sidebar{
+    width: 270px;
+    height: 100%;
+    margin-right: 50px;
+}
+.article-manage-content{
+    width: calc(100% - 270px);
+    height: 100%;
+}

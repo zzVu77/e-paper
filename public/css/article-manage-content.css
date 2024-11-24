@@ -1,0 +1,148 @@
+.article-manage-title {
+    display: flex;
+    flex-direction: row; /* Dòng này có thể bỏ, vì `row` là mặc định */
+    align-items: center; /* Căn giữa nội dung theo chiều dọc */
+    gap: 10px; /* Khoảng cách giữa các phần tử */
+    margin-bottom: 40px;
+}
+.article-manage-title span{
+    font-size: 21px;
+    font-weight: 500;
+    line-height: 25px;
+}
+.article-manage-title hr {
+    flex: 1; /* Để hr chiếm không gian còn lại, nếu cần */
+    height: 1px; /* Đặt độ dày của đường kẻ */
+    margin: 0; /* Xóa margin mặc định của hr */
+    border: none; /* Xóa viền mặc định */
+    background-color: #ccc; /* Màu của đường kẻ */
+}
+.article-manage-filter{
+    display: flex;
+    margin-bottom: 20px;
+}
+.article-manage-filterDate{
+    border-color: #c0c4cc;
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 0.8px;
+    padding: 10px 10px;
+    width: 30%;
+    /* text-align: center; */
+}
+.article-manage-filterDate input {
+    width: 32%;
+    border: none; /* Xóa viền */
+    outline: none; /* Xóa đường viền khi focus */
+    padding: 5px; /* Điều chỉnh khoảng cách nội dung */
+    background-color: transparent; /* Đặt nền trong suốt */
+    font-size: 14px; /* Kích thước chữ */
+    color: #333; /* Màu chữ */
+    text-align: center;
+
+}
+.article-manage-filterDate span{
+    margin-right: 20px;
+    margin-left: 20px;
+}
+.article-manage-filterDate i{
+    margin-right: 20px;
+}
+.article-manage-filterDate input::placeholder {
+    color: #aaa; /* Màu chữ của placeholder */
+}
+.article-manage-filterTag{
+    width: 70%;
+    margin-left: 20px;
+}
+.article-manage-filterTag input{
+    width: 100%;
+    padding: 15px;
+    border-color: #c0c4cc;
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 0.8px;
+}
+.article-manage-searchBar{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.article-manage-searchBar input{
+    width: 98%;
+    padding: 15px;
+    border-color: #c0c4cc;
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 0.8px;
+}
+.article-manage-searchBar-icon i{
+    text-align: center;
+    color:#909399;
+    background-color: #f5f7fa;
+    flex: 1;
+    padding: 15px;
+    border-color: #c0c4cc;
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 0.8px;
+}
+.article-manage-post{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #c0c4cc; /* Đường kẻ màu đen, dày 2px */
+
+}
+.article-manage-postHeader{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    text-align: left;
+    align-items: center;
+    gap:10px;
+    margin-bottom: 10px;
+}
+.article-manage-postTitle{
+    font-size: 22px;
+    line-height: 22px;
+    font-weight: 500;
+}
+.article-manage-postHeader ul{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.article-manage-postHeader ul li{
+    list-style-type: none;
+    background: #eaeaea;
+    line-height: 19px;
+    padding: 5px;
+    font-size: 18px;
+    border-radius: 4px;
+    border: 1px solid #e9e9eb;
+    color: #909399;
+
+}
+.article-manage-postEdit{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+}
+.article-manage-postEdit span{
+    color: #9b9b9b;
+    font-size: 18px;
+    line-height: 22.4px;
+}
+.article-manage-postEdit-dropdown i{
+    color: #9b9b9b;
+    font-size: 18px;
+    line-height: 14px;
+}
+/* .article-manage-postEdit-dropdown ul li{
+    text-align: center;
+} */

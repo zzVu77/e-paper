@@ -11,29 +11,35 @@
 1. Ensure Docker is installed on your system. If not, download and install it from [Docker's official website](https://www.docker.com/get-started).
 2. Make sure that terminal is standing on this directory :
 
-    ```sh
-    ../e-paper/db
-    ```
+   ```sh
+   ../e-paper/db
+   ```
 
 3. Run the following command to start your Docker containers:
 
-    ```sh
-    docker-compose up -d
-    ```
+   ```sh
+   docker-compose up -d
+   ```
+
 ## If your Database Management Software ( like DBeaver or Workbench ) support to use URL, so here is the URL :
-```mysql://root:root@localhost:3306/e_paper```
+
+`mysql://root:root@localhost:3306/e_paper`
+
+## If you use DBeaver and use the URL above, you need to set the password: root for "root" username and In the 'Driver Properties' tab, set "allowPublicKeyRetrieval" into TRUE and "useSSL" into FALSE
+
 # Or
+
 ## Scan Database in MySQL Workbench
 
 1. Open MySQL Workbench.
 2. Click on the `+` icon to create a new connection.
 3. Enter the connection details:
-    - Connection Name: `EPaperLocalDB`
-    - Hostname: `localhost`
-    - Port: `3306`
-    - Username: `root`
-    - Password: `root`
-    - Default_schema: e_paper 
+   - Connection Name: `EPaperLocalDB`
+   - Hostname: `localhost`
+   - Port: `3306`
+   - Username: `root`
+   - Password: `root`
+   - Default_schema: e_paper
 4. Click `Test Connection`.
 
 Another way is click on `Rescan for Local MySQL Instances` at the Welcome page of Workbench.

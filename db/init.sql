@@ -86,9 +86,9 @@ CREATE TABLE editor_assignments (
 -- Dummy data for users
 INSERT INTO users (id, name, pen_name, email, password, birthdate, role, subscription_expiry)
 VALUES
-    (UUID(), 'Alice Johnson', 'AliceJ', 'alice@example.com', 'password123', '1990-05-20', 'subscriber', '2024-12-31 23:59:59'),
+    (UUID(), 'Alice Johnson', 'AliceJ', 'alice@example.com', 'password123', '1990-05-20', 'writer', '2024-12-31 23:59:59'),
     (UUID(), 'Bob Smith', NULL, 'bob@example.com', 'securepass', '1985-10-15', 'writer', NULL),
-    (UUID(), 'Charlie Brown', 'CharlieB', 'charlie@example.com', 'charliepass', '1975-03-05', 'editor', NULL);
+    (UUID(), 'Charlie Brown', 'CharlieB', 'charlie@example.com', 'charliepass', '1975-03-05', 'writer', NULL);
 -- Dummy data for categories
 INSERT INTO categories (id, name, parent_id)
 VALUES
@@ -197,3 +197,86 @@ VALUES
 INSERT INTO editor_assignments (id, editor_id, category_id)
 VALUES
     (UUID(), (SELECT id FROM users WHERE name = 'Charlie Brown'), (SELECT id FROM categories WHERE name = 'Technology'));
+-- Insert 10 articles into the articles table
+INSERT INTO articles (id, title, abstract, content, image_url, status, category_id, is_premium, views, publish_date, author)
+VALUES
+    (UUID(), 'The Rise of AI', 'Exploring how artificial intelligence is transforming various industries globally.', 
+     'In-depth content about the rise of AI...', 'https://example.com/ai.jpg', 'published', (SELECT id FROM categories WHERE name = 'Artificial Intelligence'), FALSE, 200, '2024-01-01 08:00:00', (SELECT id FROM users WHERE name = 'Bob Smith')),
+    (UUID(), 'Python in Data Science', 'A comprehensive overview of Python\'s role in revolutionizing data analysis and machine learning.', 
+     'Detailed content about Python in data science...', 'https://example.com/python.jpg', 'published', (SELECT id FROM categories WHERE name = 'Python'), TRUE, 150, '2024-01-05 10:30:00', (SELECT id FROM users WHERE name = 'Alice Johnson')),
+    (UUID(), 'Modern Web Trends', 'A look at the latest technologies and frameworks shaping the web development landscape.', 
+     'Detailed content about modern web trends...', 'https://example.com/web.jpg', 'published', (SELECT id FROM categories WHERE name = 'Web Development'), FALSE, 120, '2024-01-10 14:45:00', (SELECT id FROM users WHERE name = 'Charlie Brown')),
+    (UUID(), 'Physics and Beyond', 'Delving into the mysteries of the universe and the role of physics in uncovering them.', 
+     'In-depth content about physics and beyond...', 'https://example.com/physics.jpg', 'published', (SELECT id FROM categories WHERE name = 'Physics'), TRUE, 180, '2024-01-15 12:00:00', (SELECT id FROM users WHERE name = 'Bob Smith')),
+    (UUID(), 'Geometry in Art', 'An exploration of how geometric principles inspire creativity in art and design.', 
+     'Detailed content about geometry in art...', 'https://example.com/geometry.jpg', 'published', (SELECT id FROM categories WHERE name = 'Geometry'), FALSE, 140, '2024-01-20 09:00:00', (SELECT id FROM users WHERE name = 'Alice Johnson')),
+    (UUID(), 'Building Sustainable Cities', 'Insights into engineering techniques for creating eco-friendly urban spaces.', 
+     'In-depth content about sustainable cities...', 'https://example.com/cities.jpg', 'published', (SELECT id FROM categories WHERE name = 'Civil Engineering'), TRUE, 220, '2024-01-25 16:00:00', (SELECT id FROM users WHERE name = 'Charlie Brown')),
+    (UUID(), 'Nutrition Myths Busted', 'Separating fact from fiction in popular nutritional advice.', 
+     'Detailed content about nutrition myths...', 'https://example.com/nutrition.jpg', 'published', (SELECT id FROM categories WHERE name = 'Nutrition'), FALSE, 130, '2024-02-01 11:30:00', (SELECT id FROM users WHERE name = 'Bob Smith')),
+    (UUID(), 'Online Learning Platforms', 'Examining the advantages and challenges of modern e-learning systems.', 
+     'In-depth content about online learning...', 'https://example.com/elearning.jpg', 'published', (SELECT id FROM categories WHERE name = 'Online Courses'), TRUE, 190, '2024-02-05 15:00:00', (SELECT id FROM users WHERE name = 'Alice Johnson')),
+    (UUID(), 'Investing for Beginners', 'A beginner\'s guide to understanding and navigating the world of investments.', 
+     'Detailed content about investing for beginners...', 'https://example.com/investing.jpg', 'published', (SELECT id FROM categories WHERE name = 'Investing'), FALSE, 170, '2024-02-10 10:00:00', (SELECT id FROM users WHERE name = 'Charlie Brown')),
+    (UUID(), 'The Art of Painting', 'Discover the history, techniques, and inspiration behind masterpieces in painting.', 
+     'In-depth content about painting as an art...', 'https://example.com/painting.jpg', 'published', (SELECT id FROM categories WHERE name = 'Painting'), TRUE, 210, '2024-02-15 13:30:00', (SELECT id FROM users WHERE name = 'Bob Smith'));
+-- Insert dummy data into the tags table
+INSERT INTO tags (id, name)
+VALUES
+    (UUID(), 'AI'),
+    (UUID(), 'Innovation'),
+    (UUID(), 'Trends'),
+    (UUID(), 'Python'),
+    (UUID(), 'Data Science'),
+    (UUID(), 'ML'),
+    (UUID(), 'Web'),
+    (UUID(), 'Frameworks'),
+    (UUID(), 'Physics'),
+    (UUID(), 'Universe'),
+    (UUID(), 'Science'),
+    (UUID(), 'Geometry'),
+    (UUID(), 'Art'),
+    (UUID(), 'Design'),
+    (UUID(), 'Sustainability'),
+    (UUID(), 'Cities'),
+    (UUID(), 'Engineering'),
+    (UUID(), 'Nutrition'),
+    (UUID(), 'Health'),
+    (UUID(), 'Myths'),
+    (UUID(), 'E-learning'),
+    (UUID(), 'Education'),
+    (UUID(), 'Platforms');
+-- Insert dummy data into the article_tags table
+INSERT INTO article_tags (article_id, tag_id)
+VALUES
+    ((SELECT id FROM articles WHERE title = 'The Rise of AI'), (SELECT id FROM tags WHERE name = 'AI')),
+    ((SELECT id FROM articles WHERE title = 'The Rise of AI'), (SELECT id FROM tags WHERE name = 'Innovation')),
+    ((SELECT id FROM articles WHERE title = 'The Rise of AI'), (SELECT id FROM tags WHERE name = 'Trends')),
+
+    ((SELECT id FROM articles WHERE title = 'Python in Data Science'), (SELECT id FROM tags WHERE name = 'Python')),
+    ((SELECT id FROM articles WHERE title = 'Python in Data Science'), (SELECT id FROM tags WHERE name = 'Data Science')),
+    ((SELECT id FROM articles WHERE title = 'Python in Data Science'), (SELECT id FROM tags WHERE name = 'ML')),
+
+    ((SELECT id FROM articles WHERE title = 'Modern Web Trends'), (SELECT id FROM tags WHERE name = 'Web')),
+    ((SELECT id FROM articles WHERE title = 'Modern Web Trends'), (SELECT id FROM tags WHERE name = 'Frameworks')),
+    ((SELECT id FROM articles WHERE title = 'Modern Web Trends'), (SELECT id FROM tags WHERE name = 'Trends')),
+
+    ((SELECT id FROM articles WHERE title = 'Physics and Beyond'), (SELECT id FROM tags WHERE name = 'Physics')),
+    ((SELECT id FROM articles WHERE title = 'Physics and Beyond'), (SELECT id FROM tags WHERE name = 'Universe')),
+    ((SELECT id FROM articles WHERE title = 'Physics and Beyond'), (SELECT id FROM tags WHERE name = 'Science')),
+
+    ((SELECT id FROM articles WHERE title = 'Geometry in Art'), (SELECT id FROM tags WHERE name = 'Geometry')),
+    ((SELECT id FROM articles WHERE title = 'Geometry in Art'), (SELECT id FROM tags WHERE name = 'Art')),
+    ((SELECT id FROM articles WHERE title = 'Geometry in Art'), (SELECT id FROM tags WHERE name = 'Design')),
+
+    ((SELECT id FROM articles WHERE title = 'Building Sustainable Cities'), (SELECT id FROM tags WHERE name = 'Sustainability')),
+    ((SELECT id FROM articles WHERE title = 'Building Sustainable Cities'), (SELECT id FROM tags WHERE name = 'Cities')),
+    ((SELECT id FROM articles WHERE title = 'Building Sustainable Cities'), (SELECT id FROM tags WHERE name = 'Engineering')),
+
+    ((SELECT id FROM articles WHERE title = 'Nutrition Myths Busted'), (SELECT id FROM tags WHERE name = 'Nutrition')),
+    ((SELECT id FROM articles WHERE title = 'Nutrition Myths Busted'), (SELECT id FROM tags WHERE name = 'Health')),
+    ((SELECT id FROM articles WHERE title = 'Nutrition Myths Busted'), (SELECT id FROM tags WHERE name = 'Myths')),
+
+    ((SELECT id FROM articles WHERE title = 'Online Learning Platforms'), (SELECT id FROM tags WHERE name = 'E-learning')),
+    ((SELECT id FROM articles WHERE title = 'Online Learning Platforms'), (SELECT id FROM tags WHERE name = 'Education')),
+    ((SELECT id FROM articles WHERE title = 'Online Learning Platforms'), (SELECT id FROM tags WHERE name = 'Platforms'));

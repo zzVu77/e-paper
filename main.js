@@ -3,6 +3,8 @@ import { engine } from "express-handlebars";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import categoryService from "./services/category.service.js";
+import articleService from "./services/article.service.js";
+import formatDateTime from "./helpers/formatDateTime.js";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 // const path = require("path");
@@ -19,6 +21,9 @@ app.engine(
     defaultLayout: "main",
     layoutsDir: join(__dirname, "/views/layouts/"),
     partialsDir: join(__dirname, "/views/components/"),
+    helpers: {
+      format_datetime: formatDateTime,
+    },
   })
 );
 
@@ -28,7 +33,6 @@ app.use(express.static("public"));
 // setup local data for navigation
 app.use(async function (req, res, next) {
   const categories = await categoryService.getCategoryName();
-  console.log(categories);
   res.locals.categories = categories;
   next();
 });
@@ -36,7 +40,9 @@ app.use(async function (req, res, next) {
 app.get("/posts", async function (req, res) {
   // const list = await categoryService.getCategoryName();
   // console.log(list);
-  res.render("posts");
+  const articles = await articleService.getAllArticles();
+  console.log(articles);
+  res.render("posts", { articles: articles });
 });
 
 app.get("/article", function (req, res) {

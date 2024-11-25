@@ -1,17 +1,9 @@
 <div class="tw-font-extrabold tw-text-[40px] tw-ml-4 tw-mt-2">All posts</div>
 <div class="tw-grid tw-grid-cols-3 gap-3 tw-mt-5">
-{{>posts/post-card}}
-{{>posts/post-card}}
-{{>posts/post-card}}
-{{>posts/post-card}}
-{{>posts/post-card}}
-{{>posts/post-card}}
-{{>posts/post-card}}
-{{>posts/post-card}}
-{{>posts/post-card}}
-{{>posts/post-card}}
-{{>posts/post-card}}
-{{>posts/post-card}}
+  {{#each articles}}
+    {{>posts/post-card  }}     
+  {{/each}}
+
 </div>
 {{!-- pagination --}}
 <div class="tw-mb-[200px] tw-m-auto tw-flex tw-justify-center tw-items-center">

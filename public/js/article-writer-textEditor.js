@@ -1,3 +1,4 @@
+//tagInput
 const ulTags = document.querySelector('.article-writer-textEditor-tagInput ul'),
   tagInput = document.querySelector(
     '.article-writer-textEditor-tagInput input'
@@ -46,3 +47,42 @@ function addTag(e) {
   }
 }
 tagInput.addEventListener('keyup', addTag);
+
+
+//thumbnailInput
+  const openPopupBtn = document.getElementById('article-writer-textEditor-openImagePopup');
+  const imagePopup = document.getElementById('article-writer-textEditor-imagePopup');
+  const popupOverlay = document.getElementById('article-writer-textEditor-popupOverlay');
+  const closePopupBtn = document.getElementById('article-writer-textEditor-closePopupBtn');
+  const fileInput = document.getElementById('article-writer-textEditor-imageFileInput');
+  const thumbnailPreview = document.getElementById('article-writer-textEditor-thumbnailPreview');
+
+  // Hiển thị popup
+  openPopupBtn.addEventListener('click', () => {
+    imagePopup.style.display = 'block';
+    popupOverlay.style.display = 'block';
+  });
+
+  // Đóng popup
+  closePopupBtn.addEventListener('click', () => {
+    imagePopup.style.display = 'none';
+    popupOverlay.style.display = 'none';
+  });
+
+  popupOverlay.addEventListener('click', () => {
+    imagePopup.style.display = 'none';
+    popupOverlay.style.display = 'none';
+  });
+
+  // Xử lý khi chọn file
+  fileInput.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        thumbnailPreview.src = e.target.result;
+        thumbnailPreview.style.display = 'block'; // Hiển thị ảnh
+      };
+      reader.readAsDataURL(file);
+    }
+  });

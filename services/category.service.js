@@ -1,7 +1,7 @@
 import db from "../utils/db.js";
 
 export default {
-  getCategoryName() {
+  async getCategoryName() {
     return db("categories as parent")
       .leftJoin("categories as child", "parent.id", "child.parent_id")
       .select("parent.name as parent_name", "child.name as child_name")

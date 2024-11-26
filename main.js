@@ -5,6 +5,11 @@ import { fileURLToPath } from "url";
 import categoryService from "./services/category.service.js";
 import articleService from "./services/article.service.js";
 import formatDateTime from "./helpers/formatDateTime.js";
+import categoriesmanagementRouter from "./routes/admin/categories.route.js";
+import tagsmanagementRouter from "./routes/admin/tags.route.js";
+import personsmanagementRouter from "./routes/admin/persons.route.js";
+import articlesmanagementRouter from "./routes/admin/articles.route.js";
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 // const path = require("path");
@@ -208,8 +213,16 @@ app.get("/article-manage-rejected", function (req, res) {
 app.get("/article-manage-all", function (req, res) {
   res.render("article-manage-all");
 });
-app.get("/admin", function (req, res) {
-  res.render("admin/dashboard", { layout: "admin", title: "Admin Dashboard" });
+// app.get('/admin/tags', function (req, res) {
+//   res.render('admin/tags', { layout: 'admin', title: 'Tags' });
+// });
+app.use("/admin/categories", categoriesmanagementRouter);
+app.use("/admin/tags", tagsmanagementRouter);
+app.use("/admin/persons", personsmanagementRouter);
+app.use("/admin/articles", articlesmanagementRouter);
+
+app.get("/editor", function (req, res) {
+  res.render("editor", { layout: "admin", title: "Editor" });
 });
 
 app.listen(3000, function () {

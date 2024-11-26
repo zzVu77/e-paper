@@ -1,40 +1,38 @@
-
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg bg-transparent navbar-dark">
-    <!-- Container wrapper -->
-    <div class="container-fluid">
-        <!-- Navbar brand -->
-        <a class="navbar-brand" href="#">
-            <img src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp"
-                 height="30"
-                 alt="MDB Logo"
-                 loading="lazy" />
+<nav class="tw-bg-inherit">
+    <div class="tw-max-w-screen-xl tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-mx-auto tw-p-4">
+        <a href="#" class="tw-flex tw-items-center tw-space-x-3 rtl:tw-space-x-reverse">
+        <img src="https://flowbite.com/docs/images/logo.svg" class="tw-h-8" alt="Flowbite Logo" />
+        <span class="tw-self-center tw-text-2xl tw-font-semibold tw-whitespace-nowrap dark:tw-text-black">Logo</span>
         </a>
-        <!-- Icons -->
-        <ul class="navbar-nav d-flex flex-row me-1">
-            <li class="nav-item me-3 me-lg-0">
-                <a class="nav-link text-black" href="#"><i class="fas fa-envelope mx-1"></i> Contact</a>
-            </li>
-            <li class="nav-item me-3 me-lg-0">
-                <a class="nav-link text-black" href="#"><i class="fas fa-cog mx-1"></i> Settings</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a data-mdb-dropdown-init class="nav-link dropdown-toggle text-black" href="#" id="navbarDropdown" role="button"
-                data-mdb-toggle="dropdown" aria-expanded="false"> <i class="fas fa-user mx-1"></i> Profile </a>
-                <!-- Dropdown menu -->
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li>
-                        <a class="dropdown-item" href="#">My account</a>
-                    </li>
+    
+    
+    <div class="tw-flex tw-items-center md:tw-order-2 tw-space-x-1 md:tw-space-x-0 rtl:tw-space-x-reverse">
+        <div class="tw-mr-10 tw-justify-center tw-flex-wrap">
+            <a href="#">
+                <i class="fas fa-comment-alt"></i>
+            </a>
+            <a href="#">
+                <i class="fa-regular fa-bell"></i>  
+            </a>
+        </div>
 
-                    <li>
-                        <a class="dropdown-item" href="#">Log out</a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
+        {{!-- Drop down logout .... --}}
+        <div>
+            <button id="admin-header-dropdownActionButton" type="button" data-dropdown-toggle="language-dropdown-menu" class="tw-border-none tw-inline-flex tw-items-center tw-font-medium tw-justify-center tw-px-4 tw-py-2 tw-text-sm tw-text-gray-900 dark:tw-text-black tw-rounded-lg tw-cursor-pointer hover:tw-bg-cyan-100 dark:hover:tw-bg-blue-300  dark:hover:tw-text-white">
+                <div>Huy</div>
+                <img src="/img/avatar.png" alt="" class="tw-ml-5 tw-h-10 tw-rounded-full ">
+            </button>
+
+            <!-- Dropdown menu -->
+            <div id="admin-header-dropdownAction" class="tw-absolute  tw-z-10 tw-hidden tw-bg-white tw-divide-y tw-divide-gray-100 tw-rounded-lg tw-shadow tw-w-44 dark:tw-bg-cyan-100 dark:tw-divide-blue-200">
+                <a href="#" class="tw-text-gray-900 tw-block tw-px-4 tw-py-2 hover:tw-bg-cyan-100 dark:hover:tw-bg-cyan-300 dark:hover:tw-text-white">Information</a>
+                <a href="#" class="tw-text-gray-900 tw-block tw-px-4 tw-py-2 hover:tw-bg-cyan-100 dark:hover:tw-bg-cyan-300 dark:hover:tw-text-white">Log out</a>
+                
+            </div>
+        </div>
+        
+
+        </div>
+        
     </div>
-
-    <!-- Container wrapper -->
 </nav>
-<!-- Navbar -->

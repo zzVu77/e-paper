@@ -1,0 +1,121 @@
+<div class=" tw-relative">
+    {{!-- table content --}}
+    <div class="tw-p-4  tw-relative tw-overflow-x-auto tw-shadow-md sm:tw-rounded-lg tw-w-[80rem]">
+        <div class="tw-mt-4 tw-ml-4 tw-flex tw-items-center tw-justify-between tw-flex-column tw-flex-wrap md:tw-flex-row tw-space-y-4 md:tw-space-y-0 tw-pb-4 tw-bg-white dark:tw-bg-white">
+            {{!-- Tilte body--}}
+            <div class="tw-ml-4">
+                <div class=" tw-font-semibold tw-text-lg">{{title}}</div>
+                <div class="tw-font-normal tw-text-gray-500">Active {{title}}</div>
+            </div> 
+ 
+        </div>
+        {{!-- Table --}}
+        <div>
+            <div class="tw-inline-flex tw-flex-col tw-w-full  md:tw-flex-row" role="group">
+                <a href="/admin/persons?role=subscriber" 
+                class="tw-px-4 tw-py-2 tw-text-sm tw-font-medium tw-rounded-tl-lg tw-border-none hover:tw-bg-gray-100 hover:tw-text-primary-700 focus:tw-z-10 focus:tw-ring-2 focus:tw-ring-primary-700 focus:tw-text-primary-700 dark:tw-bg-cyan-200 dark:tw-text-slate-800 dark:hover:tw-text-white dark:hover:tw-bg-cyan-600 dark:focus:tw-ring-primary-500 dark:focus:tw-text-slate-800">
+                Độc giả
+                </a>
+                <a href="/admin/persons?role=writer" 
+                class="tw-px-4 tw-py-2 tw-text-sm tw-font-medium tw-border-none hover:tw-bg-gray-100 hover:tw-text-primary-700 focus:tw-z-10 focus:tw-ring-2 focus:tw-ring-primary-700 focus:tw-text-primary-700 dark:tw-bg-cyan-200 dark:tw-text-slate-800 dark:hover:tw-text-white dark:hover:tw-bg-cyan-600 dark:focus:tw-ring-primary-500 dark:focus:tw-text-slate-800">
+                Phóng viên
+                </a>
+                <a href="/admin/persons?role=editor" 
+                class="tw-px-4 tw-py-2 tw-text-sm tw-rounded-tr-lg tw-font-medium tw-border-none hover:tw-bg-gray-100 hover:tw-text-primary-700 focus:tw-z-10 focus:tw-ring-2 focus:tw-ring-primary-700 focus:tw-text-primary-700 dark:tw-bg-cyan-200 dark:tw-text-slate-800 dark:hover:tw-text-white dark:hover:tw-bg-cyan-600 dark:focus:tw-ring-primary-500 dark:focus:tw-text-slate-800">
+                Biên tập viên
+                </a>
+            </div>
+            <table class=" tw-w-full tw-text-sm tw-text-left rtl:tw-text-right tw-text-gray-500 dark:tw-text-gray-400">
+                <thead class="tw-text-xs tw-text-gray-700 tw-uppercase tw-bg-gray-50 dark:tw-bg-gray-700 dark:tw-text-gray-400">
+                        <tr>
+                            {{#each headers}}
+                                <th scope="col" class="tw-px-6 tw-py-3">{{this}} </th>
+                                
+                            {{/each}}
+                        </tr>
+                </thead>
+
+                {{!-- body --}}
+
+                <tbody>
+                    {{!-- Component --}}
+                    {{#each this.data}}
+                    <tr id="admin-categories-row" class="tw-bg-white tw-border-b dark:tw-bg-cyan-50 dark:tw-border-cyan-300 hover:tw-bg-gray-50 dark:hover:tw-bg-cyan-200">
+                        <td class="tw-px-6 tw-py-4">{{this.name}}</td>
+
+                        {{#if this.isSubscriber}}
+                        <!-- Subscriber Fields -->
+                        <td class="tw-px-6 tw-py-4">{{this.email}}</td>
+                        <td class="tw-px-6 tw-py-4">{{this.birthdate}}</td>
+                        <td class="tw-px-6 tw-py-4">{{this.subscription_expiry}}</td>
+                        <td class="tw-px-6 tw-py-4">{{this.role}}</td>
+                        <td class="tw-px-6 tw-py-4 ">
+                            <a href="#" class="tw-text-red-400 ">
+                                Hết Hạn
+                            </a>
+                        </td>
+                        {{/if}}
+                        {{#if this.isWriter}}
+                            <!-- Writer Fields -->
+                            <td class="tw-px-6 tw-py-4">{{this.pen_name}}</td>
+                            <td class="tw-px-6 tw-py-4">{{this.email}}</td>
+                            <td class="tw-px-6 tw-py-4">{{this.birthdate}}</td>
+                            <td class="tw-px-6 tw-py-4">{{this.role}}</td>
+
+                        {{/if}}
+                        {{#if this.isEditor}}
+                        <!-- Editor Fields -->
+                        <td class="tw-px-6 tw-py-4">{{this.email}}</td>
+                        <td class="tw-px-6 tw-py-4">{{this.birthdate}}</td>
+                        <td class="tw-px-6 tw-py-4">{{this.category}} </td>
+                        <td class="tw-px-6 tw-py-4">{{this.role}}</td>
+                        <td class="tw-px-6 tw-py-4 ">
+                        <button  class="popup-trigger  tw-border-none tw-bg-transparent" data-id="{{this.id}}">
+                            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 48 48">
+                            <path d="M 36 5.0097656 C 34.205301 5.0097656 32.410791 5.6901377 31.050781 7.0507812 L 8.9160156 29.183594 C 8.4960384 29.603571 8.1884588 30.12585 8.0253906 30.699219 L 5.0585938 41.087891 A 1.50015 1.50015 0 0 0 6.9121094 42.941406 L 17.302734 39.974609 A 1.50015 1.50015 0 0 0 17.304688 39.972656 C 17.874212 39.808939 18.39521 39.50518 18.816406 39.083984 L 40.949219 16.949219 C 43.670344 14.228094 43.670344 9.7719064 40.949219 7.0507812 C 39.589209 5.6901377 37.794699 5.0097656 36 5.0097656 z M 36 7.9921875 C 37.020801 7.9921875 38.040182 8.3855186 38.826172 9.171875 A 1.50015 1.50015 0 0 0 38.828125 9.171875 C 40.403 10.74675 40.403 13.25325 38.828125 14.828125 L 36.888672 16.767578 L 31.232422 11.111328 L 33.171875 9.171875 C 33.957865 8.3855186 34.979199 7.9921875 36 7.9921875 z M 29.111328 13.232422 L 34.767578 18.888672 L 16.693359 36.962891 C 16.634729 37.021121 16.560472 37.065723 16.476562 37.089844 L 8.6835938 39.316406 L 10.910156 31.521484 A 1.50015 1.50015 0 0 0 10.910156 31.519531 C 10.933086 31.438901 10.975086 31.366709 11.037109 31.304688 L 29.111328 13.232422 z"></path>
+                            </svg>
+                        </button>
+                        </td>
+                        {{/if}}
+                            
+                    </tr>
+                    {{/each}}
+
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+    {{!-- Popup update--}}
+    {{#each this.data}}
+        <div id="admin-persons-popup-{{this.id}}" class="tw-invisible tw-backdrop-blur-sm tw-absolute tw-top-0 tw-left-0 tw-h-screen tw-w-full tw-flex tw-items-center tw-justify-center">
+            <div class="tw-relative tw-p-4 tw-w-full tw-max-w-md tw-max-h-full tw-bg-white tw-rounded-lg dark:tw-bg-cyan-200">
+                <button class="tw-bg-transparent tw-border-none tw-float-right close-popup" data-id="{{this.id}}">
+                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                    </svg>
+                </button>
+                <form class="tw-p-4 tw-md:p-5">
+                    <div class="tw-grid tw-gap-4 tw-mb-4 tw-grid-cols-2">
+                        
+                        <div class="tw-col-span-2 tw-sm:col-span-1">
+                            <label for="category" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Thuộc thể loại</label>
+                            <select id="category-{{this.id}}" class="tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 tw-text-sm tw-rounded-lg focus:tw-ring-primary-500 focus:tw-border-primary-500 tw-block tw-w-full tw-p-2.5 dark:tw-bg-white dark:tw-border-cyan-200 dark:tw-placeholder-gray-300 dark:tw-text-gray-700 dark:focus:tw-ring-primary-500 dark:focus:tw-border-primary-500">
+                                <option selected>{{this.name}}</option>
+                                {{!-- Update later --}}
+                                {{#each data}}
+                                    <option value="{{this.id}}">{{this.name}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                    </div>
+                    <a href="/admin/persons/update" class="tw-text-white tw-inline-flex tw-items-center tw-bg-blue-700 tw-hover:bg-blue-800 tw-focus:ring-4 tw-focus:outline-none tw-focus:ring-blue-300 tw-font-medium tw-rounded-lg tw-text-sm tw-px-5 tw-py-2.5 tw-text-center tw-dark:bg-blue-600 tw-dark:hover:bg-blue-700 tw-dark:focus:ring-blue-800">
+                        Sửa {{title}}
+                    </a>
+                </form>
+            </div>
+        </div>
+    {{/each}}
+</div>
+
+<script src="/js/admin/persons.js"> </script>

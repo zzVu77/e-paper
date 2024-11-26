@@ -1,0 +1,62 @@
+<div class="tw-p-4  tw-relative tw-overflow-x-auto tw-shadow-md sm:tw-rounded-lg tw-w-[80rem]">
+    <div class="tw-mt-4 tw-ml-4 tw-flex tw-items-center tw-justify-between tw-flex-column tw-flex-wrap md:tw-flex-row tw-space-y-4 md:tw-space-y-0 tw-pb-4 tw-bg-white dark:tw-bg-white">
+        <div class="tw-ml-4">
+            <div class="tw-font-semibold tw-text-lg">{{title}}</div>
+            <div class="tw-font-normal tw-text-gray-500">Active {{title}}</div>
+        </div> 
+
+    </div>
+    {{!-- Table --}}
+    <div>
+    <table class="tw-mt-4 tw-ml-4 tw-w-full tw-text-sm tw-text-left rtl:tw-text-right tw-text-gray-500 dark:tw-text-gray-400">
+        <thead class="tw-text-xs tw-text-gray-700 tw-uppercase tw-bg-gray-50 dark:tw-bg-gray-700 dark:tw-text-gray-400">
+            <tr>
+                <th scope="col" class="tw-p-4">Tác giả</th>
+                <th scope="col" class="tw-px-6 tw-py-3">Tiêu đề</th>
+                <th scope="col" class="tw-px-6 tw-py-3">Chuyên mục</th>
+                <th scope="col" class="tw-px-6 tw-py-3">Nhãn</th>
+                <th scope="col" class="tw-px-6 tw-py-3">Trạng thái</th>
+                <th scope="col" class="tw-px-6 tw-py-3">Lí do</th>
+                <th scope="col" class="tw-px-8 tw-py-3 tw-text-left">Hành động</th>
+            </tr>
+        </thead>
+
+        {{!-- body --}}
+
+        <tbody>
+            {{#each this.data}}
+            <tr id="admin-articles-row" class="tw-bg-white tw-border-b dark:tw-bg-cyan-50	 dark:tw-border-cyan-300 hover:tw-bg-gray-50 dark:hover:tw-bg-cyan-200">
+                
+
+                <td class="tw-px-6 tw-py-4">
+                    <div class="tw-flex tw-items-center">{{this.author}}</div>
+                </td>
+                <td class="tw-px-6 tw-py-4">
+                    <div>
+                        <div class="tw-text-base">{{this.title}}</div>
+                    </div>  
+                </td>
+                <td class="tw-px-6 tw-py-4">{{this.category}}</td>
+                <td class="tw-px-6 tw-py-4">{{this.tags}}</td>
+
+                <td class="tw-px-6 tw-py-4">Lí do từ chối</td>
+                <td class="tw-px-6 tw-py-4">
+                    <button onclick="toggleStatus(this, '{{this.id}}')" class="{{this.buttonClass}} tw-border-none  tw-rounded-md">
+                        {{this.status}}
+                    </button>
+                </td>
+
+                <td class="tw-px-14 tw-py-4 tw-items-center ">
+                    <a href="#" class="tw-items-center">
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                    </a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    </div>
+
+</div>
+<script src="/js/admin/articles.js"> </script>
+

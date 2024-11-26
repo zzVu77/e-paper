@@ -180,14 +180,36 @@ app.get("/account-setting-security", function (req, res) {
 app.get("/account-setting-upgrade", function (req, res) {
   res.render("account-setting-upgrade");
 });
-app.get("/admin", function (req, res) {
-  res.render("admin/dashboard", { layout: "admin", title: "Admin Dashboard" });
-});
+
 app.get("/forgot-password", function (req, res) {
   res.render("forgotPassword", { layout: "default" });
 });
 app.get("/verify-otp", function (req, res) {
   res.render("verify-otp", { layout: "default" });
+});
+app.get("/article-writer-textEditor", function (req, res) {
+  res.render("article-writer-textEditor");
+});
+app.get("/article-writer-editTextEditor", function (req, res) {
+  res.render("article-writer-editTextEditor");
+});
+app.get("/article-manage-approved", function (req, res) {
+  res.render("article-manage-approved");
+});
+app.get("/article-manage-pending", function (req, res) {
+  res.render("article-manage-pending");
+});
+app.get("/article-manage-published", function (req, res) {
+  res.render("article-manage-published");
+});
+app.get("/article-manage-rejected", function (req, res) {
+  res.render("article-manage-rejected");
+});
+app.get("/article-manage-all", function (req, res) {
+  res.render("article-manage-all");
+});
+app.get("/admin", function (req, res) {
+  res.render("admin/dashboard", { layout: "admin", title: "Admin Dashboard" });
 });
 
 app.listen(3000, function () {

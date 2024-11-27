@@ -174,9 +174,10 @@ app.get("/verify-otp", function (req, res) {
   res.render("verify-otp", { layout: "default" });
 });
 
-app.get("/", function (req, res) {
-  const data = {
-    popularPosts: [
+app.get('/', (req, res) => {
+    res.render('home', {
+        layout: 'home-layout',
+popularPosts: [
       {
         title: "Popular Post 1",
         image: "https://via.placeholder.com/800x400",
@@ -418,8 +419,7 @@ app.get("/", function (req, res) {
         }
       }
     ]
-  };
-  res.render("home", data);
+    });
 });
 
 app.listen(3000, function () {

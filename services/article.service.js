@@ -23,13 +23,14 @@ export default {
       );
   },
 
+  // get trending articles in all time
   async getTopTrendingArticles() {
-    const oneWeekAgo = new Date();
-    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+    const today = new Date();
+    today.setDate(today.getDate());
 
     return db("articles as a")
       .leftJoin("comments as c", "a.id", "c.article_id")
-      .where("a.publish_date", ">=", oneWeekAgo)
+      .where("a.publish_date", "<=", today)
       .groupBy("a.id")
       .orderBy([
         { column: db.raw("COUNT(c.id)"), order: "desc" },

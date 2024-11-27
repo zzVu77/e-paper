@@ -20,37 +20,93 @@ export default {
         "u.name as author_name",
         "c.name as category_name",
         db.raw("GROUP_CONCAT(t.name) as article_tags")
+      );
+  },
+
+  async getTopTrendingArticles() {
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+    return db("articles as a")
+      .leftJoin("comments as c", "a.id", "c.article_id")
+      .where("a.publish_date", ">=", oneWeekAgo)
+      .groupBy("a.id")
+      .orderBy([
+        { column: db.raw("COUNT(c.id)"), order: "desc" },
+        { column: "a.views", order: "desc" }
+      ])
+      .select(
+        "a.id as article_id",
+        "a.title as article_title",
+        "a.abstract as article_abstract",
+        "a.content as article_content",
+        "a.image_url as article_image_url",
+        "a.status as article_status",
+        "a.is_premium as article_is_premium",
+        "a.views as article_views",
+        "a.publish_date as article_publish_date",
+        db.raw("COUNT(c.id) as comment_count")
       )
-      .where("u.role", "writer")
-      .groupBy(
-        "a.id",
-        "a.title",
-        "a.abstract",
-        "a.content",
-        "a.image_url",
-        "a.status",
-        "a.is_premium",
-        "a.views",
-        "a.publish_date",
-        "u.name",
-        "c.name"
+      .limit(10);
+  },
+
+  //get 10 most viewed articles in all time:
+
+  async getMostViewedArticles() {
+    return db("articles")
+      .orderBy("views", "desc")
+      .select(
+        "id as article_id",
+        "title as article_title",
+        "abstract as article_abstract",
+        "content as article_content",
+        "image_url as article_image_url",
+        "status as article_status",
+        "is_premium as article_is_premium",
+        "views as article_views",
+        "publish_date as article_publish_date"
       )
-      .then((rows) => {
-        // Chuyển đổi kết quả thành format phù hợp
-        return rows.map((row) => ({
-          article_id: row.article_id,
-          article_title: row.article_title,
-          article_abstract: row.article_abstract,
-          article_content: row.article_content,
-          article_image_url: row.article_image_url,
-          article_status: row.article_status,
-          article_is_premium: row.article_is_premium,
-          article_views: row.article_views,
-          article_publish_date: row.article_publish_date,
-          author_name: row.author_name,
-          category_name: row.category_name,
-          article_tags: row.article_tags ? row.article_tags.split(",") : [],
-        }));
-      });
+      .limit(10);
+  },
+
+  //get 10 latest articles: 
+
+  async getLatestArticles() {
+    return db("articles")
+      .orderBy("publish_date", "desc")
+      .select(
+        "id as article_id",
+        "title as article_title",
+        "abstract as article_abstract",
+        "content as article_content",
+        "image_url as article_image_url",
+        "status as article_status",
+        "is_premium as article_is_premium",
+        "views as article_views",
+        "publish_date as article_publish_date"
+      )
+      .limit(10);
+  },
+
+  //from top 10 categories, get 1 latest articles of each category:
+
+  async getLatestArticleOfTopCategories() {
+    return db("categories as c")
+      .leftJoin("articles as a", "c.id", "a.category_id")
+      .orderBy("a.publish_date", "desc")
+      .select(
+        "c.id as category_id",
+        "c.name as category_name",
+        "a.id as article_id",
+        "a.title as article_title",
+        "a.abstract as article_abstract",
+        "a.content as article_content",
+        "a.image_url as article_image_url",
+        "a.status as article_status",
+        "a.is_premium as article_is_premium",
+        "a.views as article_views",
+        "a.publish_date as article_publish_date"
+      )
+      .limit(10);
   },
 };

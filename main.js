@@ -64,6 +64,15 @@ app.get("/posts/byTag", async function (req, res) {
     title: "#" + name,
   });
 });
+app.get("/posts/search", async function (req, res) {
+  const keyword = req.query.keyword || "";
+  console.log(keyword);
+  const articles = await articleService.searchArticlesByKeyword(keyword);
+  console.log(articles);
+  res.render("posts", {
+    articles: articles,
+  });
+});
 
 app.get("/article", function (req, res) {
   const content = `<h1
@@ -242,7 +251,6 @@ app.get("/editor", function (req, res) {
 
 app.get("/", async (req, res) => {
   res.render("home", {
-    layout: "home-layout",
     popularPosts: await articleService.getTopTrendingArticles(),
     mostViewed: await articleService.getMostViewedArticles(),
     latestPosts: await articleService.getLatestArticles(),

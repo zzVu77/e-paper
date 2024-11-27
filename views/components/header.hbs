@@ -158,10 +158,12 @@
     <div class="client-header-navigation">
       <div class="client-header-navigation-menu tw-w-[100%]">
         {{#each categories}}
-           <div class="menu tw-text-black">{{parent_name}}
+           <div class="menu tw-text-black"><a  class="tw-no-underline tw-text-black" href="/posts/byCat?name={{parent_name}}">{{parent_name}}</a>
             <ul class="submenu">
               {{#each child_categories}}               
-              <li class="tw-text-black">{{this}}</li>
+              <a  class="tw-no-underline tw-text-black" href="/posts/byCat?name={{this}}">
+                <li class="tw-text-black">{{this}}</li>
+              </a>
               {{/each}}
             </ul>
         </div>

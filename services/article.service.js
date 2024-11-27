@@ -53,6 +53,190 @@ export default {
         }));
       });
   },
+  async getArticlesByCategory(categoryName) {
+    // Lấy thông tin category từ tên
+    const category = await db("categories").where("name", categoryName).first();
+
+    if (!category) {
+      throw new Error("Category không tồn tại");
+    }
+
+    let categoryIds = [];
+    if (category.parent_id === null) {
+      // Nếu là parent, lấy tất cả các category con và chính nó
+      const childCategories = await db("categories")
+        .where("parent_id", category.id)
+        .select("id");
+      categoryIds = [category.id, ...childCategories.map((cat) => cat.id)];
+    } else {
+      // Nếu là child, chỉ lấy chính nó
+      categoryIds = [category.id];
+    }
+
+    // Lấy bài viết thuộc các category ID
+    return db("articles as a")
+      .leftJoin("article_tags as at", "a.id", "at.article_id")
+      .leftJoin("tags as t", "at.tag_id", "t.id")
+      .innerJoin("users as u", "a.author", "u.id")
+      .innerJoin("categories as c", "a.category_id", "c.id")
+      .select(
+        "a.id as article_id",
+        "a.title as article_title",
+        "a.abstract as article_abstract",
+        "a.content as article_content",
+        "a.image_url as article_image_url",
+        "a.status as article_status",
+        "a.is_premium as article_is_premium",
+        "a.views as article_views",
+        "a.publish_date as article_publish_date",
+        "u.name as author_name",
+        "c.name as category_name",
+        db.raw("GROUP_CONCAT(t.name) as article_tags")
+      )
+      .where("u.role", "writer")
+      .whereIn("a.category_id", categoryIds) // Lọc theo các category ID
+      .groupBy(
+        "a.id",
+        "a.title",
+        "a.abstract",
+        "a.content",
+        "a.image_url",
+        "a.status",
+        "a.is_premium",
+        "a.views",
+        "a.publish_date",
+        "u.name",
+        "c.name"
+      )
+      .then((rows) => {
+        // Chuyển đổi kết quả thành format phù hợp
+        return rows.map((row) => ({
+          article_id: row.article_id,
+          article_title: row.article_title,
+          article_abstract: row.article_abstract,
+          article_content: row.article_content,
+          article_image_url: row.article_image_url,
+          article_status: row.article_status,
+          article_is_premium: row.article_is_premium,
+          article_views: row.article_views,
+          article_publish_date: row.article_publish_date,
+          author_name: row.author_name,
+          category_name: row.category_name,
+          article_tags: row.article_tags ? row.article_tags.split(",") : [],
+        }));
+      });
+  },
+  async getArticlesByTag(tagName) {
+    if (tagName === "Premium") {
+      // Trường hợp đặc biệt: Lấy các bài viết Premium
+      return db("articles as a")
+        .innerJoin("users as u", "a.author", "u.id")
+        .innerJoin("categories as c", "a.category_id", "c.id")
+        .leftJoin("article_tags as at", "a.id", "at.article_id")
+        .leftJoin("tags as t", "at.tag_id", "t.id")
+        .select(
+          "a.id as article_id",
+          "a.title as article_title",
+          "a.abstract as article_abstract",
+          "a.content as article_content",
+          "a.image_url as article_image_url",
+          "a.status as article_status",
+          "a.is_premium as article_is_premium",
+          "a.views as article_views",
+          "a.publish_date as article_publish_date",
+          "u.name as author_name",
+          "c.name as category_name",
+          db.raw("GROUP_CONCAT(t.name) as article_tags")
+        )
+        .where("a.is_premium", true)
+        .groupBy(
+          "a.id",
+          "a.title",
+          "a.abstract",
+          "a.content",
+          "a.image_url",
+          "a.status",
+          "a.is_premium",
+          "a.views",
+          "a.publish_date",
+          "u.name",
+          "c.name"
+        )
+        .then((rows) => {
+          return rows.map((row) => ({
+            article_id: row.article_id,
+            article_title: row.article_title,
+            article_abstract: row.article_abstract,
+            article_content: row.article_content,
+            article_image_url: row.article_image_url,
+            article_status: row.article_status,
+            article_is_premium: row.article_is_premium,
+            article_views: row.article_views,
+            article_publish_date: row.article_publish_date,
+            author_name: row.author_name,
+            category_name: row.category_name,
+            article_tags: row.article_tags ? row.article_tags.split(",") : [],
+          }));
+        });
+    }
+
+    // Trường hợp bình thường: Lấy bài viết theo tag
+    const tag = await db("tags").where("name", tagName).first();
+
+    if (!tag) {
+      throw new Error("Tag không tồn tại");
+    }
+
+    return db("articles as a")
+      .innerJoin("article_tags as at", "a.id", "at.article_id")
+      .innerJoin("tags as t", "at.tag_id", "t.id")
+      .innerJoin("users as u", "a.author", "u.id")
+      .innerJoin("categories as c", "a.category_id", "c.id")
+      .select(
+        "a.id as article_id",
+        "a.title as article_title",
+        "a.abstract as article_abstract",
+        "a.content as article_content",
+        "a.image_url as article_image_url",
+        "a.status as article_status",
+        "a.is_premium as article_is_premium",
+        "a.views as article_views",
+        "a.publish_date as article_publish_date",
+        "u.name as author_name",
+        "c.name as category_name",
+        db.raw("GROUP_CONCAT(t.name) as article_tags")
+      )
+      .where("t.name", tagName) // Lọc bài viết theo tag name
+      .groupBy(
+        "a.id",
+        "a.title",
+        "a.abstract",
+        "a.content",
+        "a.image_url",
+        "a.status",
+        "a.is_premium",
+        "a.views",
+        "a.publish_date",
+        "u.name",
+        "c.name"
+      )
+      .then((rows) => {
+        return rows.map((row) => ({
+          article_id: row.article_id,
+          article_title: row.article_title,
+          article_abstract: row.article_abstract,
+          article_content: row.article_content,
+          article_image_url: row.article_image_url,
+          article_status: row.article_status,
+          article_is_premium: row.article_is_premium,
+          article_views: row.article_views,
+          article_publish_date: row.article_publish_date,
+          author_name: row.author_name,
+          category_name: row.category_name,
+          article_tags: row.article_tags ? row.article_tags.split(",") : [],
+        }));
+      });
+  },
 
   // get trending articles
   async getTopTrendingArticles() {
@@ -68,7 +252,7 @@ export default {
       .groupBy("a.id")
       .orderBy([
         { column: db.raw("COUNT(c.id)"), order: "desc" },
-        { column: "a.views", order: "desc" }
+        { column: "a.views", order: "desc" },
       ])
       .select(
         "a.id as article_id",
@@ -137,7 +321,8 @@ export default {
         "a.publish_date",
         "u.name",
         "c.name"
-      ).limit(10)
+      )
+      .limit(10)
       .then((rows) => {
         return rows.map((row) => ({
           article_id: row.article_id,
@@ -187,7 +372,8 @@ export default {
         "a.views",
         "a.publish_date",
         "c.name"
-    ).limit(10)
+      )
+      .limit(10)
       .then((rows) => {
         return rows.map((row) => ({
           article_id: row.article_id,
@@ -239,7 +425,8 @@ export default {
         "a.is_premium",
         "a.views",
         "a.publish_date"
-    ).limit(10)
+      )
+      .limit(10)
       .then((rows) => {
         return rows.map((row) => ({
           article_id: row.article_id,

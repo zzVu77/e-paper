@@ -1,21 +1,24 @@
-<div class="tw-font-extrabold tw-text-[40px] tw-ml-4 tw-mt-2">All posts</div>
-<div class="tw-grid tw-grid-cols-3 gap-3 tw-mt-5">
-  {{#each articles}}
-    {{>posts/post-card  }}     
-  {{/each}}
-
-</div>
+<div class="tw-font-extrabold tw-text-[40px] tw-ml-4 tw-mt-2">{{title}}</div>
+{{#if articles}}
+   <div class="tw-grid tw-grid-cols-3 gap-5 tw-mt-5 tw-mr-4">
+    {{#each articles}}
+      {{>posts/post-card  }}     
+    {{/each}}
+  </div>
 {{!-- pagination --}}
-<div class="tw-mb-[200px] tw-m-auto tw-flex tw-justify-center tw-items-center">
-  <div>
-<nav aria-label="Page navigation example">
-  <ul class="pagination">
-    <li class="page-item"><a class="page-link tw-text-[#53aa51] tw-font-extrabold tw-text-lg" href="#">Prev</a></li>
-    <li class="page-item"><a class="page-link tw-text-[#53aa51] tw-font-extrabold tw-text-lg" href="#">1</a></li>
-    <li class="page-item"><a class="page-link tw-text-[#53aa51] tw-font-extrabold tw-text-lg" href="#">2</a></li>
-    <li class="page-item"><a class="page-link tw-text-[#53aa51] tw-font-extrabold tw-text-lg" href="#">3</a></li>
-    <li class="page-item"><a class="page-link tw-text-[#53aa51] tw-font-extrabold tw-text-lg" href="#">Next</a></li>
-  </ul> 
-</nav>
- </div>
-</div>
+  <div class="tw-mb-[200px] tw-m-auto tw-flex tw-justify-center tw-items-center">
+    <div>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item"><a class="page-link tw-text-[#53aa51] tw-font-extrabold tw-text-lg" href="#">Prev</a></li>
+          <li class="page-item"><a class="page-link tw-text-[#53aa51] tw-font-extrabold tw-text-lg" href="#">1</a></li>
+          <li class="page-item"><a class="page-link tw-text-[#53aa51] tw-font-extrabold tw-text-lg" href="#">2</a></li>
+          <li class="page-item"><a class="page-link tw-text-[#53aa51] tw-font-extrabold tw-text-lg" href="#">3</a></li>
+          <li class="page-item"><a class="page-link tw-text-[#53aa51] tw-font-extrabold tw-text-lg" href="#">Next</a></li>
+        </ul> 
+      </nav>
+    </div>
+  </div>
+  {{else}}
+     <div class="tw-mt-auto tw-text-center tw-mb-10 tw-text-3xl tw-font-medium">No posts</div>
+{{/if}}

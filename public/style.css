@@ -126,6 +126,18 @@
   top: 0px !important;
 }
 
+.-tw-right-4 {
+  right: -1rem !important;
+}
+
+.-tw-top-2\.5 {
+  top: -0.625rem !important;
+}
+
+.-tw-top-2 {
+  top: -0.5rem !important;
+}
+
 .-tw-z-20 {
   z-index: -20 !important;
 }
@@ -136,6 +148,10 @@
 
 .tw-z-20 {
   z-index: 20 !important;
+}
+
+.-tw-z-10 {
+  z-index: -10 !important;
 }
 
 .tw-order-2 {
@@ -372,6 +388,10 @@
 
 .tw-mt-auto {
   margin-top: auto !important;
+}
+
+.tw-box-border {
+  box-sizing: border-box !important;
 }
 
 .tw-line-clamp-3 {
@@ -637,6 +657,12 @@
   cursor: pointer !important;
 }
 
+.tw-appearance-none {
+  -webkit-appearance: none !important;
+     -moz-appearance: none !important;
+          appearance: none !important;
+}
+
 .tw-grid-flow-row {
   grid-auto-flow: row !important;
 }
@@ -667,6 +693,10 @@
 
 .tw-flex-row {
   flex-direction: row !important;
+}
+
+.tw-flex-row-reverse {
+  flex-direction: row-reverse !important;
 }
 
 .tw-flex-col {
@@ -1597,6 +1627,11 @@
   --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
   --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color) !important;
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
+}
+
+.tw-outline-none {
+  outline: 2px solid transparent !important;
+  outline-offset: 2px !important;
 }
 
 .tw-backdrop-blur-sm {

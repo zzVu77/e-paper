@@ -3,7 +3,7 @@ const knex = knexObj({
   client: "mysql2",
   connection: {
     host: "localhost",
-    port: 3306,
+    port: 33061,
     user: "root",
     password: "root",
     database: "e_paper",

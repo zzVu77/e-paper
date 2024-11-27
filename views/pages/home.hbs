@@ -60,11 +60,11 @@
             <!-- Latest Posts -->
             <div class="tab-pane fade show active" id="latest-posts" role="tabpanel" aria-labelledby="latest-posts-tab">
                 <section class="mt-4">
-                    <div class="row">
+                    <div class="tw-grid tw-grid-cols-3 gap-5 tw-mt-5 tw-mr-4">
                         {{#each latestPosts}}
-                        <div class="col-md-6">
+                        
                             {{> posts/post-card}}
-                        </div>
+                       
                         {{/each}}
                     </div>
                 </section>
@@ -72,11 +72,11 @@
             <!-- Most Viewed Articles -->
             <div class="tab-pane fade" id="most-viewed" role="tabpanel" aria-labelledby="most-viewed-tab">
                 <section class="mt-4">
-                    <div class="row">
+                    <div class="tw-grid tw-grid-cols-3 gap-5 tw-mt-5 tw-mr-4">
                         {{#each mostViewed}}
-                        <div class="col-md-6">
+                        
                             {{> posts/post-card}}
-                        </div>
+                        
                         {{/each}}
                     </div>
                 </section>
@@ -84,11 +84,11 @@
             <!-- Most Popular Posts of the Past Week -->
             <div class="tab-pane fade" id="popular-posts" role="tabpanel" aria-labelledby="popular-posts-tab">
                 <section class="mt-4">
-                    <div class="row">
+                    <div class="tw-grid tw-grid-cols-3 gap-5 tw-mt-5 tw-mr-4">
                         {{#each popularPosts}}
-                        <div class="col-md-6">
+                        
                             {{> posts/post-card}}
-                        </div>
+                       
                         {{/each}}
                     </div>
                 </section>
@@ -96,12 +96,12 @@
             <!-- Top Categories with Newest Article -->
             <div class="tab-pane fade" id="top-categories" role="tabpanel" aria-labelledby="top-categories-tab">
                 <section class="mt-4">
-                    <div class="row">
+                    <div class="tw-grid tw-grid-cols-3 gap-5 tw-mt-5 tw-mr-4">
                         {{#each topCategories}}
-                        <div class="col-md-6 mb-4">
-                            <h3 class="fw-bold">{{this.category}}</h3>
+                       
+                            
                             {{> posts/post-card post=this.newestPost}}
-                        </div>
+                       
                         {{/each}}
                     </div>
                 </section>

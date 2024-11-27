@@ -59,7 +59,10 @@ app.get("/posts/byTag", async function (req, res) {
   console.log(name);
   const articles = await articleService.getArticlesByTag(name);
   console.log(articles);
-  res.render("posts", { articles: articles, title: name });
+  res.render("posts", {
+    articles: articles,
+    title: "#" + name,
+  });
 });
 
 app.get("/article", function (req, res) {
@@ -237,9 +240,9 @@ app.get("/editor", function (req, res) {
   res.render("editor", { layout: "admin", title: "Editor" });
 });
 
-app.get('/', async (req, res) => {
-  res.render('home', {
-    layout: 'home-layout',
+app.get("/", async (req, res) => {
+  res.render("home", {
+    layout: "home-layout",
     popularPosts: await articleService.getTopTrendingArticles(),
     mostViewed: await articleService.getMostViewedArticles(),
     latestPosts: await articleService.getLatestArticles(),

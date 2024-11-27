@@ -1,0 +1,112 @@
+{{!< layouts/home-layout }}
+
+<!-- Slideshow/Carousel -->
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+            aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+            aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+            aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="https://via.placeholder.com/800x400" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+            <img src="https://via.placeholder.com/800x400" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+            <img src="https://via.placeholder.com/800x400" class="d-block w-100" alt="...">
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+        data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+        data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<main class="container mt-5">
+    <!-- Tabs -->
+    <ul class="nav nav-tabs custom-tabbar" id="homeTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="latest-posts-tab" data-bs-toggle="tab"
+                data-bs-target="#latest-posts" type="button" role="tab" aria-controls="latest-posts"
+                aria-selected="true">Latest Posts</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="most-viewed-tab" data-bs-toggle="tab" data-bs-target="#most-viewed"
+                type="button" role="tab" aria-controls="most-viewed" aria-selected="false">Most Viewed
+                Articles</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="popular-posts-tab" data-bs-toggle="tab" data-bs-target="#popular-posts"
+                type="button" role="tab" aria-controls="popular-posts" aria-selected="false">Most Popular Posts of
+                the Past Week</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="top-categories-tab" data-bs-toggle="tab" data-bs-target="#top-categories"
+                type="button" role="tab" aria-controls="top-categories" aria-selected="false">Top 10 
+                Categories</button>
+        </li>
+    </ul>
+    <div class="tab-content" id="homeTabsContent">
+
+        <!-- Latest Posts -->
+        <div class="tab-pane fade show active" id="latest-posts" role="tabpanel" aria-labelledby="latest-posts-tab">
+            <section class="mt-4">
+                <div class="row">
+                    {{#each latestPosts}}
+                    <div class="col-md-6">
+                        {{> posts/post-card}}
+                    </div>
+                    {{/each}}
+                </div>
+            </section>
+        </div>
+        <!-- Most Viewed Articles -->
+        <div class="tab-pane fade" id="most-viewed" role="tabpanel" aria-labelledby="most-viewed-tab">
+            <section class="mt-4">
+                <div class="row">
+                    {{#each mostViewed}}
+                    <div class="col-md-6">
+                        {{> posts/post-card}}
+                    </div>
+                    {{/each}}
+                </div>
+            </section>
+        </div>
+        <!-- Most Popular Posts of the Past Week -->
+        <div class="tab-pane fade" id="popular-posts" role="tabpanel" aria-labelledby="popular-posts-tab">
+            <section class="mt-4">
+                <div class="row">
+                    {{#each popularPosts}}
+                    <div class="col-md-6">
+                        {{> posts/post-card}}
+                    </div>
+                    {{/each}}
+                </div>
+            </section>
+        </div>
+        <!-- Top Categories with Newest Article -->
+        <div class="tab-pane fade" id="top-categories" role="tabpanel" aria-labelledby="top-categories-tab">
+            <section class="mt-4">
+                <div class="row">
+                    {{#each topCategories}}
+                    <div class="col-md-6 mb-4">
+                        <h3 class="fw-bold">{{this.category}}</h3>
+                        {{> posts/post-card post=this.newestPost}}
+                    </div>
+                    {{/each}}
+                </div>
+            </section>
+        </div>
+    </div>
+</main>

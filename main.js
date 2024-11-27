@@ -39,15 +39,20 @@ app.use(express.static("public"));
 app.use(async function (req, res, next) {
   const categories = await categoryService.getCategoryName();
   res.locals.categories = categories;
+  console.log(categories);
   next();
 });
 
 app.get("/posts", async function (req, res) {
-  // const list = await categoryService.getCategoryName();
-  // console.log(list);
   const articles = await articleService.getAllArticles();
+  res.render("posts", { articles: articles, title: "All posts" });
+});
+
+app.get("/posts/byCat", async function (req, res) {
+  const name = req.query.name || "";
+  const articles = await articleService.getArticlesByCategory(name);
   console.log(articles);
-  res.render("posts", { articles: articles });
+  res.render("posts", { articles: articles, title: name });
 });
 
 app.get("/article", function (req, res) {

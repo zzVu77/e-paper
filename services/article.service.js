@@ -84,7 +84,23 @@ export default {
         "cat.name as category_name",
         db.raw("GROUP_CONCAT(t.name) as article_tags")
       )
-      .limit(10);
+      .limit(10)
+      .then((rows) => {
+        return rows.map((row) => ({
+          article_id: row.article_id,
+          article_title: row.article_title,
+          article_abstract: row.article_abstract,
+          article_content: row.article_content,
+          article_image_url: row.article_image_url,
+          article_status: row.article_status,
+          article_is_premium: row.article_is_premium,
+          article_views: row.article_views,
+          article_publish_date: row.article_publish_date,
+          author_name: row.author_name,
+          category_name: row.category_name,
+          article_tags: row.article_tags ? row.article_tags.split(",") : [],
+        }));
+      });
   },
 
   // get most viewed articles
@@ -93,6 +109,7 @@ export default {
       .leftJoin("article_tags as at", "a.id", "at.article_id")
       .leftJoin("tags as t", "at.tag_id", "t.id")
       .innerJoin("categories as c", "a.category_id", "c.id")
+      .innerJoin("users as u", "a.author", "u.id")
       .orderBy("a.views", "desc")
       .select(
         "a.id as article_id",
@@ -104,6 +121,7 @@ export default {
         "a.is_premium as article_is_premium",
         "a.views as article_views",
         "a.publish_date as article_publish_date",
+        "u.name as author_name",
         "c.name as category_name",
         db.raw("GROUP_CONCAT(t.name) as article_tags")
       )
@@ -117,9 +135,25 @@ export default {
         "a.is_premium",
         "a.views",
         "a.publish_date",
+        "u.name",
         "c.name"
-      )
-      .limit(10);
+      ).limit(10)
+      .then((rows) => {
+        return rows.map((row) => ({
+          article_id: row.article_id,
+          article_title: row.article_title,
+          article_abstract: row.article_abstract,
+          article_content: row.article_content,
+          article_image_url: row.article_image_url,
+          article_status: row.article_status,
+          article_is_premium: row.article_is_premium,
+          article_views: row.article_views,
+          article_publish_date: row.article_publish_date,
+          author_name: row.author_name,
+          category_name: row.category_name,
+          article_tags: row.article_tags ? row.article_tags.split(",") : [],
+        }));
+      });
   },
 
   // get latest articles
@@ -153,8 +187,23 @@ export default {
         "a.views",
         "a.publish_date",
         "c.name"
-      )
-      .limit(10);
+    ).limit(10)
+      .then((rows) => {
+        return rows.map((row) => ({
+          article_id: row.article_id,
+          article_title: row.article_title,
+          article_abstract: row.article_abstract,
+          article_content: row.article_content,
+          article_image_url: row.article_image_url,
+          article_status: row.article_status,
+          article_is_premium: row.article_is_premium,
+          article_views: row.article_views,
+          article_publish_date: row.article_publish_date,
+          author_name: row.author_name,
+          category_name: row.category_name,
+          article_tags: row.article_tags ? row.article_tags.split(",") : [],
+        }));
+      });
   },
 
   // get latest articles of top categories
@@ -190,7 +239,22 @@ export default {
         "a.is_premium",
         "a.views",
         "a.publish_date"
-      )
-      .limit(10);
+    ).limit(10)
+      .then((rows) => {
+        return rows.map((row) => ({
+          article_id: row.article_id,
+          article_title: row.article_title,
+          article_abstract: row.article_abstract,
+          article_content: row.article_content,
+          article_image_url: row.article_image_url,
+          article_status: row.article_status,
+          article_is_premium: row.article_is_premium,
+          article_views: row.article_views,
+          article_publish_date: row.article_publish_date,
+          author_name: row.author_name,
+          category_name: row.category_name,
+          article_tags: row.article_tags ? row.article_tags.split(",") : [],
+        }));
+      });
   },
 };

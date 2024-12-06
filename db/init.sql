@@ -83,6 +83,9 @@ CREATE TABLE editor_assignments (
     FOREIGN KEY (editor_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
 );
+-- Full text search
+ALTER TABLE articles 
+ADD FULLTEXT(title, abstract, content);
 -- Dummy data for users
 INSERT INTO users (id, name, pen_name, email, password, birthdate, role, subscription_expiry)
 VALUES

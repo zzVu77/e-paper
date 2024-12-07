@@ -7,6 +7,7 @@ import  categoriesmanagementRouter from './routes/admin/categories.route.js';
 import  tagsmanagementRouter from './routes/admin/tags.route.js';
 import  personsmanagementRouter from './routes/admin/persons.route.js';
 import  articlesmanagementRouter from './routes/admin/articles.route.js';
+import  editormanagementRouter from './routes/editor.route.js';
 
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -55,11 +56,7 @@ app.use('/admin/categories', categoriesmanagementRouter);
 app.use('/admin/tags', tagsmanagementRouter);
 app.use('/admin/persons', personsmanagementRouter);
 app.use('/admin/articles', articlesmanagementRouter);
-
-
-app.get('/editor', function (req, res) {
-  res.render('editor', { layout: 'admin', title: 'Editor' });
-});
+app.use('/editor', editormanagementRouter);
 
 app.listen(3000, function () {
   console.log('ecApp is running at http://localhost:3000');

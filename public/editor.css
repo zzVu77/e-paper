@@ -1,0 +1,21 @@
+#editor-content{
+    display :flex;
+    gap: 20px;
+    height: 100vh;
+}
+#editor-container{
+    height: 100vh;
+}
+#editor-header{
+    background: linear-gradient(to bottom, white, #F0F8FF);
+}
+#editor-sidebar{
+    background: linear-gradient(to bottom, #F0F8FF, #BDF3FF);
+}
+#editor-footer
+{
+    background: linear-gradient(to bottom,  #BDF3FF, #87CEEB);  
+}
+#editor-sidebar {
+    width: auto;
+}

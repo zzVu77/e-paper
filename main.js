@@ -9,6 +9,19 @@ import categoriesmanagementRouter from "./routes/admin/categories.route.js";
 import tagsmanagementRouter from "./routes/admin/tags.route.js";
 import personsmanagementRouter from "./routes/admin/persons.route.js";
 import articlesmanagementRouter from "./routes/admin/articles.route.js";
+import editormanagementRouter from "./routes/editor.route.js";
+
+// import express from 'express';
+// import { engine } from 'express-handlebars';
+// import { dirname, join } from 'path';
+// import { fileURLToPath } from 'url';
+
+// import  categoriesmanagementRouter from './routes/admin/categories.route.js';
+// import  tagsmanagementRouter from './routes/admin/tags.route.js';
+// import  personsmanagementRouter from './routes/admin/persons.route.js';
+// import  articlesmanagementRouter from './routes/admin/articles.route.js';
+
+// >>>>>>> feat/admin
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -245,9 +258,9 @@ app.use("/admin/tags", tagsmanagementRouter);
 app.use("/admin/persons", personsmanagementRouter);
 app.use("/admin/articles", articlesmanagementRouter);
 
-app.get("/editor", function (req, res) {
-  res.render("editor", { layout: "admin", title: "Editor" });
-});
+// app.get("/editor", function (req, res) {
+//   res.render("editor", { layout: "admin", title: "Editor" });
+// });
 
 app.get("/", async (req, res) => {
   res.render("home", {
@@ -257,6 +270,12 @@ app.get("/", async (req, res) => {
     topCategories: await articleService.getLatestArticleOfTopCategories(),
   });
 });
+
+app.use("/admin/categories", categoriesmanagementRouter);
+app.use("/admin/tags", tagsmanagementRouter);
+app.use("/admin/persons", personsmanagementRouter);
+app.use("/admin/articles", articlesmanagementRouter);
+app.use("/editor", editormanagementRouter);
 
 app.listen(3000, function () {
   console.log("ecApp is running at http://localhost:3000");

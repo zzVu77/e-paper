@@ -1,6 +1,6 @@
 <div>
 
-<div class="tw-p-4  tw-relative tw-overflow-x-auto tw-shadow-md sm:tw-rounded-lg tw-w-[80rem]">
+<div class="tw-p-4  tw-relative tw-overflow-x-auto tw-shadow-md sm:tw-rounded-lg tw-w-auto">
     <div class="tw-mt-4 tw-ml-4 tw-flex tw-items-center tw-justify-between tw-flex-column tw-flex-wrap md:tw-flex-row tw-space-y-4 md:tw-space-y-0 tw-pb-4 tw-bg-white dark:tw-bg-white">
         {{!-- Tilte body--}}
 
@@ -91,7 +91,11 @@
                         </div>
                         <div class="tw-col-span-2">
                             <label for="reason" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Lí do</label>
-                            <input type="text" name="reason" id="reason-{{this.id}}" class="tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 tw-text-sm tw-rounded-lg focus:tw-ring-primary-600 focus:tw-border-primary-600 tw-block tw-w-full tw-p-2.5 dark:tw-bg-white dark:tw-border-cyan-100 dark:tw-placeholder-gray-300 dark:tw-text-gray-700 dark:focus:tw-ring-primary-500 dark:focus:tw-border-primary-500" placeholder="Lí do từ chối" value="{{this.ten}}" required="">
+                            <textarea 
+                                name="reason" 
+                                id="reason-{{this.id}}" 
+                                class="tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 tw-text-sm tw-rounded-lg focus:tw-ring-primary-600 focus:tw-border-primary-600 tw-block tw-w-full tw-p-2.5 dark:tw-bg-white dark:tw-border-cyan-100 dark:tw-placeholder-gray-300 dark:tw-text-gray-700 dark:focus:tw-ring-primary-500 dark:focus:tw-border-primary-500" required>{{this.ten}}
+                            </textarea>
                         </div>
                         <div class="tw-col-span-2 tw-sm:col-span-1">
                             <label for="decision" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Quyết định</label>

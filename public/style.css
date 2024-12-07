@@ -315,6 +315,10 @@
   width: 100% !important;
 }
 
+.tw-w-auto {
+  width: auto !important;
+}
+
 .tw-max-w-md {
   max-width: 28rem !important;
 }

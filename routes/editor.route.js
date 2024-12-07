@@ -46,7 +46,7 @@ const data = [
 const router = express.Router();
 
 router.get('/', function (req, res) {
-    res.render('editor', { layout: 'admin', title: 'Editor' ,data: data });
+    res.render('editor', { layout: 'editor', title: 'Editor' ,data: data });
 });
 
 export default router;

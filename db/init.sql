@@ -2,20 +2,23 @@ CREATE DATABASE IF NOT EXISTS e_paper;
 USE e_paper;
 -- Table: users
 CREATE TABLE users (
-    id CHAR(36) NOT NULL PRIMARY KEY,
+    id CHAR(36) NOT NULL PRIMARY KEY DEFAULT (UUID()),
     name VARCHAR(255) NOT NULL,
     pen_name VARCHAR(255),
     email VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    birthdate DATE NOT NULL,
-    role ENUM('guest', 'subscriber', 'writer', 'editor', 'admin') NOT NULL,
+    provider ENUM('local', 'google', 'github') NOT NULL,
+    password VARCHAR(255),
+    oauth_id VARCHAR(255),
+    oauth_token VARCHAR(255),
+    birthdate DATE,
+    role ENUM('subscriber', 'writer', 'editor', 'admin') NOT NULL,
     subscription_expiry DATETIME,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 -- Table: categories
 CREATE TABLE categories (
-    id CHAR(36) NOT NULL PRIMARY KEY,
+    id CHAR(36) NOT NULL PRIMARY KEY DEFAULT (UUID()),
     name VARCHAR(255) NOT NULL,
     parent_id CHAR(36),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -24,14 +27,14 @@ CREATE TABLE categories (
 );
 -- Table: tags
 CREATE TABLE tags (
-    id CHAR(36) NOT NULL PRIMARY KEY,
+    id CHAR(36) NOT NULL PRIMARY KEY DEFAULT (UUID()),
     name VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 -- Table: articles
 CREATE TABLE articles (
-    id CHAR(36) NOT NULL PRIMARY KEY,
+    id CHAR(36) NOT NULL PRIMARY KEY DEFAULT (UUID()),
     title VARCHAR(255) NOT NULL,
     abstract TEXT,
     content TEXT NOT NULL,
@@ -49,7 +52,7 @@ CREATE TABLE articles (
 );
 -- Table: article_tags
 CREATE TABLE article_tags (
-    article_id CHAR(36) NOT NULL,
+    article_id CHAR(36) NOT NULL DEFAULT (UUID()),
     tag_id CHAR(36) NOT NULL,
     UNIQUE (article_id, tag_id),
     FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE,
@@ -57,7 +60,7 @@ CREATE TABLE article_tags (
 );
 -- Table: comments
 CREATE TABLE comments (
-    id CHAR(36) NOT NULL PRIMARY KEY,
+    id CHAR(36) NOT NULL PRIMARY KEY DEFAULT (UUID()),
     article_id CHAR(36) NOT NULL,
     user_id CHAR(36) NOT NULL,
     content TEXT NOT NULL,
@@ -67,7 +70,7 @@ CREATE TABLE comments (
 );
 -- Table: rejection_notes
 CREATE TABLE rejection_notes (
-    id CHAR(36) NOT NULL PRIMARY KEY,
+    id CHAR(36) NOT NULL PRIMARY KEY DEFAULT (UUID()),
     article_id CHAR(36) NOT NULL,
     editor_id CHAR(36) NOT NULL,
     note TEXT NOT NULL,
@@ -77,7 +80,7 @@ CREATE TABLE rejection_notes (
 );
 -- Table: editor_assignments
 CREATE TABLE editor_assignments (
-    id CHAR(36) NOT NULL PRIMARY KEY,
+    id CHAR(36) NOT NULL PRIMARY KEY DEFAULT (UUID()),
     editor_id CHAR(36) NOT NULL,
     category_id CHAR(36) NOT NULL,
     FOREIGN KEY (editor_id) REFERENCES users(id) ON DELETE CASCADE,

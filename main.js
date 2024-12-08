@@ -221,14 +221,14 @@ app.use("/posts", postsRouter);
 //   res.render("editor", { layout: "admin", title: "Editor" });
 // });
 
-// app.get("/", async (req, res) => {
-//   res.render("home", {
-//     popularPosts: await articleService.getTopTrendingArticles(),
-//     mostViewed: await articleService.getMostViewedArticles(),
-//     latestPosts: await articleService.getLatestArticles(),
-//     topCategories: await articleService.getLatestArticleOfTopCategories(),
-//   });
-// });
+app.get("/", async (req, res) => {
+  res.render("home", {
+    popularPosts: await articleService.getTopTrendingArticles(),
+    mostViewed: await articleService.getMostViewedArticles(),
+    latestPosts: await articleService.getLatestArticles(),
+    topCategories: await articleService.getLatestArticleOfTopCategories(),
+  });
+});
 
 app.use("/admin/categories", categoriesmanagementRouter);
 app.use("/admin/tags", tagsmanagementRouter);

@@ -11,6 +11,13 @@ import personsmanagementRouter from "./routes/admin/persons.route.js";
 import articlesmanagementRouter from "./routes/admin/articles.route.js";
 import editormanagementRouter from "./routes/editor.route.js";
 import postsRouter from "./routes/posts.route.js";
+import session from "express-session";
+import passport from "./auth/config/passportConfig.js";
+import cors from "cors";
+import authRoutes from "./routes/auth.js";
+import { ensureAuthenticated } from "./auth/middlewares/authMiddleware.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -44,6 +51,22 @@ app.use(async function (req, res, next) {
   // console.log(categories);
   next();
 });
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Routes
+app.use("/auth", authRoutes);
 
 // app.get("/posts/detail", function (req, res) {
 //   const content = `<h1
@@ -151,7 +174,7 @@ app.use(async function (req, res, next) {
 //   res.render("article-detail", { title: "", content: content });
 // });
 
-app.get("/features", function (req, res) {
+app.get("/features", ensureAuthenticated, function (req, res) {
   res.render("features");
 });
 
@@ -159,7 +182,7 @@ app.get("/about", function (req, res) {
   res.render("about");
 });
 
-app.get("/admin", function (req, res) {
+app.get("/admin", ensureAuthenticated, function (req, res) {
   res.render("admin/dashboard", { layout: "admin", title: "Admin Dashboard" });
 });
 
@@ -171,13 +194,13 @@ app.get("/signup", function (req, res) {
   res.render("signup", { layout: "default" });
 });
 
-app.get("/account-setting-myprofile", function (req, res) {
+app.get("/account-setting-myprofile", ensureAuthenticated, function (req, res) {
   res.render("account-setting-myprofile");
 });
-app.get("/account-setting-security", function (req, res) {
+app.get("/account-setting-security", ensureAuthenticated, function (req, res) {
   res.render("account-setting-security");
 });
-app.get("/account-setting-upgrade", function (req, res) {
+app.get("/account-setting-upgrade", ensureAuthenticated, function (req, res) {
   res.render("account-setting-upgrade");
 });
 
@@ -187,34 +210,34 @@ app.get("/forgot-password", function (req, res) {
 app.get("/verify-otp", function (req, res) {
   res.render("verify-otp", { layout: "default" });
 });
-app.get("/article-writer-textEditor", function (req, res) {
+app.get("/article-writer-textEditor", ensureAuthenticated, function (req, res) {
   res.render("article-writer-textEditor");
 });
-app.get("/article-writer-editTextEditor", function (req, res) {
+app.get("/article-writer-editTextEditor", ensureAuthenticated, function (req, res) {
   res.render("article-writer-editTextEditor");
 });
-app.get("/article-manage-approved", function (req, res) {
+app.get("/article-manage-approved", ensureAuthenticated, function (req, res) {
   res.render("article-manage-approved");
 });
-app.get("/article-manage-pending", function (req, res) {
+app.get("/article-manage-pending", ensureAuthenticated, function (req, res) {
   res.render("article-manage-pending");
 });
-app.get("/article-manage-published", function (req, res) {
+app.get("/article-manage-published", ensureAuthenticated, function (req, res) {
   res.render("article-manage-published");
 });
-app.get("/article-manage-rejected", function (req, res) {
+app.get("/article-manage-rejected", ensureAuthenticated, function (req, res) {
   res.render("article-manage-rejected");
 });
-app.get("/article-manage-all", function (req, res) {
+app.get("/article-manage-all", ensureAuthenticated, function (req, res) {
   res.render("article-manage-all");
 });
 // app.get('/admin/tags', function (req, res) {
 //   res.render('admin/tags', { layout: 'admin', title: 'Tags' });
 // });
-app.use("/admin/categories", categoriesmanagementRouter);
-app.use("/admin/tags", tagsmanagementRouter);
-app.use("/admin/persons", personsmanagementRouter);
-app.use("/admin/articles", articlesmanagementRouter);
+app.use("/admin/categories", ensureAuthenticated, categoriesmanagementRouter);
+app.use("/admin/tags", ensureAuthenticated, tagsmanagementRouter);
+app.use("/admin/persons", ensureAuthenticated, personsmanagementRouter);
+app.use("/admin/articles", ensureAuthenticated, articlesmanagementRouter);
 app.use("/posts", postsRouter);
 
 // app.get("/editor", function (req, res) {
@@ -227,14 +250,15 @@ app.get("/", async (req, res) => {
     mostViewed: await articleService.getMostViewedArticles(),
     latestPosts: await articleService.getLatestArticles(),
     topCategories: await articleService.getLatestArticleOfTopCategories(),
+    isAuthenticated: req.isAuthenticated(),
   });
 });
 
-app.use("/admin/categories", categoriesmanagementRouter);
-app.use("/admin/tags", tagsmanagementRouter);
-app.use("/admin/persons", personsmanagementRouter);
-app.use("/admin/articles", articlesmanagementRouter);
-app.use("/editor", editormanagementRouter);
+// app.use("/admin/categories", categoriesmanagementRouter);
+// app.use("/admin/tags", tagsmanagementRouter);
+// app.use("/admin/persons", personsmanagementRouter);
+// app.use("/admin/articles", articlesmanagementRouter);
+app.use("/editor", ensureAuthenticated, editormanagementRouter);
 
 app.listen(3000, function () {
   console.log("ecApp is running at http://localhost:3000");

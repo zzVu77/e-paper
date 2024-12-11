@@ -742,6 +742,10 @@
   justify-items: center !important;
 }
 
+.tw-justify-items-stretch {
+  justify-items: stretch !important;
+}
+
 .tw-gap-1 {
   gap: 0.25rem !important;
 }

@@ -1,75 +1,94 @@
 import express from  'express'
-// import productService from '../services/categories.service.js';
+import categoryAdminService from '../../services/category-admin.service.js';
 
-const jsonData = {
-    "data": [
-      {
-        "id": 1,
-        "ten": "John Doe",
-        "thuoc": "Quản lý sản phẩm",
-        "ngay_tao": "2023-10-01",
-        "ngay_chinh_sua": "2023-11-01"
-      },
-      {
-        "id": 2,
-        "ten": "Jane Smith",
-        "thuoc": "Quản lý nhân sự",
-        "ngay_tao": "2023-09-20",
-        "ngay_chinh_sua": "2023-10-20"
-      },
-      {
-        "id": 3,
-        "ten": "Michael Johnson",
-        "thuoc": "Quản lý tài chính",
-        "ngay_tao": "2023-07-15",
-        "ngay_chinh_sua": "2023-08-10"
-      },
-      {
-        "id": 4,
-        "ten": "Sarah Lee",
-        "thuoc": "Quản lý marketing",
-        "ngay_tao": "2023-05-12",
-        "ngay_chinh_sua": "2023-06-15"
-      },
-      {
-        "id": 5,
-        "ten": "David Brown",
-        "thuoc": "Quản lý kho",
-        "ngay_tao": "2023-04-05",
-        "ngay_chinh_sua": "2023-05-22"
-      }
-    ]
-  };
 
 const router = express.Router();
 
 
-router.get('/', function (req, res) {
-  res.render('admin/categories', { layout: 'admin', title: 'Chuyên mục' ,data: jsonData.data});
+router.get('/', async function (req, res) {
+  const currentPage = parseInt(req.query.page) || 1; 
+  const itemsPerPage = 5; 
+  const offset = (currentPage - 1) * itemsPerPage; 
+
+  try {
+    let data = await categoryAdminService.getPageCategories(itemsPerPage, offset);
+
+    const totalCategories = await categoryAdminService.getTotalCategories();
+    const totalItems = totalCategories.count;
+    const totalPages = Math.ceil(totalItems / itemsPerPage); 
+
+    const maxVisiblePages = 5; 
+    const pageNumbers = []; 
+
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+    if (endPage - startPage < maxVisiblePages - 1) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push({ value: i, active: i === currentPage });
+    }
+    
+    for (const category of data) {
+      if (category.parent_id){
+        const parentName = await categoryAdminService.getCategoryNameByParentId(category.parent_id);
+        category.parent_name = parentName;
+      }
+    };
+    const categories = await categoryAdminService.getAllCategories();
+    data = data.map(category => ({
+      ...category,
+      categories: categories, 
+    }));
+    console.log(data);
+    res.render('admin/categories', {
+      layout: 'admin',
+      title: 'Chuyên mục', 
+      data: data,
+      pageNumbers: pageNumbers, 
+      hasNextPage: currentPage < totalPages, 
+      hasPrevPage: currentPage > 1, 
+      nextPage: currentPage + 1, 
+      prevPage: currentPage - 1, 
+    });
+  } catch (error) {
+    console.error('Error rendering categories:', error);
+    res.status(500).json({ message: 'An error occurred while fetching categories.' });
+  }
 });
 
-router.get('/del', (req, res) => {
-  const { id } = req.query;
+router.post('/update',async (req,res) => {
+  const { id, name_category, parent_category } = req.body;
+
+  try {
+    const result = await categoryAdminService.updateCategory(id, name_category, parent_category);
+    res.redirect('/admin/categories');
+  } catch (error) {
+    console.error('Error updating category:', error);
+    res.status(500).json({ message: 'An error occurred while updating the category' });
+  }
+});
+
+router.post('/add', async (req, res) => {
+  const { name, category } = req.body; 
+  try {
+      await categoryAdminService.addCategory(name, category);
+      res.redirect('/admin/categories');
+  } catch (error) {
+      console.error('Error adding category:', error);
+      res.status(500).json({ message: 'An error occurred while adding the category' });
+  }
+});
+
+router.post('/del', async (req, res) => {
+  const { id } = req.body;
   if (!id) {
     return res.status(400).send('Missing id parameter');
   }
-  // delete 
-  const categoryIndex = jsonData.data.findIndex(category => category.id === parseInt(id));
-  
-  if (categoryIndex === -1) {
-    return res.status(404).send('Category not found');
-  }
+  const result = await categoryAdminService.deleteCategory(id);
 
-  jsonData.data.splice(categoryIndex, 1);
-  // 
-
-  res.redirect('/admin/categories');
-});
-
-router.get('/add', (req,res) => {
-  res.redirect('/admin/categories');
-});
-router.get('/update', (req,res) => {
   res.redirect('/admin/categories');
 });
 

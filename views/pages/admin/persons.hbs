@@ -46,13 +46,22 @@
                         {{#if this.isSubscriber}}
                         <!-- Subscriber Fields -->
                         <td class="tw-px-6 tw-py-4">{{this.email}}</td>
-                        <td class="tw-px-6 tw-py-4">{{this.birthdate}}</td>
-                        <td class="tw-px-6 tw-py-4">{{this.subscription_expiry}}</td>
+                        <td class="tw-px-6 tw-py-4">{{format_datetime this.birthdate}}</td>
+                        <td class="tw-px-6 tw-py-4">{{format_datetime this.subscription_expiry}}</td>
                         <td class="tw-px-6 tw-py-4">{{this.role}}</td>
                         <td class="tw-px-6 tw-py-4 ">
-                            <a href="#" class="tw-text-red-400 ">
-                                Hết Hạn
-                            </a>
+                            {{#if this.isExpired}}
+                            <form action="/admin/persons/extend" method="post">
+                                <input type="hidden" name="id" value="{{this.id}}">
+                                <button type="submit" class="tw-border-none tw-bg-none tw-text-red-400 ">
+                                    Gia Hạn
+                                </button>
+                            </form>
+                            {{else}}
+                            <button  class="tw-border-none tw-bg-none tw-text-cyan-400 ">
+                                Còn Hạn
+                            </button>
+                            {{/if}}
                         </td>
                         {{/if}}
                         {{#if this.isWriter}}
@@ -67,7 +76,7 @@
                         <!-- Editor Fields -->
                         <td class="tw-px-6 tw-py-4">{{this.email}}</td>
                         <td class="tw-px-6 tw-py-4">{{this.birthdate}}</td>
-                        <td class="tw-px-6 tw-py-4">{{this.category}} </td>
+                        <td class="tw-px-6 tw-py-4">{{#each this.category}}   {{this.category_name}}  {{/each}}</td>
                         <td class="tw-px-6 tw-py-4">{{this.role}}</td>
                         <td class="tw-px-6 tw-py-4 ">
                         <button  class="popup-trigger  tw-border-none tw-bg-transparent" data-id="{{this.id}}">
@@ -84,7 +93,27 @@
                 </tbody>
             </table>
         </div>
-        
+        <div class="tw-relative tw-grid tw-justify-items-stretch tw-mt-4"> 
+            <ul class="pagination tw-justify-self-end">
+                <li class="page-item {{#unless hasPrevPage}}disabled{{/unless}}">
+                    <a class="page-link" href="?id={{catId}}&page={{prevPage}}">Previous</a>
+                </li>
+                {{#each pageNumbers}}
+                    {{#if isEllipsis}}
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    {{else}}
+                        <li class="page-item {{#if active}}active{{/if}}">
+                            <a class="page-link" href="?id={{../catId}}&page={{value}}">{{value}}</a>
+                        </li>
+                    {{/if}}
+                {{/each}}
+                <li class="page-item {{#unless hasNextPage}}disabled{{/unless}}">
+                    <a class="page-link" href="?id={{catId}}&page={{nextPage}}">Next</a>
+                </li>
+            </ul>
+        </div>
     </div>
     {{!-- Popup update--}}
     {{#each this.data}}
@@ -95,23 +124,24 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
                     </svg>
                 </button>
-                <form class="tw-p-4 tw-md:p-5">
+                <form action="/admin/persons/assignment" method="post" class="tw-p-4 tw-md:p-5">
+                    <input type="hidden" name="id" value="{{this.id}}">
                     <div class="tw-grid tw-gap-4 tw-mb-4 tw-grid-cols-2">
                         
                         <div class="tw-col-span-2 tw-sm:col-span-1">
-                            <label for="category" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Thuộc thể loại</label>
-                            <select id="category-{{this.id}}" class="tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 tw-text-sm tw-rounded-lg focus:tw-ring-primary-500 focus:tw-border-primary-500 tw-block tw-w-full tw-p-2.5 dark:tw-bg-white dark:tw-border-cyan-200 dark:tw-placeholder-gray-300 dark:tw-text-gray-700 dark:focus:tw-ring-primary-500 dark:focus:tw-border-primary-500">
-                                <option selected>{{this.name}}</option>
+                            <label for="categoryID" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Thuộc thể loại</label>
+                            <select name="categoryID" id="categoryID-{{this.id}}" class="tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 tw-text-sm tw-rounded-lg focus:tw-ring-primary-500 focus:tw-border-primary-500 tw-block tw-w-full tw-p-2.5 dark:tw-bg-white dark:tw-border-cyan-200 dark:tw-placeholder-gray-300 dark:tw-text-gray-700 dark:focus:tw-ring-primary-500 dark:focus:tw-border-primary-500">
+                                <option selected>{{#each this.category}} {{category_name}} {{/each}}</option>
                                 {{!-- Update later --}}
-                                {{#each data}}
+                                {{#each categories}}
                                     <option value="{{this.id}}">{{this.name}}</option>
                                 {{/each}}
                             </select>
                         </div>
                     </div>
-                    <a href="/admin/persons/update" class="tw-text-white tw-inline-flex tw-items-center tw-bg-blue-700 tw-hover:bg-blue-800 tw-focus:ring-4 tw-focus:outline-none tw-focus:ring-blue-300 tw-font-medium tw-rounded-lg tw-text-sm tw-px-5 tw-py-2.5 tw-text-center tw-dark:bg-blue-600 tw-dark:hover:bg-blue-700 tw-dark:focus:ring-blue-800">
+                    <button type="submit" class="tw-text-white tw-inline-flex tw-items-center tw-bg-blue-700 tw-hover:bg-blue-800 tw-focus:ring-4 tw-focus:outline-none tw-focus:ring-blue-300 tw-font-medium tw-rounded-lg tw-text-sm tw-px-5 tw-py-2.5 tw-text-center tw-dark:bg-blue-600 tw-dark:hover:bg-blue-700 tw-dark:focus:ring-blue-800">
                         Sửa {{title}}
-                    </a>
+                    </button>
                 </form>
             </div>
         </div>

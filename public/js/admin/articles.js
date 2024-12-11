@@ -1,12 +1,15 @@
-function toggleStatus(button) {
-    // Kiểm tra trạng thái hiện tại của button
-    if (button.textContent === "Đã duyệt") {
-        button.textContent = "Nháp"; 
-        button.classList.remove("tw-bg-amber-400"); 
-        button.classList.add("tw-bg-gray-400"); 
-    } else {
-        button.textContent = "Đã duyệt"; 
-        button.classList.remove("tw-bg-gray-400"); 
-        button.classList.add("tw-bg-amber-400"); 
-    }
-}
+document.querySelectorAll('.popup-trigger').forEach(button => {
+    button.addEventListener('click', function () {
+        const id = this.getAttribute('data-id');
+        const popup = document.getElementById('admin-popup-' + id);
+        popup.classList.remove('tw-invisible'); // Show the popup
+    });
+    });
+    
+    document.querySelectorAll('.close-popup').forEach(button => {
+        button.addEventListener('click', function () {
+            const id = this.getAttribute('data-id');
+            const popup = document.getElementById('admin-popup-' + id);
+            popup.classList.add('tw-invisible'); // Hide the popup
+        });
+    });

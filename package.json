@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node main.js",
-    "build:css": "npx tailwindcss -i ./public/global.css -o ./public/style.css --watch"
+    "build:css": "npx tailwindcss -i ./public/global.css -o ./public/style.css --watch",
+    "dev": "nodemon --inspect main.js"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
+    "nodemon": "^3.1.7",
     "postcss": "^8.4.48",
     "tailwindcss": "^3.4.14"
   }

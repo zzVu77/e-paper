@@ -1,0 +1,30 @@
+.custom-tabbar {
+    background:  no-repeat center center;
+    background-size: cover;
+    border: none;
+    padding: 20px 0;
+}
+
+.custom-tabbar .nav-item {
+    margin-bottom: -1px;
+}
+
+.custom-tabbar .nav-link {
+    color: #7E7F81;
+    font-weight: bold;
+    background-color: transparent;
+    border: none;
+    margin-right: 20px;
+    transition: color 0.3s, background-color 0.3s;
+}
+
+.custom-tabbar .nav-link.active {
+    color: #53AA51;
+    background-color: transparent;
+    border-bottom: 3px solid #53AA51;
+}
+
+.custom-tabbar .nav-link:hover {
+    color: #53AA51;
+    background-color: transparent;
+}

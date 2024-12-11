@@ -23,7 +23,7 @@
 
 ## If your Database Management Software ( like DBeaver or Workbench ) support to use URL, so here is the URL :
 
-`mysql://root:root@localhost:3306/e_paper`
+`mysql://root:root@localhost:33061/e_paper`
 
 ## If you use DBeaver and use the URL above, you need to set the password: root for "root" username and In the 'Driver Properties' tab, set "allowPublicKeyRetrieval" into TRUE and "useSSL" into FALSE
 
@@ -36,7 +36,7 @@
 3. Enter the connection details:
    - Connection Name: `EPaperLocalDB`
    - Hostname: `localhost`
-   - Port: `3306`
+   - Port: `33061`
    - Username: `root`
    - Password: `root`
    - Default_schema: e_paper

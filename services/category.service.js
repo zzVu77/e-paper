@@ -45,5 +45,15 @@ export default {
   getAll() {
     return db("categories")
       .select("name")
-  }
+  },
+  //get top 10 categories have the most articles:
+  async getTopCategories() {
+    return db("categories as c")
+      .leftJoin("articles as a", "c.id", "a.category_id")
+      .groupBy("c.id")
+      .orderBy("article_count", "desc")
+      .select("c.id as category_id", "c.name as category_name")
+      .count("a.id as article_count")
+      .limit(10);
+  },
 };

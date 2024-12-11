@@ -8,301 +8,69 @@
   href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
 />
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
-<div class="article-manage-display">
-  <div class="article-manage-title">
-    <span>Bài viết đã xuất bản</span>
-    <hr />
-  </div>
-  <div class="article-manage-search">
-    <div class="article-manage-filter">
-      <div class="article-manage-filterDate">
-        <i class="bi bi-calendar"></i>
-        <input type="text" id="startDatePicker" placeholder="Ngày bắt đầu" />
-        <span>-</span>
-        <input type="text" id="endDatePicker" placeholder="Ngày kết thúc" />
-      </div>
-      <div class="article-manage-filterTag">
-        <input type="text" placeholder="Thẻ" />
-      </div>
+<form>
+  <div class="article-manage-display">
+    <div class="article-manage-title">
+      <span>Bài viết đã xuất bản</span>
+      <hr />
     </div>
-    <div class="article-manage-searchBar">
-      <input type="text" placeholder="Tìm kiếm" />
-      <div class="article-manage-searchBar-icon"><i
-          class="bi bi-search"
-        ></i></div>
-    </div>
-  </div>
-  <div class="article-manage-posts">
-    <div class="article-manage-post">
-      <div class="article-manage-postHeader">
-        <i class="bi bi-file-earmark-check" style="color:green"></i>
-        <span class="article-manage-postTitle">Giá xăng về sát 20.500 đồng một
-          lít</span>
-        <ul>
-          <li><span>Kinh Tế</span></li>
-          <li><span>Tài chính</span></li>
-          <li><span>Y tế </span></li>
-          <li><span>Giáo dục</span></li>
-        </ul>
-      </div>
-      <div class="article-manage-postEdit">
-        <span>Sửa lần cuối: 20/11/2024</span>
-        <div class="article-manage-postEdit-dropdown">
-          <i
-            class="bi bi-three-dots dropdown-toggle"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          ></i>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/article-writer-editTextEditor">Sửa</a></li>
-            <li><a
-                class="dropdown-item"
-                href="#"
-                data-bs-toggle="modal"
-                data-bs-target="#deleteModal"
-              >Xóa</a></li>
-          </ul>
+    <div class="article-manage-search">
+      <div class="article-manage-filter">
+        <div class="article-manage-filterDate">
+          <i class="bi bi-calendar"></i>
+          <input type="text" id="startDatePicker" placeholder="Ngày bắt đầu" />
+          <span>-</span>
+          <input type="text" id="endDatePicker" placeholder="Ngày kết thúc" />
+        </div>
+        <div class="article-manage-filterTag">
+          <input type="text" placeholder="Thẻ" />
         </div>
       </div>
-      <!-- Modal xác nhận xóa -->
-      <div
-        class="modal fade"
-        id="deleteModal"
-        tabindex="-1"
-        aria-labelledby="deleteModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-dialog-centered">
-          <!-- Thêm class modal-dialog-centered để căn giữa modal -->
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa</h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              Bạn có chắc chắn muốn xóa bài viết này không?
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >Hủy</button>
-              <button type="button" class="btn btn-danger">Xóa</button>
+      <div class="article-manage-searchBar">
+        <input type="text" placeholder="Tìm kiếm" />
+        <div class="article-manage-searchBar-icon"><i
+            class="bi bi-search"
+          ></i></div>
+      </div>
+    </div>
+    <div class="article-manage-posts">
+      {{#each this.list}}
+        <div class="article-manage-post">
+          <div class="article-manage-postHeader">
+          <i class="bi bi-clock-history" style="color:orange"></i>
+            <span class="article-manage-postTitle">{{title}}</span>
+            <ul>
+              {{#each tags}}
+                <li><span>{{this}}</span></li>
+              {{/each}}
+            </ul>
+          </div>
+          <div class="article-manage-postEdit">
+            <span>Sửa lần cuối: {{updated_at}}</span>
+            <div class="article-manage-postEdit-dropdown">
+              <i
+                class="bi bi-three-dots dropdown-toggle"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              ></i>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/article-writer-editTextEditor?id={{id}}">Sửa</a></li>
+                <li><a
+                    id ="article-writer-manage-delete"
+                    class="dropdown-item"
+                    href="#"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteModal"
+                  >Xóa</a></li>
+              </ul>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="article-manage-post">
-      <div class="article-manage-postHeader">
-        <i class="bi bi-clock-history" style="color:orange"></i>
-        <span class="article-manage-postTitle">Giá xăng về sát 20.500 đồng một
-          lít</span>
-        <ul>
-          <li><span>Kinh Tế</span></li>
-          <li><span>Tài chính</span></li>
-          <li><span>Y tế </span></li>
-          <li><span>Giáo dục</span></li>
-        </ul>
-      </div>
-      <div class="article-manage-postEdit">
-        <span>Sửa lần cuối: 20/11/2024</span>
-        <div class="article-manage-postEdit-dropdown">
-          <i
-            class="bi bi-three-dots dropdown-toggle"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          ></i>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/article-writer-editTextEditor">Sửa</a></li>
-            <li><a
-                class="dropdown-item"
-                href="#"
-                data-bs-toggle="modal"
-                data-bs-target="#deleteModal"
-              >Xóa</a></li>
-          </ul>
-        </div>
-      </div>
-      <!-- Modal xác nhận xóa -->
-      <div
-        class="modal fade"
-        id="deleteModal"
-        tabindex="-1"
-        aria-labelledby="deleteModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-dialog-centered">
-          <!-- Thêm class modal-dialog-centered để căn giữa modal -->
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa</h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              Bạn có chắc chắn muốn xóa bài viết này không?
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >Hủy</button>
-              <button type="button" class="btn btn-danger">Xóa</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="article-manage-post">
-      <div class="article-manage-postHeader">
-        <i class="bi bi-hourglass-split" style="color:rgb(128, 128, 79)"></i>
-        <span class="article-manage-postTitle">Giá xăng về sát 20.500 đồng một
-          lít</span>
-        <ul>
-          <li><span>Kinh Tế</span></li>
-          <li><span>Tài chính</span></li>
-          <li><span>Y tế </span></li>
-          <li><span>Giáo dục</span></li>
-        </ul>
-      </div>
-      <div class="article-manage-postEdit">
-        <span>Sửa lần cuối: 20/11/2024</span>
-        <div class="article-manage-postEdit-dropdown">
-          <i
-            class="bi bi-three-dots dropdown-toggle"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          ></i>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/article-writer-editTextEditor">Sửa</a></li>
-            <li><a
-                class="dropdown-item"
-                href="#"
-                data-bs-toggle="modal"
-                data-bs-target="#deleteModal"
-              >Xóa</a></li>
-          </ul>
-        </div>
-      </div>
-      <!-- Modal xác nhận xóa -->
-      <div
-        class="modal fade"
-        id="deleteModal"
-        tabindex="-1"
-        aria-labelledby="deleteModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-dialog-centered">
-          <!-- Thêm class modal-dialog-centered để căn giữa modal -->
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa</h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              Bạn có chắc chắn muốn xóa bài viết này không?
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >Hủy</button>
-              <button type="button" class="btn btn-danger">Xóa</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="article-manage-post">
-      <div class="article-manage-postHeader">
-        <i class="bi bi-x-circle" style="color:red"></i>
-        <span class="article-manage-postTitle">Giá xăng về sát 20.500 đồng một
-          lít</span>
-        <ul>
-          <li><span>Kinh Tế</span></li>
-          <li><span>Tài chính</span></li>
-          <li><span>Y tế </span></li>
-          <li><span>Giáo dục</span></li>
-        </ul>
-      </div>
-      <div class="article-manage-postEdit">
-        <span>Sửa lần cuối: 20/11/2024</span>
-        <div class="article-manage-postEdit-dropdown">
-          <i
-            class="bi bi-three-dots dropdown-toggle"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          ></i>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/article-writer-editTextEditor">Sửa</a></li>
-            <li><a
-                class="dropdown-item"
-                href="#"
-                data-bs-toggle="modal"
-                data-bs-target="#deleteModal"
-              >Xóa</a></li>
-          </ul>
-        </div>
-      </div>
-      <!-- Modal xác nhận xóa -->
-      <div
-        class="modal fade"
-        id="deleteModal"
-        tabindex="-1"
-        aria-labelledby="deleteModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-dialog-centered">
-          <!-- Thêm class modal-dialog-centered để căn giữa modal -->
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa</h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              Bạn có chắc chắn muốn xóa bài viết này không?
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >Hủy</button>
-              <button type="button" class="btn btn-danger">Xóa</button>
-            </div>
-          </div>
-        </div>
-      </div>
+      {{/each}}
     </div>
   </div>
-</div>
+</form>
+
 <script>
   // Khởi tạo Flatpickr cho các input ngày
   flatpickr("#startDatePicker", { dateFormat: "Y-m-d" });

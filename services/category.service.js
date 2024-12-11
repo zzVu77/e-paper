@@ -30,4 +30,20 @@ export default {
         return result;
       });
   },
+  getCategoryIdByName(categoryName) {
+    return db("categories")
+      .select("id")
+      .where("name", categoryName)
+      .first(); // Lấy 1 kết quả đầu tiên
+  },
+  getCategoryNameById(id){
+    return db("categories")
+    .select("name")
+    .where("id", id)
+    .first(); // Lấy 1 kết quả đầu tiên
+  },
+  getAll() {
+    return db("categories")
+      .select("name")
+  }
 };

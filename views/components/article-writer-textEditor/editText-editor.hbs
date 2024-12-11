@@ -30,16 +30,9 @@
 
 <div id="summernote"></div>
 <script>
-  var HTMLstring = ` <div style="background-color: #f0f8ff; padding: 20px;
-  border: 1px solid #ccc;"> <h2 style="text-align: center; color:
-  #2c3e50;">Welcome to Summernote</h2> <p> This is a <strong>rich text
-  editor</strong> where you can add formatted text, <a
-  href="https://summernote.org" target="_blank">links</a>, and images like the
-  one below. </p> <img src="https://via.placeholder.com/300x150" alt="Sample
-  Image" style="display: block; margin: 10px auto; border-radius: 10px;" /> <p
-  style="text-align: center; font-size: 14px;"> <em>Placeholder image for
-  demonstration.</em> </p> <ul> <li>Feature 1: Supports images</li> <li>Feature
-  2: Easy customization</li> </ul> </div> `;
-  $('#summernote').summernote('pasteHTML', HTMLstring);
-
+  // Đảm bảo rằng content là chuỗi HTML không bị escape
+  var content = '{{{content}}}';  // Dùng 3 dấu ngoặc nhọn để truyền HTML nguyên vẹn vào JavaScript
+  content = content.trim();  // Loại bỏ khoảng trắng đầu và cuối chuỗi
+  console.log(content);
+  $('#summernote').summernote('code', content); // Chèn nội dung vào Summernote
 </script>

@@ -53,3 +53,15 @@
 .article-writer-textEditor-tagsDetail button:hover{
     background: #2c52ed;
 }
+.article-writer-textEditor-tagsDetail{
+  margin-bottom: 50px;
+  width: 100%;
+  display: flex; 
+  justify-content: space-between; 
+  /* align-items: center; */
+}
+.article-writer-textEditor-tagsDetail label {
+  font-weight: bold;
+  color: green;
+  font-size: 20px;
+}

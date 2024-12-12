@@ -1,4 +1,7 @@
-<div class="tw-p-4  tw-relative tw-overflow-x-auto tw-shadow-md sm:tw-rounded-lg tw-w-[80rem]">
+
+<link rel="stylesheet" href="/css/article-admin-table.css" />
+
+<div class="tw-p-4  tw-relative tw-overflow-x-auto tw-shadow-md sm:tw-rounded-lg tw-w-auto">
     <div class="tw-mt-4 tw-ml-4 tw-flex tw-items-center tw-justify-between tw-flex-column tw-flex-wrap md:tw-flex-row tw-space-y-4 md:tw-space-y-0 tw-pb-4 tw-bg-white dark:tw-bg-white">
         <div class="tw-ml-4">
             <div class="tw-font-semibold tw-text-lg">{{title}}</div>
@@ -33,12 +36,14 @@
                     <div class="tw-flex tw-items-center">{{this.author_name}}</div>
                 </td>
                 <td class="tw-px-6 tw-py-4">
-                    <div>
-                        <div class="tw-text-base">{{this.article_title}}</div>
-                    </div>  
+                        <div class="title-card-content tw-text-base">{{this.article_title}}</div>
                 </td>
                 <td class="tw-px-6 tw-py-4">{{this.category_name}}</td>
-                <td class="tw-px-6 tw-py-4">{{this.article_tags}}</td>
+                <td class="tw-px-6 tw-py-4">
+                    <div class=" tag-card-content">
+                    {{this.article_tags}}
+                    </div>
+                </td>
                 <td class="tw-px-6 tw-py-4">
                     {{this.article_status}}
                 </td>
@@ -58,30 +63,30 @@
             {{/each}}
         </tbody>
     </table>
+
+    </div>
+    
     <div class="tw-relative tw-grid tw-justify-items-stretch tw-mt-4"> 
-        <ul class="pagination tw-justify-self-end">
-            <li class="page-item {{#unless hasPrevPage}}disabled{{/unless}}">
-                <a class="page-link" href="?id={{catId}}&page={{prevPage}}">Previous</a>
-            </li>
-            {{#each pageNumbers}}
-                {{#if isEllipsis}}
-                    <li class="page-item disabled">
-                        <span class="page-link">...</span>
-                    </li>
-                {{else}}
-                    <li class="page-item {{#if active}}active{{/if}}">
-                        <a class="page-link" href="?id={{../catId}}&page={{value}}">{{value}}</a>
-                    </li>
-                {{/if}}
-            {{/each}}
-            <li class="page-item {{#unless hasNextPage}}disabled{{/unless}}">
-                <a class="page-link" href="?id={{catId}}&page={{nextPage}}">Next</a>
-            </li>
-        </ul>
+            <ul class="pagination tw-justify-self-end">
+                <li class="page-item {{#unless hasPrevPage}}disabled{{/unless}}">
+                    <a class="page-link" href="?id={{catId}}&page={{prevPage}}">Previous</a>
+                </li>
+                {{#each pageNumbers}}
+                    {{#if isEllipsis}}
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    {{else}}
+                        <li class="page-item {{#if active}}active{{/if}}">
+                            <a class="page-link" href="?id={{../catId}}&page={{value}}">{{value}}</a>
+                        </li>
+                    {{/if}}
+                {{/each}}
+                <li class="page-item {{#unless hasNextPage}}disabled{{/unless}}">
+                    <a class="page-link" href="?id={{catId}}&page={{nextPage}}">Next</a>
+                </li>
+            </ul>
     </div>
-
-    </div>
-
     {{!-- Popup update--}}
     {{#each this.data}}
         <div id="admin-popup-{{this.article_id}}" class="tw-invisible tw-backdrop-blur-sm tw-absolute tw-top-0 tw-left-0 tw-h-screen tw-w-full tw-flex tw-items-center tw-justify-center">

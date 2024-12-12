@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/", async function (req, res) {
   const currentPage = parseInt(req.query.page) || 1; 
-  const itemsPerPage = 5; 
+  const itemsPerPage = 4; 
   const offset = (currentPage - 1) * itemsPerPage; 
 
   let data = await adminService.getPageArticles(itemsPerPage, offset); 

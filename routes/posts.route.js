@@ -3,34 +3,145 @@ import articleService from "../services/article.service.js";
 const router = express.Router();
 
 router.get("/", async function (req, res) {
-  const articles = await articleService.getAllArticles(1, 10);
+  const articles = await articleService.getAllArticles();
   res.render("posts", { articles: articles, title: "All posts" });
 });
 
 router.get("/byCat", async function (req, res) {
   const name = req.query.name || "";
-  const articles = await articleService.getArticlesByCategory(name);
-  // console.log(articles);
-  res.render("posts", { articles: articles, title: name });
+  const current_page = req.query.page || 1;
+  const limit = 6;
+  const offSet = (+current_page - 1) * limit;
+  const total = await articleService.countArticlesByCategory(name);
+  const totalPages = Math.ceil(total / limit);
+  const pageNumber = [];
+  const maxVisiblePage = 5;
+  const calculatePossibleStartPage = Math.max(
+    0,
+    current_page - Math.floor(maxVisiblePage - 2)
+  );
+  const startPage =
+    calculatePossibleStartPage < maxVisiblePage
+      ? calculatePossibleStartPage
+      : calculatePossibleStartPage -
+        (calculatePossibleStartPage - maxVisiblePage);
+  const endPage = Math.min(totalPages, startPage + maxVisiblePage);
+  console.log(endPage);
+  for (let i = startPage; i < endPage; i++) {
+    pageNumber.push({
+      value: i + 1,
+      catName: name,
+      active: i + 1 === parseInt(current_page),
+    });
+  }
+  const articles = await articleService.getArticlesByCategory(
+    name,
+    limit,
+    offSet
+  );
+  console.log(name);
+  res.render("posts", {
+    hasPagination: totalPages > 1,
+    articles: articles,
+    title: name,
+    catName: name,
+    pageNumber: pageNumber,
+    totalPages: totalPages,
+    hasNextPage: current_page < totalPages,
+    hasPreviousPage: current_page > 1,
+    nextPage: parseInt(current_page) + 1,
+    previousPage: parseInt(current_page) - 1,
+    isByCategory: true,
+  });
 });
 
 router.get("/byTag", async function (req, res) {
   const name = req.query.name || "";
-  console.log(name);
-  const articles = await articleService.getArticlesByTag(name);
-  console.log(articles);
+  const current_page = req.query.page || 1;
+  const limit = 6;
+  const offSet = (+current_page - 1) * limit;
+  const total = await articleService.countArticlesByTagName(name);
+  const totalPages = Math.ceil(total / limit);
+  const pageNumber = [];
+  const maxVisiblePage = 5;
+  const calculatePossibleStartPage = Math.max(
+    0,
+    current_page - Math.floor(maxVisiblePage - 2)
+  );
+  const startPage =
+    calculatePossibleStartPage < maxVisiblePage
+      ? calculatePossibleStartPage
+      : calculatePossibleStartPage -
+        (calculatePossibleStartPage - maxVisiblePage);
+  const endPage = Math.min(totalPages, startPage + maxVisiblePage);
+  for (let i = startPage; i < endPage; i++) {
+    pageNumber.push({
+      value: i + 1,
+      tagName: name,
+      active: i + 1 === parseInt(current_page),
+    });
+  }
+  const articles = await articleService.getArticlesByTag(name, limit, offSet);
   res.render("posts", {
     articles: articles,
+    tagName: name,
     title: "#" + name,
+    hasPagination: totalPages > 1,
+    articles: articles,
+    pageNumber: pageNumber,
+    totalPages: totalPages,
+    hasNextPage: current_page < totalPages,
+    hasPreviousPage: current_page > 1,
+    nextPage: parseInt(current_page) + 1,
+    previousPage: parseInt(current_page) - 1,
+    isByTagName: true,
   });
 });
+
 router.get("/search", async function (req, res) {
   const keyword = req.query.keyword || "";
-  console.log(keyword);
-  const articles = await articleService.searchArticlesByKeyword(keyword);
-  console.log(articles);
+  const current_page = req.query.page || 1;
+  const limit = 6;
+  const offSet = (+current_page - 1) * limit;
+  const total = await articleService.countArticlesByKeyword(keyword);
+  const totalPages = Math.ceil(total / limit);
+  const pageNumber = [];
+  const maxVisiblePage = 5;
+  const calculatePossibleStartPage = Math.max(
+    0,
+    current_page - Math.floor(maxVisiblePage - 2)
+  );
+  const startPage =
+    Math.max(0, current_page - Math.floor(maxVisiblePage - 2)) < maxVisiblePage
+      ? calculatePossibleStartPage
+      : calculatePossibleStartPage +
+        (calculatePossibleStartPage - maxVisiblePage);
+  const endPage = Math.min(totalPages, startPage + maxVisiblePage);
+  for (let i = startPage; i < endPage; i++) {
+    pageNumber.push({
+      value: i + 1,
+      keyword: keyword,
+      active: i + 1 === parseInt(current_page),
+    });
+  }
+  const articles = await articleService.searchArticlesByKeyword(
+    keyword,
+    limit,
+    offSet
+  );
   res.render("posts", {
     articles: articles,
+    keyword: keyword,
+    title: "#" + keyword,
+    hasPagination: totalPages > 1,
+    articles: articles,
+    pageNumber: pageNumber,
+    totalPages: totalPages,
+    hasNextPage: current_page < totalPages,
+    hasPreviousPage: current_page > 1,
+    nextPage: parseInt(current_page) + 1,
+    previousPage: parseInt(current_page) - 1,
+    isByKeyword: true,
   });
 });
 

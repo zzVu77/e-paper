@@ -53,7 +53,7 @@ export default {
         }));
       });
   },
-  async getArticlesByCategory(categoryName) {
+  async getArticlesByCategory(categoryName, limit, offset) {
     // Lấy thông tin category từ tên
     const category = await db("categories").where("name", categoryName).first();
 
@@ -108,6 +108,8 @@ export default {
         "u.name",
         "c.name"
       )
+      .limit(limit) // Giới hạn số lượng bài viết trả về
+      .offset(offset) // Bắt đầu từ vị trí offset
       .then((rows) => {
         // Chuyển đổi kết quả thành format phù hợp
         return rows.map((row) => ({
@@ -126,7 +128,36 @@ export default {
         }));
       });
   },
-  async getArticlesByTag(tagName) {
+  async countArticlesByCategory(categoryName) {
+    // Lấy thông tin category từ tên
+    const category = await db("categories").where("name", categoryName).first();
+
+    if (!category) {
+      throw new Error("Category không tồn tại");
+    }
+
+    let categoryIds = [];
+    if (category.parent_id === null) {
+      // Nếu là parent, lấy tất cả các category con và chính nó
+      const childCategories = await db("categories")
+        .where("parent_id", category.id)
+        .select("id");
+      categoryIds = [category.id, ...childCategories.map((cat) => cat.id)];
+    } else {
+      // Nếu là child, chỉ lấy chính nó
+      categoryIds = [category.id];
+    }
+
+    // Đếm số lượng bài viết thuộc các category ID
+    const count = await db("articles")
+      .whereIn("category_id", categoryIds) // Lọc theo các category ID
+      .count("id as count") // Đếm số lượng bài viết
+      .first();
+
+    return count ? count.count : 0; // Trả về số lượng bài viết
+  },
+
+  async getArticlesByTag(tagName, limit, offset) {
     if (tagName === "Premium") {
       // Trường hợp đặc biệt: Lấy các bài viết Premium
       return db("articles as a")
@@ -162,6 +193,8 @@ export default {
           "u.name",
           "c.name"
         )
+        .limit(limit) // Giới hạn số lượng bài viết trả về
+        .offset(offset) // Bắt đầu từ vị trí offset
         .then((rows) => {
           return rows.map((row) => ({
             article_id: row.article_id,
@@ -237,7 +270,37 @@ export default {
         }));
       });
   },
+  async countArticlesByTagName(tagName) {
+    try {
+      let result;
 
+      if (tagName.toLowerCase() === "premium") {
+        // Trường hợp đặc biệt: đếm số lượng bài viết có article_is_premium = true
+        result = await db("articles")
+          .where("is_premium", true)
+          .count("* as total")
+          .first();
+      } else {
+        // Lấy thông tin tag từ tên
+        const tag = await db("tags").where("name", tagName).first();
+
+        if (!tag) {
+          throw new Error("Tag không tồn tại");
+        }
+
+        // Đếm số lượng bài viết có tag_id khớp với tag.id
+        result = await db("article_tags")
+          .where("tag_id", tag.id)
+          .count("* as total")
+          .first();
+      }
+
+      return result.total;
+    } catch (error) {
+      console.error("Error counting articles by tag name:", error);
+      throw error;
+    }
+  },
   // get trending articles
   async getTopTrendingArticles() {
     const today = new Date();
@@ -445,7 +508,7 @@ export default {
       });
   },
   // search article by word
-  async searchArticlesByKeyword(keyword) {
+  async searchArticlesByKeyword(keyword, limit, offset) {
     if (!keyword || keyword.trim() === "") {
       throw new Error("Từ khóa tìm kiếm không được để trống");
     }
@@ -486,6 +549,9 @@ export default {
         "u.name",
         "c.name"
       )
+      .limit(limit) // Giới hạn số lượng bài viết trả về
+      .offset(offset) // Bắt đầu từ vị trí offset
+
       .then((rows) => {
         return rows.map((row) => ({
           article_id: row.article_id,
@@ -502,5 +568,26 @@ export default {
           article_tags: row.article_tags ? row.article_tags.split(",") : [],
         }));
       });
+  },
+  async countArticlesByKeyword(keyword) {
+    try {
+      if (!keyword || keyword.trim() === "") {
+        throw new Error("Từ khóa tìm kiếm không được để trống");
+      }
+
+      // Đếm số lượng bài viết sử dụng Full-Text Search
+      const result = await db("articles")
+        .whereRaw(
+          "MATCH(title, abstract, content) AGAINST(? IN NATURAL LANGUAGE MODE)",
+          [keyword]
+        )
+        .count("* as total")
+        .first();
+
+      return result.total;
+    } catch (error) {
+      console.error("Error counting articles by keyword:", error);
+      throw error;
+    }
   },
 };

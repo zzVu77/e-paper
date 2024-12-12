@@ -16,10 +16,15 @@ router.get("/byCat", async function (req, res) {
   const totalPages = Math.ceil(total / limit);
   const pageNumber = [];
   const maxVisiblePage = 5;
-  const startPage = Math.max(
+  const calculatePossibleStartPage = Math.max(
     0,
-    current_page - (Math.floor(maxVisiblePage / 2) - 1)
+    current_page - Math.floor(maxVisiblePage - 2)
   );
+  const startPage =
+    calculatePossibleStartPage < maxVisiblePage
+      ? calculatePossibleStartPage
+      : calculatePossibleStartPage -
+        (calculatePossibleStartPage - maxVisiblePage);
   const endPage = Math.min(totalPages, startPage + maxVisiblePage);
   console.log(endPage);
   for (let i = startPage; i < endPage; i++) {
@@ -59,10 +64,15 @@ router.get("/byTag", async function (req, res) {
   const totalPages = Math.ceil(total / limit);
   const pageNumber = [];
   const maxVisiblePage = 5;
-  const startPage = Math.max(
+  const calculatePossibleStartPage = Math.max(
     0,
-    current_page - Math.floor(maxVisiblePage / 2) - 1
+    current_page - Math.floor(maxVisiblePage - 2)
   );
+  const startPage =
+    calculatePossibleStartPage < maxVisiblePage
+      ? calculatePossibleStartPage
+      : calculatePossibleStartPage -
+        (calculatePossibleStartPage - maxVisiblePage);
   const endPage = Math.min(totalPages, startPage + maxVisiblePage);
   for (let i = startPage; i < endPage; i++) {
     pageNumber.push({
@@ -97,10 +107,15 @@ router.get("/search", async function (req, res) {
   const totalPages = Math.ceil(total / limit);
   const pageNumber = [];
   const maxVisiblePage = 5;
-  const startPage = Math.max(
+  const calculatePossibleStartPage = Math.max(
     0,
-    current_page - Math.floor(maxVisiblePage / 2) - 1
+    current_page - Math.floor(maxVisiblePage - 2)
   );
+  const startPage =
+    Math.max(0, current_page - Math.floor(maxVisiblePage - 2)) < maxVisiblePage
+      ? calculatePossibleStartPage
+      : calculatePossibleStartPage +
+        (calculatePossibleStartPage - maxVisiblePage);
   const endPage = Math.min(totalPages, startPage + maxVisiblePage);
   for (let i = startPage; i < endPage; i++) {
     pageNumber.push({

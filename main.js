@@ -15,7 +15,6 @@ import postsRouter from "./routes/posts.route.js";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 // const path = require("path");
-
 app.use(
   express.urlencoded({
     extended: true,

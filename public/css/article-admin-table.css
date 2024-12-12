@@ -1,0 +1,19 @@
+.title-card-content {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3; /* Giới hạn số dòng */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.5; /* Điều chỉnh chiều cao dòng */
+    max-height: calc(1.5em * 3); /* Giới hạn chiều cao */
+  }
+.tag-card-content {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1; /* Giới hạn số dòng */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.5; /* Điều chỉnh chiều cao dòng */
+    max-height: calc(1.5em * 3); /* Giới hạn chiều cao */
+}
+  

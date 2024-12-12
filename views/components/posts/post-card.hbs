@@ -61,7 +61,7 @@
   >
     {{#if article_is_premium}}
       <a
-        href="/posts/byTag?name=Premium"
+        href="/posts/byTag?name=Premium&page=1"
         class="tw-no-underline tw-text-black tw-mr-3"
       >
         <div
@@ -96,7 +96,7 @@
     {{/if}}
     {{#each article_tags}}
       <a
-        href="/posts/byTag?name={{this}}"
+        href="/posts/byTag?name={{this}}&page=1"
         class="tw-no-underline tw-text-black tw-mr-3 tw-max-w-[120px] tw-w-full"
       >
         <div

@@ -26,7 +26,7 @@ router.get("/byCat", async function (req, res) {
       : calculatePossibleStartPage -
         (calculatePossibleStartPage - maxVisiblePage);
   const endPage = Math.min(totalPages, startPage + maxVisiblePage);
-  console.log(endPage);
+  // console.log(endPage);
   for (let i = startPage; i < endPage; i++) {
     pageNumber.push({
       value: i + 1,
@@ -39,7 +39,7 @@ router.get("/byCat", async function (req, res) {
     limit,
     offSet
   );
-  console.log(name);
+  // console.log(name);
   res.render("posts", {
     hasPagination: totalPages > 1,
     articles: articles,

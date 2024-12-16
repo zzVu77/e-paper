@@ -29,6 +29,9 @@ app.engine(
     partialsDir: join(__dirname, "/views/components/"),
     helpers: {
       format_datetime: formatDateTime,
+      compareStrings(str1, str2) {
+        return str1 === str2; // Trả về true nếu hai chuỗi bằng nhau, ngược lại trả về false
+      },
     },
   })
 );
@@ -38,9 +41,26 @@ app.set("views", "./views/pages");
 app.use(express.static("public"));
 // setup local data for navigation
 app.use(async function (req, res, next) {
+  const currentCategory = req.query.name || "";
+  console.log("Current Category: ", currentCategory);
   const categories = await categoryService.getCategoryName();
-  res.locals.categories = categories;
-  // console.log(categories);
+  const listCategory = [];
+  const parentCat = currentCategory
+    ? await categoryService.getParentCategory(currentCategory)
+    : "";
+  console.log("parent", parentCat);
+  for (let index = 0; index < categories.length; index++) {
+    listCategory.push({
+      currentCategory: currentCategory,
+      parent_name: categories[index].parent_name,
+      child_categories: categories[index].child_categories,
+      parent_cat_active:
+        parentCat === categories[index].parent_name ||
+        currentCategory === categories[index].parent_name,
+    });
+  }
+  console.log(listCategory);
+  res.locals.categories = listCategory;
   next();
 });
 

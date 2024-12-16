@@ -31,6 +31,35 @@ export default {
       });
   },
 
+  async getParentCategory(categoryName) {
+    try {
+      // Lấy thông tin category từ tên
+      const category = await db("categories")
+        .where("name", categoryName)
+        .first();
+
+      if (!category) {
+        throw new Error("Category không tồn tại");
+      }
+
+      // Kiểm tra nếu category có parent_id
+      if (category.parent_id) {
+        // Lấy thông tin category parent
+        const parentCategory = await db("categories")
+          .where("id", category.parent_id)
+          .first();
+
+        return parentCategory ? parentCategory.name : null;
+      } else {
+        // Nếu không có parent_id, trả về null
+        return null;
+      }
+    } catch (error) {
+      console.error("Error getting parent category:", error);
+      throw error;
+    }
+  },
+
   //get top 10 categories have the most articles:
   async getTopCategories() {
     return db("categories as c")

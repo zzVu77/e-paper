@@ -2,7 +2,10 @@
 
 <div class="post-card tw-ml-3 tw-w-[400x] tw-h-[620px] tw-pb-16">
   {{! Image }}
-  <a href="/posts/detail" class="tw-no-underline tw-text-black">
+  <a
+    href="/posts/detail?id={{article_id}}"
+    class="tw-no-underline tw-text-black"
+  >
 
     {{#if article_image_url}}
       <div class="post-card-img">
@@ -50,7 +53,7 @@
   >
     {{! Category }}
     <div
-      class="tw-ml-2 tw-mt-3 tw-text-lg tw-font-semibold tw-text-gray-400 tw-border-b-[1.5px] tw-border-dashed tw-pb-2 tw-border-gray-400 tw-mb-5"
+      class="tw-ml-2 tw-mt-3 tw-text-lg tw-font-semibold tw-text-gray-400 tw-pb-2 tw-border-gray-400 tw-mb-5"
     >
       {{category_name}}
     </div>
@@ -65,7 +68,7 @@
         class="tw-no-underline tw-text-black tw-mr-3"
       >
         <div
-          class="tw-bg-gray-200 tw-mr-3 tw-cursor-pointer tw-max-w-[120px] tw-w-full tw-h-[30px] tw-border-red-600 tw-rounded-[50px] tw-text-center tw-inline-flex tw-items-center tw-justify-center tw-text-[#54A651] tw-text-xs tw-font-medium"
+          class="tw-bg-gray-200 tw-mr-3 tw-cursor-pointer tw-max-w-[120px] tw-w-full tw-h-[30px] tw-border-red-600 tw-rounded-[50px] tw-text-center tw-inline-flex tw-items-center tw-justify-center tw-text-[#54A651] tw-text-xs tw-font-medium tw-px-1"
         >
           <div class="tw-mr-1">
             <svg
@@ -100,7 +103,7 @@
         class="tw-no-underline tw-text-black tw-mr-3 tw-max-w-[120px] tw-w-full"
       >
         <div
-          class="tw-bg-gray-200 tw-mr-3 tw-cursor-pointer tw-max-w-[120px] tw-w-full tw-h-[30px] tw-border-red-600 tw-rounded-[50px] tw-text-center tw-inline-flex tw-items-center tw-justify-center tw-text-gray-600 tw-text-xs tw-font-medium"
+          class="tw-bg-gray-200 tw-mr-3 tw-cursor-pointer tw-max-w-[120px] tw-w-full tw-h-[30px] tw-border-red-600 tw-rounded-[50px] tw-text-center tw-inline-flex tw-items-center tw-justify-center tw-text-gray-600 tw-text-xs tw-font-medium tw-px-1"
         >
           {{this}}
         </div>

@@ -181,6 +181,84 @@ export default {
         }));
       });
   },
+
+  async getRelatedArticleByCategory(categoryName, articleId, limit) {
+    // Lấy thông tin category từ tên
+    const category = await db("categories").where("name", categoryName).first();
+
+    if (!category) {
+      throw new Error("Category không tồn tại");
+    }
+
+    let categoryIds = [];
+    if (category.parent_id === null) {
+      // Nếu là parent, lấy tất cả các category con và chính nó
+      const childCategories = await db("categories")
+        .where("parent_id", category.id)
+        .select("id");
+      categoryIds = [category.id, ...childCategories.map((cat) => cat.id)];
+    } else {
+      // Nếu là child, chỉ lấy chính nó
+      categoryIds = [category.id];
+    }
+
+    // Lấy bài viết thuộc các category ID, trừ chính bài viết hiện tại, và sắp xếp ngẫu nhiên
+    return db("articles as a")
+      .leftJoin("article_tags as at", "a.id", "at.article_id")
+      .leftJoin("tags as t", "at.tag_id", "t.id")
+      .innerJoin("users as u", "a.author", "u.id")
+      .innerJoin("categories as c", "a.category_id", "c.id")
+      .select(
+        "a.id as article_id",
+        "a.title as article_title",
+        "a.abstract as article_abstract",
+        "a.content as article_content",
+        "a.image_url as article_image_url",
+        "a.status as article_status",
+        "a.is_premium as article_is_premium",
+        "a.views as article_views",
+        "a.publish_date as article_publish_date",
+        "u.name as author_name",
+        "c.name as category_name",
+        db.raw("GROUP_CONCAT(t.name) as article_tags")
+      )
+      .where("u.role", "writer")
+      .whereIn("a.category_id", categoryIds) // Lọc theo các category ID
+      .where("a.id", "!=", articleId) // Trừ bài viết hiện tại
+      .groupBy(
+        "a.id",
+        "a.title",
+        "a.abstract",
+        "a.content",
+        "a.image_url",
+        "a.status",
+        "a.is_premium",
+        "a.views",
+        "a.publish_date",
+        "u.name",
+        "c.name"
+      ) // Thêm các cột vào GROUP BY
+      .orderByRaw("RAND()") // Sắp xếp ngẫu nhiên
+      .limit(limit) // Giới hạn số lượng bài viết trả về
+      .then((rows) => {
+        // Chuyển đổi kết quả thành format phù hợp
+        return rows.map((row) => ({
+          article_id: row.article_id,
+          article_title: row.article_title,
+          article_abstract: row.article_abstract,
+          article_content: row.article_content,
+          article_image_url: row.article_image_url,
+          article_status: row.article_status,
+          article_is_premium: row.article_is_premium,
+          article_views: row.article_views,
+          article_publish_date: row.article_publish_date,
+          author_name: row.author_name,
+          category_name: row.category_name,
+          article_tags: row.article_tags ? row.article_tags.split(",") : [],
+        }));
+      });
+  },
+
   async countArticlesByCategory(categoryName) {
     // Lấy thông tin category từ tên
     const category = await db("categories").where("name", categoryName).first();

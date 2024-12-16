@@ -151,7 +151,14 @@ router.get("/detail", async function (req, res) {
   const detail = await articleService.getArticleById(id);
   console.log(detail);
   console.log(detail.article_image_url);
+  const relatedArticles = await articleService.getRelatedArticleByCategory(
+    detail.category_name,
+    detail.article_id,
+    6
+  );
+  console.log(relatedArticles);
   res.render("article-detail", {
+    id: detail.article_id,
     title: detail.article_title,
     content: detail.article_content,
     img_url: detail.article_image_url,
@@ -160,6 +167,7 @@ router.get("/detail", async function (req, res) {
     category: detail.category_name,
     tags: detail.article_tags,
     published_date: detail.article_publish_date,
+    relatedArticles: relatedArticles,
   });
 });
 export default router;

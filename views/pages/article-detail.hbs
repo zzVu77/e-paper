@@ -38,7 +38,7 @@
         class="tw-no-underline tw-text-black tw-mr-3"
       >
         <div         
-          class="tag tw-bg-gray-200 tw-mr-3 tw-cursor-pointer tw-max-w-[120px] tw-w-full tw-h-[38px] tw-border-red-600 tw-rounded-[50px] tw-text-center tw-inline-flex tw-items-center tw-justify-center tw-text-[#54A651] tw-text-xs tw-font-medium tw-px-1"
+          class="tw-bg-gray-200 tw-mr-3 tw-cursor-pointer tw-max-w-[120px] tw-w-full tw-h-[30px] tw-border-red-600 tw-rounded-[50px] tw-text-center tw-inline-flex tw-items-center tw-justify-center tw-text-[#54A651] tw-text-xs tw-font-medium tw-px-1"
         >
           <div class="tw-mr-1">
             <svg
@@ -68,11 +68,16 @@
       </a>
     {{/if}}
   {{#each tags}}
-     <div
-      class="tag tw-bg-gray-200 tw-mr-3 tw-cursor-pointer tw-max-w-[120px] tw-w-full tw-h-[38px] tw-border-red-600 tw-rounded-[50px] tw-text-center tw-inline-flex tw-items-center tw-justify-center tw-text-gray-600 tw-text-xs tw-font-medium tw-px-1"
-    >
-      {{this}}
-    </div>
+     <a
+        href="/posts/byTag?name={{this}}&page=1"
+        class="tw-no-underline tw-text-black tw-mr-3 tw-max-w-[120px] tw-w-full"
+      >
+        <div
+          class="tw-bg-gray-200 tw-mr-3 tw-cursor-pointer tw-max-w-[120px] tw-w-full tw-h-[30px] tw-border-red-600 tw-rounded-[50px] tw-text-center tw-inline-flex tw-items-center tw-justify-center tw-text-gray-600 tw-text-xs tw-font-medium tw-px-1"
+        >
+          {{this}}
+        </div>
+      </a>
   {{/each}}
     {{! Button download }}
     <div
@@ -227,7 +232,10 @@
   {{! Related posts }}
   <div class="tw-font-extrabold tw-text-[40px] tw-ml-4 tw-mt-2">Related posts</div>
   <div class="tw-grid tw-grid-cols-3 gap-5 tw-mb-10  container tw-mt-10">
-    {{>posts/post-card
+    {{#each relatedArticles}}
+        {{>posts/post-card  }}    
+    {{/each}}
+    {{!-- {{>posts/post-card
      article_image_url="https://images.unsplash.com/2/02.jpg?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"  
      article_title="What Happened To The Clippers?"
      article_abstract="Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi in dicta, hic, omnis natus iusto voluptates, dolore nobis ducimus aspernatur saepe voluptas delectus non laborum recusandae nisi aliquid repellat voluptatem!"
@@ -236,56 +244,7 @@
      article_tags=["He","Hu","Ha"]
      author_name="Van Vu"
       article_publish_date="2024-01-15T03:00:00.000Z"
-      }}
-    {{>posts/post-card
-     article_image_url="https://images.unsplash.com/2/02.jpg?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"  
-     article_title="What Happened To The Clippers?"
-     article_abstract="Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi in dicta, hic, omnis natus iusto voluptates, dolore nobis ducimus aspernatur saepe voluptas delectus non laborum recusandae nisi aliquid repellat voluptatem!"
-     category_name="Education"
-     article_is_premium=true
-     article_tags=["He","Hu","Ha"]
-     author_name="Van Vu"
-      article_publish_date="2024-01-15T03:00:00.000Z"
-      }}
-    {{>posts/post-card
-     article_image_url="https://images.unsplash.com/2/02.jpg?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"  
-     article_title="What Happened To The Clippers?"
-     article_abstract="Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi in dicta, hic, omnis natus iusto voluptates, dolore nobis ducimus aspernatur saepe voluptas delectus non laborum recusandae nisi aliquid repellat voluptatem!"
-     category_name="Education"
-     article_is_premium=true
-     article_tags=["He","Hu","Ha"]
-     author_name="Van Vu"
-      article_publish_date="2024-01-15T03:00:00.000Z"
-      }}
-    {{>posts/post-card
-     article_image_url="https://images.unsplash.com/2/02.jpg?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"  
-     article_title="What Happened To The Clippers?"
-     article_abstract="Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi in dicta, hic, omnis natus iusto voluptates, dolore nobis ducimus aspernatur saepe voluptas delectus non laborum recusandae nisi aliquid repellat voluptatem!"
-     category_name="Education"
-     article_is_premium=true
-     article_tags=["He","Hu","Ha"]
-     author_name="Van Vu"
-      article_publish_date="2024-01-15T03:00:00.000Z"
-      }}
-    {{>posts/post-card
-     article_image_url="https://images.unsplash.com/2/02.jpg?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"  
-     article_title="What Happened To The Clippers?"
-     article_abstract="Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi in dicta, hic, omnis natus iusto voluptates, dolore nobis ducimus aspernatur saepe voluptas delectus non laborum recusandae nisi aliquid repellat voluptatem!"
-     category_name="Education"
-     article_is_premium=true
-     article_tags=["He","Hu","Ha"]
-     author_name="Van Vu"
-      article_publish_date="2024-01-15T03:00:00.000Z"
-      }}
-    {{>posts/post-card
-     article_image_url="https://images.unsplash.com/2/02.jpg?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"  
-     article_title="What Happened To The Clippers?"
-     article_abstract="Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi in dicta, hic, omnis natus iusto voluptates, dolore nobis ducimus aspernatur saepe voluptas delectus non laborum recusandae nisi aliquid repellat voluptatem!"
-     category_name="Education"
-     article_is_premium=true
-     article_tags=["He","Hu","Ha"]
-     author_name="Van Vu"
-      article_publish_date="2024-01-15T03:00:00.000Z"
-      }}
+      }} --}}
+    
   </div>
 </div>

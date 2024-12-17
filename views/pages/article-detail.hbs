@@ -274,7 +274,7 @@
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ content: finalContent, title: article_title }),
+        body: JSON.stringify({ content: finalContent, title: article_title.trim() }),
       });
 
       if (response.ok) {

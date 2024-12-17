@@ -1,7 +1,7 @@
 import puppeteer from "puppeteer";
 
 async function genPDF(content, title) {
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
 
   await page.setContent(content, { waitUntil: "domcontentloaded" });

@@ -1,7 +1,7 @@
 import puppeteer from "puppeteer";
 
 async function genPDF(content, title) {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
 
   await page.setContent(content, { waitUntil: "domcontentloaded" });
@@ -43,7 +43,7 @@ async function autoScroll(page) {
           clearInterval(timer);
           resolve();
         }
-      }, 150); // Thời gian giữa mỗi lần cuộn (ms)
+      }, 500); // Thời gian giữa mỗi lần cuộn (ms)
     });
   });
 }

@@ -160,14 +160,26 @@ app.post("/generate-pdf", async function (req, res) {
     // Tạo PDF
     await genPDF(content, title);
 
-    // Sau khi gửi file cho client, xóa nó
-    res.download(`${title}.pdf`, (err) => {
+    const filePath = `${title}.pdf`;
+
+    // Gửi file cho client
+    res.download(filePath, (err) => {
       if (err) {
         console.error("Error while downloading the file:", err);
-        return res.status(500).send("Error generating PDF");
+
+        // Nếu xảy ra lỗi khi gửi file, xóa file để tránh lưu trữ không cần thiết
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+          console.log("File deleted after download error:", filePath);
+        }
+        return res.status(500).send("Error downloading PDF");
       }
-      // Xóa file sau khi client đã tải về
-      fs.unlinkSync(`${title}.pdf`);
+
+      // Xóa file sau khi gửi thành công
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+        console.log("File successfully sent and deleted:", filePath);
+      }
     });
   } catch (error) {
     console.error("Error generating PDF:", error);

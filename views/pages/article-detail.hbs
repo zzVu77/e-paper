@@ -1,4 +1,13 @@
 <link rel="stylesheet" href="/css/article-detail.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="/js/genPDF.js"></script>
+<!-- Download Notification Modal -->
+<div id="downloadModal" class="modal">
+  <div class="modal-content">
+    <p class="tw-font-bold tw-text-xl tw-tracking-widest">Downloading, please wait...</p>
+    <div class="spinner"></div>
+  </div>
+</div>
   {{! Cover image }}
   <div class="tw-text-center">
     <img
@@ -17,6 +26,7 @@
     {{#if title}}   
       <div
         class="tw-font-semibold tw-text-[40px] tw-tracking-wide tw-leading-[1.1] tw-text-left tw-m-5"
+        id="article-title"
       >{{title}}</div>
     {{/if}}
 
@@ -86,6 +96,7 @@
       <button
         class="tw-w-[auto] tw-h-[38px] tw-border-none tw-rounded-[30px] tw-bg-[#53AA51] tw-text-white tw-text-center tw-text-sm tw-font-medium tw-px-4"
         type="button"
+        id="downloadBtn"
       >
         <svg
           width="28px"
@@ -118,7 +129,7 @@
 
   </div>
   {{! Article content }}
-  <div class="tw-mx-[148px] tw-text-left tw-my-10 tw-mt-5 tw-mb-24">
+  <div id="content" class="tw-mx-[148px] tw-text-left tw-my-10 tw-mt-5 tw-mb-24">
 
     {{{this.content}}}
 
@@ -235,16 +246,101 @@
     {{#each relatedArticles}}
         {{>posts/post-card  }}    
     {{/each}}
-    {{!-- {{>posts/post-card
-     article_image_url="https://images.unsplash.com/2/02.jpg?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"  
-     article_title="What Happened To The Clippers?"
-     article_abstract="Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi in dicta, hic, omnis natus iusto voluptates, dolore nobis ducimus aspernatur saepe voluptas delectus non laborum recusandae nisi aliquid repellat voluptatem!"
-     category_name="Education"
-     article_is_premium=true
-     article_tags=["He","Hu","Ha"]
-     author_name="Van Vu"
-      article_publish_date="2024-01-15T03:00:00.000Z"
-      }} --}}
-    
   </div>
 </div>
+
+ <script>
+  async function downloadPDF() {
+    const article_title = document.getElementById("article-title").innerHTML;
+    const article_content = document.getElementById("content").innerHTML;
+    console.log(article_title);
+
+    // Show modal when download button is clicked
+    document.getElementById("downloadModal").style.display = "block";
+
+    const newHTML = `
+    <div style="">
+      <div style="font-weight: 600; font-size: 38px; text-align: left; letter-spacing: 0.025em; line-height: 1.1; ">
+        ${article_title}
+      </div>
+    </div>
+    `;
+    const finalContent = newHTML + article_content;
+    console.log(finalContent);
+
+    try {
+      const response = await fetch("/generate-pdf", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ content: finalContent, title: article_title }),
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${article_title}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      } else {
+        console.error("Error generating PDF");
+      }
+    } catch (error) {
+      console.error("Download failed:", error);
+    } finally {
+      // Hide modal when download is complete
+      document.getElementById("downloadModal").style.display = "none";
+    }
+  }
+
+  document.getElementById("downloadBtn").addEventListener("click", downloadPDF);
+  
+  // If the user clicks outside the modal, close the modal
+  
+</script>
+
+  <style>
+  /* CSS for Modal */
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  .modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 5px;
+    width: 30%;
+    height: 22%;
+    border-radius: 10px;
+    text-align: center;
+    opacity: 0.8;
+  }
+  .spinner {
+    margin: 10px auto;
+    border: 4px solid #f3f3f3; /* Background color */
+    border-top: 4px solid #53AA51; /* Spinner color */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+</style>
+
+<script>
+  
+</script>

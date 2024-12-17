@@ -5,7 +5,7 @@ services:
     image: mysql:8.0
     container_name: local_mysql_db
     ports:
-      - '33061:3306'
+      - "33061:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: e_paper
@@ -23,4 +23,3 @@ volumes:
 
 networks:
   mysql_network:
-# DATABASE_URL=mysql://root:root@localhost:33061/e_paper

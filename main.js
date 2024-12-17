@@ -41,8 +41,11 @@ app.engine(
         if (!str) return []; // Nếu chuỗi không tồn tại, trả về mảng rỗng
         return str.split(",").map((item) => item.trim()); // Tách chuỗi và loại bỏ khoảng trắng
       },
-    },
-  })
+      compareStrings(str1, str2) {
+        return str1 === str2; // Trả về true nếu hai chuỗi bằng nhau, ngược lại trả về false
+      },
+
+  }})
 );
 
 app.set("view engine", "hbs");
@@ -50,9 +53,26 @@ app.set("views", "./views/pages");
 app.use(express.static("public"));
 // setup local data for navigation
 app.use(async function (req, res, next) {
+  const currentCategory = req.query.name || "";
+  console.log("Current Category: ", currentCategory);
   const categories = await categoryService.getCategoryName();
-  res.locals.categories = categories;
-  // console.log(categories);
+  const listCategory = [];
+  const parentCat = currentCategory
+    ? await categoryService.getParentCategory(currentCategory)
+    : "";
+  console.log("parent", parentCat);
+  for (let index = 0; index < categories.length; index++) {
+    listCategory.push({
+      currentCategory: currentCategory,
+      parent_name: categories[index].parent_name,
+      child_categories: categories[index].child_categories,
+      parent_cat_active:
+        parentCat === categories[index].parent_name ||
+        currentCategory === categories[index].parent_name,
+    });
+  }
+  console.log(listCategory);
+  res.locals.categories = listCategory;
   next();
 });
 app.use("/writer/article/manage", writerArticleMangeRouter);

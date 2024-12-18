@@ -1,8 +1,11 @@
 import express from "express";
 import { engine } from "express-handlebars";
+import fs from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import formatDateTime from "./helpers/formatDateTime.js";
+import genPDF from "./public/js/genPDF.js";
+import accountmanagementRouter from "./routes/account.route.js";
 import articlesmanagementRouter from "./routes/admin/articles.route.js";
 import categoriesmanagementRouter from "./routes/admin/categories.route.js";
 import personsmanagementRouter from "./routes/admin/persons.route.js";
@@ -11,9 +14,7 @@ import editormanagementRouter from "./routes/editor.route.js";
 import postsRouter from "./routes/posts.route.js";
 import articleService from "./services/article.service.js";
 import categoryService from "./services/category.service.js";
-import genPDF from "./public/js/genPDF.js";
 const __dirname = dirname(fileURLToPath(import.meta.url));
-import fs from "fs";
 const app = express();
 // const path = require("path");
 app.use(
@@ -43,13 +44,11 @@ app.use(express.static("public"));
 // setup local data for navigation
 app.use(async function (req, res, next) {
   const currentCategory = req.query.name || "";
-  console.log("Current Category: ", currentCategory);
   const categories = await categoryService.getCategoryName();
   const listCategory = [];
   const parentCat = currentCategory
     ? await categoryService.getParentCategory(currentCategory)
     : "";
-  console.log("parent", parentCat);
   for (let index = 0; index < categories.length; index++) {
     listCategory.push({
       currentCategory: currentCategory,
@@ -60,7 +59,7 @@ app.use(async function (req, res, next) {
         currentCategory === categories[index].parent_name,
     });
   }
-  console.log(listCategory);
+  // console.log(listCategory);
   res.locals.categories = listCategory;
   next();
 });
@@ -75,14 +74,6 @@ app.get("/about", function (req, res) {
 
 app.get("/admin", function (req, res) {
   res.render("admin/dashboard", { layout: "admin", title: "Admin Dashboard" });
-});
-
-app.get("/login", function (req, res) {
-  res.render("login", { layout: "default" });
-});
-
-app.get("/signup", function (req, res) {
-  res.render("signup", { layout: "default" });
 });
 
 app.get("/account-setting-myprofile", function (req, res) {
@@ -149,6 +140,7 @@ app.use("/admin/tags", tagsmanagementRouter);
 app.use("/admin/persons", personsmanagementRouter);
 app.use("/admin/articles", articlesmanagementRouter);
 app.use("/editor", editormanagementRouter);
+app.use("/account", accountmanagementRouter);
 app.post("/generate-pdf", async function (req, res) {
   try {
     const { content, title } = req.body;

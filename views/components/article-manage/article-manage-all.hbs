@@ -21,7 +21,7 @@
         <hr />
       </div>
       
-      <form id ="article-manage-filterForm"method ="GET" action="/article-manage-all/filter">
+      <form id ="article-manage-filterForm"method ="GET" action="/writer/article/manage/AllArticle-filter">
       <div class="article-manage-search">
         <div class="article-manage-filter">
           <div class="article-manage-filterDate">
@@ -45,7 +45,7 @@
           </div>
         </div>
         <div class="article-manage-searchBar">
-          <input type="text" placeholder="Tìm kiếm" />
+          <input type="text" name ="searchKeyWord" placeholder="Tìm kiếm" />
           <div class="article-manage-searchBar-icon">
             <i class="bi bi-search" id ="article-manage-searchBtn"></i>
             </div>
@@ -109,15 +109,15 @@
                   {{else}}
                     <li><a
                         class="dropdown-item"
-                        href="#"
+                        href="/posts/detail?id={{id}}"
                       >Xem</a></li>
                     <li>
-                    <li>
+                    {{!-- <li>
                       <form action="/writer/article/manage/del" method="post">
                         <input type="hidden" name="id" value="{{id}}" />
                         <button type="submit" class="dropdown-item" id="article-manage-delBtn">Xóa bài viết</button>
                       </form>
-                    </li>
+                    </li> --}}
                   {{/if}}
                 </ul>
               </div>
@@ -126,7 +126,7 @@
         {{/each}}
       </div>
     </div>
-    <div style="width: 100%;">
+    <div style="width: 100%; margin-top: 20px;">
       <ul
         class="pagination"
         style="margin-top :20px; margin:0 auto; width: fit-content;"
@@ -139,7 +139,7 @@
           <li class="page-item">
             <a
               class="page-link"
-              href="/writer/article/manage/all?page={{previousPage}}"
+              href={{previousLink}}
             >Previous</a>
           </li>
         {{/if}}
@@ -153,7 +153,7 @@
             <li class="page-item">
               <a
                 class="page-link"
-                href="/writer/article/manage/all?page={{value}}"
+                href={{link}}
               >{{value}}</a>
             </li>
           {{/if}}
@@ -166,7 +166,7 @@
           <li class="page-item">
             <a
               class="page-link"
-              href="/writer/article/manage/all?page={{nextPage}}"
+              href={{nextLink}}
             >Next</a>
           </li>
         {{/if}}

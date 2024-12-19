@@ -4,8 +4,7 @@ import tagService from "../../services/tag.service.js";
 import articleTagsService from "../../services/articleTag.service.js";
 
 const router = express.Router();
-
-router.get("/all", async function (req, res) {
+router.get("/AllArticle", async function (req, res) {
   // const list = await articleService.findAll();
   const limit = 5;
   let current_page = req.query.page || 1;
@@ -22,6 +21,7 @@ router.get("/all", async function (req, res) {
     pageNumbers.push({
       value: i + 1,
       active: i + 1 === +current_page,
+      link: `/writer/article/manage/AllArticle?page=${i+1}`,
     });
   }
 
@@ -34,23 +34,23 @@ router.get("/all", async function (req, res) {
       article.tags = article.tags.split(",").map((tag) => tag.trim());
     }
   }
-  // console.log(nRows)
-  // console.log(nPages)
-  console.log(list);
-  // console.log(pageNumbers)
+
+  const nextPage= Number(current_page) + Number(1);
+  const previousPage= Number(current_page) - Number(1);
   res.render("article-manage-all", {
     list: list,
     empty: list.length === 0,
     pageNumbers: pageNumbers,
-    nextPage: Number(current_page) + Number(1),
-    previousPage: Number(current_page) - Number(1),
     isLastPage: Number(current_page) === Number(nPages),
+    pagnitionName: "all",
+    nextLink: `/writer/article/manage/AllArticle?page=${nextPage}`,
+    previousLink: `/writer/article/manage/AllArticle?page=${previousPage}`,
   });
 });
-
-router.get("/approved", async function (req, res) {
+router.get("/ApprovedArticle", async function (req, res) {
   // const list = await articleService.findAll();
   const limit = 5;
+  const status = "approved";
   let current_page = req.query.page || 1;
   if (isNaN(current_page) || current_page < 1) {
     // Nếu current_page không phải là một số hợp lệ hoặc nhỏ hơn 1
@@ -58,17 +58,18 @@ router.get("/approved", async function (req, res) {
   }
   const offset = (current_page - 1) * limit;
 
-  const nRows = await articleService.countAllArticlesByAuthorID(1);
+  const nRows = await articleService.countByStatusAndAuthorID(status,1);
   const nPages = Math.ceil(nRows.total / limit);
   const pageNumbers = [];
   for (let i = 0; i < nPages; i++) {
     pageNumbers.push({
       value: i + 1,
       active: i + 1 === +current_page,
+      link: `/writer/article/manage/ApprovedArticle?page=${i+1}`,
     });
   }
 
-  const list = await articleService.findPageByStatusAndAuthorID(limit, offset, "approved",1);
+  const list = await articleService.findPageByStatusAndAuthorID(limit, offset,status,1);
   // Lặp qua từng bài viết trong list
   for (let article of list) {
     // Kiểm tra nếu tags có tồn tại và là một chuỗi
@@ -77,23 +78,22 @@ router.get("/approved", async function (req, res) {
       article.tags = article.tags.split(",").map((tag) => tag.trim());
     }
   }
-  // console.log(nRows)
-  // console.log(nPages)
-  console.log(list);
-  // console.log(pageNumbers)
+
+  const nextPage= Number(current_page) + Number(1);
+  const previousPage= Number(current_page) - Number(1);
   res.render("article-manage-approved", {
     list: list,
     empty: list.length === 0,
     pageNumbers: pageNumbers,
-    nextPage: Number(current_page) + Number(1),
-    previousPage: Number(current_page) - Number(1),
     isLastPage: Number(current_page) === Number(nPages),
+    nextLink: `/writer/article/manage/ApprovedArticle?page=${nextPage}`,
+    previousLink: `/writer/article/manage/ApprovedArticle?page=${previousPage}`,
   });
 });
-
-router.get("/published", async function (req, res) {
+router.get("/PublishedArticle", async function (req, res) {
   // const list = await articleService.findAll();
   const limit = 5;
+  const status = "published";
   let current_page = req.query.page || 1;
   if (isNaN(current_page) || current_page < 1) {
     // Nếu current_page không phải là một số hợp lệ hoặc nhỏ hơn 1
@@ -101,22 +101,18 @@ router.get("/published", async function (req, res) {
   }
   const offset = (current_page - 1) * limit;
 
-  const nRows = await articleService.countAllArticlesByAuthorID(1);
+  const nRows = await articleService.countByStatusAndAuthorID(status,1);
   const nPages = Math.ceil(nRows.total / limit);
   const pageNumbers = [];
   for (let i = 0; i < nPages; i++) {
     pageNumbers.push({
       value: i + 1,
       active: i + 1 === +current_page,
+      link: `/writer/article/manage/PublishedArticle?page=${i+1}`,
     });
   }
 
-  const list = await articleService.findPageByStatusAndAuthorID(
-    limit,
-    offset,
-    "published",
-    1
-  );
+  const list = await articleService.findPageByStatusAndAuthorID(limit, offset,status,1);
   // Lặp qua từng bài viết trong list
   for (let article of list) {
     // Kiểm tra nếu tags có tồn tại và là một chuỗi
@@ -125,23 +121,22 @@ router.get("/published", async function (req, res) {
       article.tags = article.tags.split(",").map((tag) => tag.trim());
     }
   }
-  // console.log(nRows)
-  // console.log(nPages)
-  console.log(list);
-  // console.log(pageNumbers)
+
+  const nextPage= Number(current_page) + Number(1);
+  const previousPage= Number(current_page) - Number(1);
   res.render("article-manage-published", {
     list: list,
     empty: list.length === 0,
     pageNumbers: pageNumbers,
-    nextPage: Number(current_page) + Number(1),
-    previousPage: Number(current_page) - Number(1),
     isLastPage: Number(current_page) === Number(nPages),
+    nextLink: `/writer/article/manage/PublishedArticle?page=${nextPage}`,
+    previousLink: `/writer/article/manage/PublishedArticle?page=${previousPage}`,
   });
 });
-
-router.get("/rejected", async function (req, res) {
+router.get("/RejectedArticle", async function (req, res) {
   // const list = await articleService.findAll();
   const limit = 5;
+  const status = "rejected";
   let current_page = req.query.page || 1;
   if (isNaN(current_page) || current_page < 1) {
     // Nếu current_page không phải là một số hợp lệ hoặc nhỏ hơn 1
@@ -149,17 +144,18 @@ router.get("/rejected", async function (req, res) {
   }
   const offset = (current_page - 1) * limit;
 
-  const nRows = await articleService.countAllArticlesByAuthorID(1);
+  const nRows = await articleService.countByStatusAndAuthorID(status,1);
   const nPages = Math.ceil(nRows.total / limit);
   const pageNumbers = [];
   for (let i = 0; i < nPages; i++) {
     pageNumbers.push({
       value: i + 1,
       active: i + 1 === +current_page,
+      link: `/writer/article/manage/RejectedArticle?page=${i+1}`,
     });
   }
 
-  const list = await articleService.findPageByStatusAndAuthorID(limit, offset, "rejected",1);
+  const list = await articleService.findPageByStatusAndAuthorID(limit, offset,status,1);
   // Lặp qua từng bài viết trong list
   for (let article of list) {
     // Kiểm tra nếu tags có tồn tại và là một chuỗi
@@ -168,23 +164,22 @@ router.get("/rejected", async function (req, res) {
       article.tags = article.tags.split(",").map((tag) => tag.trim());
     }
   }
-  // console.log(nRows)
-  // console.log(nPages)
-  // console.log(list)
-  // console.log(pageNumbers)
+
+  const nextPage= Number(current_page) + Number(1);
+  const previousPage= Number(current_page) - Number(1);
   res.render("article-manage-rejected", {
     list: list,
     empty: list.length === 0,
     pageNumbers: pageNumbers,
-    nextPage: Number(current_page) + Number(1),
-    previousPage: Number(current_page) - Number(1),
     isLastPage: Number(current_page) === Number(nPages),
+    nextLink: `/writer/article/manage/RejectedArticle?page=${nextPage}`,
+    previousLink: `/writer/article/manage/RejectedArticle?page=${previousPage}`,
   });
 });
-
-router.get("/pending", async function (req, res) {
+router.get("/PendingArticle", async function (req, res) {
   // const list = await articleService.findAll();
   const limit = 5;
+  const status = "pending";
   let current_page = req.query.page || 1;
   if (isNaN(current_page) || current_page < 1) {
     // Nếu current_page không phải là một số hợp lệ hoặc nhỏ hơn 1
@@ -192,17 +187,18 @@ router.get("/pending", async function (req, res) {
   }
   const offset = (current_page - 1) * limit;
 
-  const nRows = await articleService.countAllArticlesByAuthorID(1);
+  const nRows = await articleService.countByStatusAndAuthorID(status,1);
   const nPages = Math.ceil(nRows.total / limit);
   const pageNumbers = [];
   for (let i = 0; i < nPages; i++) {
     pageNumbers.push({
       value: i + 1,
       active: i + 1 === +current_page,
+      link: `/writer/article/manage/PendingArticle?page=${i+1}`,
     });
   }
 
-  const list = await articleService.findPageByStatusAndAuthorID(limit, offset, "pending",1);
+  const list = await articleService.findPageByStatusAndAuthorID(limit, offset,status,1);
   // Lặp qua từng bài viết trong list
   for (let article of list) {
     // Kiểm tra nếu tags có tồn tại và là một chuỗi
@@ -211,65 +207,593 @@ router.get("/pending", async function (req, res) {
       article.tags = article.tags.split(",").map((tag) => tag.trim());
     }
   }
-  // console.log(nRows)
-  // console.log(nPages)
-  // console.log(list)
-  // console.log(pageNumbers)
+
+  const nextPage= Number(current_page) + Number(1);
+  const previousPage= Number(current_page) - Number(1);
   res.render("article-manage-pending", {
     list: list,
     empty: list.length === 0,
     pageNumbers: pageNumbers,
-    nextPage: Number(current_page) + Number(1),
-    previousPage: Number(current_page) - Number(1),
     isLastPage: Number(current_page) === Number(nPages),
+    nextLink: `/writer/article/manage/PendingArticle?page=${nextPage}`,
+    previousLink: `/writer/article/manage/PendingArticle?page=${previousPage}`,
   });
 });
+// Hàm kiểm tra tính hợp lệ của ngày
+function isValidDate(dateString) {
+  const date = new Date(dateString);
+  return !isNaN(date.getTime()); // Kiểm tra nếu ngày hợp lệ
+}
+// Hàm tách searchKeyWord khỏi phần ?page nếu có
+function extractSearchKeyWord(searchKeyWord) {
+  // Giải mã searchKeyWord để xử lý các ký tự đặc biệt (như + -> khoảng trắng)
+  searchKeyWord = decodeURIComponent(searchKeyWord);
 
-// router.get("/filter", async function (req, res) {
-//   const tags = req.query.tags;
-//   const startFilterDate = req.query.startCreateDate;
-//   const endFilterDate = req.query.endCreateDate;
-//   const tagsArray = tags ? tags.split(",") : [];
+  // Kiểm tra nếu searchKeyWord chứa '?page='
+  if (searchKeyWord && searchKeyWord.includes('?page=')) {
+    // Tách searchKeyWord khỏi tham số page
+    const keyword = searchKeyWord.split('?page=')[0];
+    return keyword.trim(); // Xóa khoảng trắng thừa
+  }
+  
+  return searchKeyWord; // Nếu không có '?page=', trả về giá trị ban đầu
+}
 
-//   try {
-//     // Lấy danh sách tagIDs tương ứng với các tags
-//     const tagIDs = await Promise.all(
-//       tagsArray.map(async (tag) => {
-//         const tagData = await tagService.getTagByName(tag.trim()); // Lấy tagID từ tên tag
-//         return tagData ? tagData.id : null; // Trả về null nếu tag không tồn tại
-//       })
-//     );
+router.get("/AllArticle-filter", async function (req, res) {
+  const tags = req.query.tags;
+  // Xử lý startDate và endDate
+  const startDate = isValidDate(req.query.startCreateDate) ? req.query.startCreateDate : null;
+  const endDate = isValidDate(req.query.endCreateDate) ? req.query.endCreateDate : null;
+  const tagsArray = tags ? tags.split(",") : [];
+  const rawSearchKeyWord = req.query.searchKeyWord;
+  const searchKeyWord = extractSearchKeyWord(rawSearchKeyWord);
+  const status = "all";
+  try {
 
-//     // Loại bỏ các giá trị null (nếu có tags không tồn tại)
-//     const validTagIDs = tagIDs.filter((id) => id !== null);
+      //pagnition
+      const limit = 3;
+      let current_page = req.query.page || 1;
+      if (isNaN(current_page) || current_page < 1) {
+        // Nếu current_page không phải là một số hợp lệ hoặc nhỏ hơn 1
+        current_page = 1; // Gán giá trị mặc định là 1
+      }
+      const offset = (current_page - 1) * limit;
 
-//     if (validTagIDs.length === 0) {
-//       return res.json({ message: "No matching articles found", articles: [] });
-//     }
 
-//     // Kiểm tra khoảng thời gian
-//     if (!startFilterDate || !endFilterDate) {
-//       return res
-//         .status(400)
-//         .json({ message: "startCreateDate and endCreateDate are required" });
-//     }
+    // Lấy danh sách tagIDs tương ứng với các tags
+    const tagIDs = await Promise.all(
+      tagsArray.map(async (tag) => {
+        const tagData = await tagService.getTagByName(tag.trim()); // Lấy tagID từ tên tag
+        return tagData ? tagData.id : null; // Trả về null nếu tag không tồn tại
+      })
+    );
 
-//     // Lấy danh sách bài viết dựa trên các tagIDs hợp lệ và khoảng thời gian
-//     const articles = await articleService.getArticlesByFilter(
-//       validTagIDs,
-//       new Date(startFilterDate), // Chuyển đổi sang đối tượng Date
-//       new Date(endFilterDate)
-//     );
-//     // console.log(new Date(startFilterDate));
-//     // console.log(new Date(endFilterDate));
-//     console.log(articles);
+    // Loại bỏ các giá trị null (nếu có tags không tồn tại)
+    const validTagIDs = tagIDs.filter((id) => id !== null);
 
-//     res.json({ message: "Success", articles });
-//   } catch (error) {
-//     console.error("Error:", error);
-//     res.status(500).json({ message: "Internal Server Error" });
-//   }
-// });
+    // Lấy danh sách bài viết dựa trên các tagIDs hợp lệ và khoảng thời gian
+    let list = [];
+    if(startDate != null & endDate != null)
+    {
+       list = await articleService.getArticlesByFilter(
+        validTagIDs,
+        new Date(startDate), // Chuyển đổi sang đối tượng Date
+        new Date(endDate),
+        searchKeyWord, 
+        limit,
+        offset,
+        1,
+        status
+      );
+    }
+    else{
+       list = await articleService.getArticlesByFilter(
+        validTagIDs,
+        startDate, // Chuyển đổi sang đối tượng Date
+        endDate,
+        searchKeyWord, 
+        limit,
+        offset,
+        1,
+        status
+      );
+    }
+
+
+    for (let article of list) {
+      // Kiểm tra nếu tags có tồn tại và là một chuỗi
+      if (article.tags && typeof article.tags === "string") {
+        // Tách chuỗi tags thành mảng, loại bỏ khoảng trắng thừa nếu có
+        article.tags = article.tags.split(",").map((tag) => tag.trim());
+      }
+    }
+
+    const nRows = await articleService.countArticlesByFilter(
+      validTagIDs,
+      startDate, // Chuyển đổi sang đối tượng Date
+      endDate,
+      searchKeyWord,
+      1,
+      status
+    );
+    const nPages = Math.ceil(nRows / limit);
+    const pageNumbers = [];
+    console.log(searchKeyWord);
+
+    for (let i = 0; i < nPages; i++) {
+      pageNumbers.push({
+        value: i + 1,
+        active: i + 1 === +current_page,
+        link: `/writer/article/manage/AllArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${tags}&searchKeyWord=${encodeURIComponent(searchKeyWord)}&page=${i+1}`,
+      });
+    }
+
+
+
+
+    // console.log(list);
+    // console.log(nRows);
+    // console.log(pageNumbers);
+    const nextPage= Number(current_page) + Number(1);
+    const previousPage= Number(current_page) - Number(1);
+    res.render("article-manage-all", {
+      list: list,
+      empty: list.length === 0,
+      pageNumbers: pageNumbers,
+      isLastPage: Number(current_page) === Number(nPages),
+      pagnitionName: "AllArticle-filter",
+      nextLink: `/writer/article/manage/AllArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${validTagIDs}&searchKeyWord=${searchKeyWord}&page=${nextPage}`,
+      previousLink: `/writer/article/manage/AllArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${validTagIDs}&searchKeyWord=${searchKeyWord}&page=${previousPage}`,
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+router.get("/PublishedArticle-filter", async function (req, res) {
+  const tags = req.query.tags;
+  // Xử lý startDate và endDate
+  const startDate = isValidDate(req.query.startCreateDate) ? req.query.startCreateDate : null;
+  const endDate = isValidDate(req.query.endCreateDate) ? req.query.endCreateDate : null;
+  const tagsArray = tags ? tags.split(",") : [];
+  const rawSearchKeyWord = req.query.searchKeyWord;
+  const searchKeyWord = extractSearchKeyWord(rawSearchKeyWord);
+  const status = "published";
+
+  try {
+
+      //pagnition
+      const limit = 5;
+      let current_page = req.query.page || 1;
+      if (isNaN(current_page) || current_page < 1) {
+        // Nếu current_page không phải là một số hợp lệ hoặc nhỏ hơn 1
+        current_page = 1; // Gán giá trị mặc định là 1
+      }
+      const offset = (current_page - 1) * limit;
+
+
+    // Lấy danh sách tagIDs tương ứng với các tags
+    const tagIDs = await Promise.all(
+      tagsArray.map(async (tag) => {
+        const tagData = await tagService.getTagByName(tag.trim()); // Lấy tagID từ tên tag
+        return tagData ? tagData.id : null; // Trả về null nếu tag không tồn tại
+      })
+    );
+
+    // Loại bỏ các giá trị null (nếu có tags không tồn tại)
+    const validTagIDs = tagIDs.filter((id) => id !== null);
+
+    // Lấy danh sách bài viết dựa trên các tagIDs hợp lệ và khoảng thời gian
+    let list = [];
+    if(startDate != null & endDate != null)
+    {
+       list = await articleService.getArticlesByFilter(
+        validTagIDs,
+        new Date(startDate), // Chuyển đổi sang đối tượng Date
+        new Date(endDate),
+        searchKeyWord, 
+        limit,
+        offset,
+        1,
+        status
+      );
+    }
+    else{
+       list = await articleService.getArticlesByFilter(
+        validTagIDs,
+        startDate, // Chuyển đổi sang đối tượng Date
+        endDate,
+        searchKeyWord, 
+        limit,
+        offset,
+        1,
+        status
+      );
+    }
+
+
+    for (let article of list) {
+      // Kiểm tra nếu tags có tồn tại và là một chuỗi
+      if (article.tags && typeof article.tags === "string") {
+        // Tách chuỗi tags thành mảng, loại bỏ khoảng trắng thừa nếu có
+        article.tags = article.tags.split(",").map((tag) => tag.trim());
+      }
+    }
+
+    const nRows = await articleService.countArticlesByFilter(
+      validTagIDs,
+      startDate, // Chuyển đổi sang đối tượng Date
+      endDate,
+      searchKeyWord,
+      1,
+      status
+    );
+    const nPages = Math.ceil(nRows / limit);
+    const pageNumbers = [];
+
+    for (let i = 0; i < nPages; i++) {
+      pageNumbers.push({
+        value: i + 1,
+        active: i + 1 === +current_page,
+        link: `/writer/article/manage/PublishedArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${tags}&searchKeyWord=${searchKeyWord}&page=${i+1}`,
+      });
+    }
+
+
+
+
+    // console.log(list);
+    // console.log(pageNumbers);
+    const nextPage= Number(current_page) + Number(1);
+    const previousPage= Number(current_page) - Number(1);
+    res.render("article-manage-all", {
+      list: list,
+      empty: list.length === 0,
+      pageNumbers: pageNumbers,
+      isLastPage: Number(current_page) === Number(nPages),
+      pagnitionName: "AllArticle-filter",
+      nextLink: `/writer/article/manage/PublishedArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${validTagIDs}&searchKeyWord=${searchKeyWord}&page=${nextPage}`,
+      previousLink: `/writer/article/manage/PublishedArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${validTagIDs}&searchKeyWord=${searchKeyWord}&page=${previousPage}`,
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+router.get("/ApprovedArticle-filter", async function (req, res) {
+  const tags = req.query.tags;
+  // Xử lý startDate và endDate
+  const startDate = isValidDate(req.query.startCreateDate) ? req.query.startCreateDate : null;
+  const endDate = isValidDate(req.query.endCreateDate) ? req.query.endCreateDate : null;
+  const tagsArray = tags ? tags.split(",") : [];
+  const rawSearchKeyWord = req.query.searchKeyWord;
+  const searchKeyWord = extractSearchKeyWord(rawSearchKeyWord);
+  const status = "approved";
+
+  try {
+
+      //pagnition
+      const limit = 5;
+      let current_page = req.query.page || 1;
+      if (isNaN(current_page) || current_page < 1) {
+        // Nếu current_page không phải là một số hợp lệ hoặc nhỏ hơn 1
+        current_page = 1; // Gán giá trị mặc định là 1
+      }
+      const offset = (current_page - 1) * limit;
+
+
+    // Lấy danh sách tagIDs tương ứng với các tags
+    const tagIDs = await Promise.all(
+      tagsArray.map(async (tag) => {
+        const tagData = await tagService.getTagByName(tag.trim()); // Lấy tagID từ tên tag
+        return tagData ? tagData.id : null; // Trả về null nếu tag không tồn tại
+      })
+    );
+
+    // Loại bỏ các giá trị null (nếu có tags không tồn tại)
+    const validTagIDs = tagIDs.filter((id) => id !== null);
+
+    // Lấy danh sách bài viết dựa trên các tagIDs hợp lệ và khoảng thời gian
+    let list = [];
+    if(startDate != null & endDate != null)
+    {
+       list = await articleService.getArticlesByFilter(
+        validTagIDs,
+        new Date(startDate), // Chuyển đổi sang đối tượng Date
+        new Date(endDate),
+        searchKeyWord, 
+        limit,
+        offset,
+        1,
+        status
+      );
+    }
+    else{
+       list = await articleService.getArticlesByFilter(
+        validTagIDs,
+        startDate, // Chuyển đổi sang đối tượng Date
+        endDate,
+        searchKeyWord, 
+        limit,
+        offset,
+        1,
+        status
+      );
+    }
+
+
+    for (let article of list) {
+      // Kiểm tra nếu tags có tồn tại và là một chuỗi
+      if (article.tags && typeof article.tags === "string") {
+        // Tách chuỗi tags thành mảng, loại bỏ khoảng trắng thừa nếu có
+        article.tags = article.tags.split(",").map((tag) => tag.trim());
+      }
+    }
+
+    const nRows = await articleService.countArticlesByFilter(
+      validTagIDs,
+      startDate, // Chuyển đổi sang đối tượng Date
+      endDate,
+      searchKeyWord,
+      1,
+      status
+    );
+    const nPages = Math.ceil(nRows / limit);
+    const pageNumbers = [];
+
+    for (let i = 0; i < nPages; i++) {
+      pageNumbers.push({
+        value: i + 1,
+        active: i + 1 === +current_page,
+        link: `/writer/article/manage/ApprovedArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${tags}&searchKeyWord=${searchKeyWord}&page=${i+1}`,
+      });
+    }
+
+
+
+
+    // console.log(list);
+    // console.log(pageNumbers);
+    const nextPage= Number(current_page) + Number(1);
+    const previousPage= Number(current_page) - Number(1);
+    res.render("article-manage-all", {
+      list: list,
+      empty: list.length === 0,
+      pageNumbers: pageNumbers,
+      isLastPage: Number(current_page) === Number(nPages),
+      pagnitionName: "AllArticle-filter",
+      nextLink: `/writer/article/manage/ApprovedArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${validTagIDs}&searchKeyWord=${searchKeyWord}&page=${nextPage}`,
+      previousLink: `/writer/article/manage/ApprovedArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${validTagIDs}&searchKeyWord=${searchKeyWord}&page=${previousPage}`,
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+router.get("/PendingArticle-filter", async function (req, res) {
+  const tags = req.query.tags;
+  // Xử lý startDate và endDate
+  const startDate = isValidDate(req.query.startCreateDate) ? req.query.startCreateDate : null;
+  const endDate = isValidDate(req.query.endCreateDate) ? req.query.endCreateDate : null;
+  const tagsArray = tags ? tags.split(",") : [];
+  const rawSearchKeyWord = req.query.searchKeyWord;
+  const searchKeyWord = extractSearchKeyWord(rawSearchKeyWord);
+  const status = "pending";
+
+  try {
+
+      //pagnition
+      const limit = 5;
+      let current_page = req.query.page || 1;
+      if (isNaN(current_page) || current_page < 1) {
+        // Nếu current_page không phải là một số hợp lệ hoặc nhỏ hơn 1
+        current_page = 1; // Gán giá trị mặc định là 1
+      }
+      const offset = (current_page - 1) * limit;
+
+
+    // Lấy danh sách tagIDs tương ứng với các tags
+    const tagIDs = await Promise.all(
+      tagsArray.map(async (tag) => {
+        const tagData = await tagService.getTagByName(tag.trim()); // Lấy tagID từ tên tag
+        return tagData ? tagData.id : null; // Trả về null nếu tag không tồn tại
+      })
+    );
+
+    // Loại bỏ các giá trị null (nếu có tags không tồn tại)
+    const validTagIDs = tagIDs.filter((id) => id !== null);
+
+    // Lấy danh sách bài viết dựa trên các tagIDs hợp lệ và khoảng thời gian
+    let list = [];
+    if(startDate != null & endDate != null)
+    {
+       list = await articleService.getArticlesByFilter(
+        validTagIDs,
+        new Date(startDate), // Chuyển đổi sang đối tượng Date
+        new Date(endDate),
+        searchKeyWord, 
+        limit,
+        offset,
+        1,
+        status
+      );
+    }
+    else{
+       list = await articleService.getArticlesByFilter(
+        validTagIDs,
+        startDate, // Chuyển đổi sang đối tượng Date
+        endDate,
+        searchKeyWord, 
+        limit,
+        offset,
+        1,
+        status
+      );
+    }
+
+    console.log(list);
+    for (let article of list) {
+      // Kiểm tra nếu tags có tồn tại và là một chuỗi
+      if (article.tags && typeof article.tags === "string") {
+        // Tách chuỗi tags thành mảng, loại bỏ khoảng trắng thừa nếu có
+        article.tags = article.tags.split(",").map((tag) => tag.trim());
+      }
+    }
+
+    const nRows = await articleService.countArticlesByFilter(
+      validTagIDs,
+      startDate, // Chuyển đổi sang đối tượng Date
+      endDate,
+      searchKeyWord,
+      1,
+      status
+    );
+    const nPages = Math.ceil(nRows / limit);
+    const pageNumbers = [];
+
+    for (let i = 0; i < nPages; i++) {
+      pageNumbers.push({
+        value: i + 1,
+        active: i + 1 === +current_page,
+        link: `/writer/article/manage/PendingArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${tags}&searchKeyWord=${searchKeyWord}&page=${i+1}`,
+      });
+    }
+
+
+
+
+    // console.log(list);
+    // console.log(pageNumbers);
+    const nextPage= Number(current_page) + Number(1);
+    const previousPage= Number(current_page) - Number(1);
+    res.render("article-manage-all", {
+      list: list,
+      empty: list.length === 0,
+      pageNumbers: pageNumbers,
+      isLastPage: Number(current_page) === Number(nPages),
+      pagnitionName: "AllArticle-filter",
+      nextLink: `/writer/article/manage/PendingArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${validTagIDs}&searchKeyWord=${searchKeyWord}&page=${nextPage}`,
+      previousLink: `/writer/article/manage/PendingArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${validTagIDs}&searchKeyWord=${searchKeyWord}&page=${previousPage}`,
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+router.get("/RejectedArticle-filter", async function (req, res) {
+  const tags = req.query.tags;
+  // Xử lý startDate và endDate
+  const startDate = isValidDate(req.query.startCreateDate) ? req.query.startCreateDate : null;
+  const endDate = isValidDate(req.query.endCreateDate) ? req.query.endCreateDate : null;
+  const tagsArray = tags ? tags.split(",") : [];
+  const rawSearchKeyWord = req.query.searchKeyWord;
+  const searchKeyWord = extractSearchKeyWord(rawSearchKeyWord);
+  const status = "rejected";
+
+  try {
+
+      //pagnition
+      const limit = 5;
+      let current_page = req.query.page || 1;
+      if (isNaN(current_page) || current_page < 1) {
+        // Nếu current_page không phải là một số hợp lệ hoặc nhỏ hơn 1
+        current_page = 1; // Gán giá trị mặc định là 1
+      }
+      const offset = (current_page - 1) * limit;
+
+
+    // Lấy danh sách tagIDs tương ứng với các tags
+    const tagIDs = await Promise.all(
+      tagsArray.map(async (tag) => {
+        const tagData = await tagService.getTagByName(tag.trim()); // Lấy tagID từ tên tag
+        return tagData ? tagData.id : null; // Trả về null nếu tag không tồn tại
+      })
+    );
+
+    // Loại bỏ các giá trị null (nếu có tags không tồn tại)
+    const validTagIDs = tagIDs.filter((id) => id !== null);
+
+    // Lấy danh sách bài viết dựa trên các tagIDs hợp lệ và khoảng thời gian
+    let list = [];
+    if(startDate != null & endDate != null)
+    {
+       list = await articleService.getArticlesByFilter(
+        validTagIDs,
+        new Date(startDate), // Chuyển đổi sang đối tượng Date
+        new Date(endDate),
+        searchKeyWord, 
+        limit,
+        offset,
+        1,
+        status
+      );
+    }
+    else{
+       list = await articleService.getArticlesByFilter(
+        validTagIDs,
+        startDate, // Chuyển đổi sang đối tượng Date
+        endDate,
+        searchKeyWord, 
+        limit,
+        offset,
+        1,
+        status
+      );
+    }
+
+
+    for (let article of list) {
+      // Kiểm tra nếu tags có tồn tại và là một chuỗi
+      if (article.tags && typeof article.tags === "string") {
+        // Tách chuỗi tags thành mảng, loại bỏ khoảng trắng thừa nếu có
+        article.tags = article.tags.split(",").map((tag) => tag.trim());
+      }
+    }
+
+    const nRows = await articleService.countArticlesByFilter(
+      validTagIDs,
+      startDate, // Chuyển đổi sang đối tượng Date
+      endDate,
+      searchKeyWord,
+      1,
+      status
+    );
+    const nPages = Math.ceil(nRows / limit);
+    const pageNumbers = [];
+
+    for (let i = 0; i < nPages; i++) {
+      pageNumbers.push({
+        value: i + 1,
+        active: i + 1 === +current_page,
+        link: `/writer/article/manage/RejectedArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${tags}&searchKeyWord=${searchKeyWord}&page=${i+1}`,
+      });
+    }
+
+
+
+
+    // console.log(list);
+    // console.log(pageNumbers);
+    const nextPage= Number(current_page) + Number(1);
+    const previousPage= Number(current_page) - Number(1);
+    res.render("article-manage-all", {
+      list: list,
+      empty: list.length === 0,
+      pageNumbers: pageNumbers,
+      isLastPage: Number(current_page) === Number(nPages),
+      pagnitionName: "AllArticle-filter",
+      nextLink: `/writer/article/manage/RejectedArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${validTagIDs}&searchKeyWord=${searchKeyWord}&page=${nextPage}`,
+      previousLink: `/writer/article/manage/RejectedArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${validTagIDs}&searchKeyWord=${searchKeyWord}&page=${previousPage}`,
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
 
 router.post("/del", async function (req, res) {
   const id = req.body.id;

@@ -9,8 +9,9 @@ const tagNumb = document.querySelector(
   ".article-writer-textEditor-tagsDetail span"
 );
 
-let maxTags = 5;
-let tags = Array.from(initialTags).map(li => li.getAttribute("name"));
+const maxTags = 3;
+let tags = Array.from(initialTags).map((li) => li.getAttribute("name"));
+console.log(tags);
 function countTags() {
   tagInput.focus();
   tagNumb.innerText = maxTags - tags.length;
@@ -31,16 +32,29 @@ function createTag() {
       ulTags.insertAdjacentHTML("afterbegin", liTag);
     });
   countTags();
+  console.log("đây là counttag");
 }
 
 function removeTag(element, tag) {
-  let index = tags.indexOf(tag);
-  tags = [...tags.slice(0, index), ...tags.slice(index + 1)];
-  element.parentElement.remove();
-  countTags();
+  console.log("Tag được truyền vào:", tag);  // Kiểm tra tag truyền vào
+  console.log("Danh sách tag:", tags);  // Kiểm tra mảng tags
+  let index = tags.indexOf(tag.trim());  // Loại bỏ khoảng trắng nếu có
+
+
+  // Kiểm tra nếu tag tồn tại trong mảng trước khi xóa
+  if (index !== -1) {
+    // Xóa tag bằng cách cập nhật mảng
+    tags = [...tags.slice(0, index), ...tags.slice(index + 1)];
+    element.parentElement.remove();
+    countTags();
+  } else {
+    console.error("Tag không tồn tại trong mảng.");
+    console.log(tags);
+  }
 }
+
 function addTag(e) {
-  if (tags.length < 5) {
+  if (tags.length < 3) {
     if (e.key == "Enter") {
       // e.preventDefault(); // Ngừng hành vi gửi form khi nhấn Enter
       let tag = e.target.value.replace(/\s+/g, " ");
@@ -68,7 +82,9 @@ submitButton.addEventListener("click", function (e) {
   // console.log("hello");
   e.preventDefault();
 
-  const categoryName = document.getElementById("article-writer-textEditor-categoryName").value;
+  const categoryName = document.getElementById(
+    "article-writer-textEditor-categoryName"
+  ).value;
   if (categoryName.length === 0) {
     // console.log(categoryName); // Kiểm tra giá trị
     Swal.fire({
@@ -102,9 +118,11 @@ submitButton.addEventListener("click", function (e) {
   // Lấy nội dung từ Summernote (code view) nếu cần
   var content = $("#summernote").summernote("code");
   $("#article-writer-textEditor-articleContent").val(content); // Đưa nội dung vào trường ẩn trong form
-  
 
-  var contentText = $("#summernote").summernote("code").replace(/<[^>]+>/g, "").trim();
+  var contentText = $("#summernote")
+    .summernote("code")
+    .replace(/<[^>]+>/g, "")
+    .trim();
   if (contentText.length === 0) {
     Swal.fire({
       title: "Error!",
@@ -115,7 +133,7 @@ submitButton.addEventListener("click", function (e) {
   }
   console.log(categoryName);
   console.log(categories);
-  if (!categories.some(category => category.name === categoryName)) {
+  if (!categories.some((category) => category.name === categoryName)) {
     Swal.fire({
       title: "Error!",
       text: "Category is not available",
@@ -130,7 +148,7 @@ submitButton.addEventListener("click", function (e) {
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Yes"
+    confirmButtonText: "Yes",
   }).then((result) => {
     if (result.isConfirmed) {
       tags.forEach((tag) => {
@@ -147,13 +165,13 @@ submitButton.addEventListener("click", function (e) {
           Swal.showLoading();
           const timer = Swal.getPopup().querySelector("b");
           timerInterval = setInterval(() => {
-              // Hiển thị số giây còn lại (làm tròn xuống)
-              timer.textContent = Math.floor(Swal.getTimerLeft() / 1000);
-            }, 100); // Cập nhật mỗi 100ms để đảm bảo đồng bộ
-          },
+            // Hiển thị số giây còn lại (làm tròn xuống)
+            timer.textContent = Math.floor(Swal.getTimerLeft() / 1000);
+          }, 100); // Cập nhật mỗi 100ms để đảm bảo đồng bộ
+        },
         willClose: () => {
           clearInterval(timerInterval);
-        }
+        },
       }).then((result) => {
         /* Read more about handling dismissals below */
         if (result.dismiss === Swal.DismissReason.timer) {

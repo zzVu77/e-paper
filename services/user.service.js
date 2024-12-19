@@ -58,4 +58,7 @@ export default {
       .select("users.*")
       .where("id", id)
   },
+  patch(id, entity) {
+    return db("users").where("id", id).update(entity);
+  },
 };

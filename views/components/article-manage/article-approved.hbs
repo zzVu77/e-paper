@@ -98,12 +98,12 @@
         class="pagination"
         style="margin-top :20px; margin:0 auto; width: fit-content;"
       >
-        {{#if (isEqual this.previousPage 0)}}
-          <li class="page-item disabled">
+        {{#if isFirstPage}}
+          <li class="page-item disabled" style="width: 86px;">
             <a class="page-link" href="#">Previous</a>
           </li>
         {{else}}
-          <li class="page-item">
+          <li class="page-item" style="width: 86px;">
             <a
               class="page-link"
               href={{previousLink}}
@@ -126,11 +126,11 @@
           {{/if}}
         {{/each}}
         {{#if isLastPage}}
-          <li class="page-item disabled">
+          <li class="page-item disabled" style="width: 86px; text-align:center">
             <a class="page-link" href="#">Next</a>
           </li>
         {{else}}
-          <li class="page-item">
+          <li class="page-item" style="width: 86px; text-align:center">
             <a
               class="page-link"
               href={{nextLink}}

@@ -26,7 +26,7 @@ router.get("/", async function (req, res) {
     );
     // console.log(categoryName);
 
-    res.render("article-writer-editTextEditor", {
+    res.render("writer/article-writer-editTextEditor", {
       article: article,
       categoryName: categoryName,
       categoryListName: JSON.stringify(articleList),

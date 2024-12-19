@@ -1,8 +1,10 @@
 import express from "express";
 import { engine } from "express-handlebars";
+import fs from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import formatDateTime from "./helpers/formatDateTime.js";
+import genPDF from "./public/js/genPDF.js";
 import articlesmanagementRouter from "./routes/admin/articles.route.js";
 import categoriesmanagementRouter from "./routes/admin/categories.route.js";
 import personsmanagementRouter from "./routes/admin/persons.route.js";
@@ -11,9 +13,9 @@ import editormanagementRouter from "./routes/editor.route.js";
 import postsRouter from "./routes/posts.route.js";
 import articleService from "./services/article.service.js";
 import categoryService from "./services/category.service.js";
-import genPDF from "./public/js/genPDF.js";
+import otp_generator from "otp-generator";
+import Redis from "ioredis";
 const __dirname = dirname(fileURLToPath(import.meta.url));
-import fs from "fs";
 const app = express();
 // const path = require("path");
 app.use(
@@ -43,13 +45,13 @@ app.use(express.static("public"));
 // setup local data for navigation
 app.use(async function (req, res, next) {
   const currentCategory = req.query.name || "";
-  console.log("Current Category: ", currentCategory);
+  // console.log("Current Category: ", currentCategory);
   const categories = await categoryService.getCategoryName();
   const listCategory = [];
   const parentCat = currentCategory
     ? await categoryService.getParentCategory(currentCategory)
     : "";
-  console.log("parent", parentCat);
+  // console.log("parent", parentCat);
   for (let index = 0; index < categories.length; index++) {
     listCategory.push({
       currentCategory: currentCategory,
@@ -60,7 +62,7 @@ app.use(async function (req, res, next) {
         currentCategory === categories[index].parent_name,
     });
   }
-  console.log(listCategory);
+  // console.log(listCategory);
   res.locals.categories = listCategory;
   next();
 });
@@ -187,11 +189,29 @@ app.post("/generate-pdf", async function (req, res) {
   }
 });
 app.post("/send-email", async function (req, res) {
-  const { email } = req.body;
-  console.log("Value: ", email);
-  res.json({
-    success: true,
-  });
+  try {
+    const { email } = req.body;
+    const otpcode = otp_generator.generate(4, {
+      digits: true,
+      upperCaseAlphabets: false,
+      lowerCaseAlphabets: false,
+      specialChars: false,
+      alphabets: false, // Loại bỏ ký tự chữ, chỉ giữ chữ số
+    });
+    console.log(otpcode);
+    const validTime = 10; // Thời gian hợp lệ của mã OTP (phút)
+    const redis = new Redis();
+    const key = `otp:${email}`;
+    redis.set(key, otpcode, "EX", 60 * validTime); // Lưu mã OTP vào Redis với thời gian hết hạn
+    const value = await redis.get(key);
+    console.log("redis: ", value);
+    res.json({
+      success: true,
+      otp: otpcode,
+    });
+  } catch (error) {
+    alert("Failed to send email.");
+  }
 });
 
 app.listen(3000, function () {

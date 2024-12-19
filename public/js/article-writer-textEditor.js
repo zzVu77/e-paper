@@ -103,7 +103,15 @@ submitButton.addEventListener("click", function (e) {
     });
     return;
   }
-
+  const thumbnail = $("#article-writer-textEditor-imageFileInput").val();
+  if (!thumbnail) {
+    Swal.fire({
+      title: "Error!",
+      text: "Thumbnail is required",
+      icon: "error",
+    });
+    return;
+  }
   // Thêm các input ẩn với giá trị của tags
 
   // console.log(tags.length);

@@ -8,6 +8,7 @@ import categoriesmanagementRouter from "./routes/admin/categories.route.js";
 import personsmanagementRouter from "./routes/admin/persons.route.js";
 import tagsmanagementRouter from "./routes/admin/tags.route.js";
 import editormanagementRouter from "./routes/editor.route.js";
+import accountSettingRouter from "./routes/account-setting.route.js";
 import postsRouter from "./routes/posts.route.js";
 import articleService from "./services/article.service.js";
 import categoryService from "./services/category.service.js";
@@ -85,15 +86,7 @@ app.get("/signup", function (req, res) {
   res.render("signup", { layout: "default" });
 });
 
-app.get("/account-setting-myprofile", function (req, res) {
-  res.render("account-setting-myprofile");
-});
-app.get("/account-setting-security", function (req, res) {
-  res.render("account-setting-security");
-});
-app.get("/account-setting-upgrade", function (req, res) {
-  res.render("account-setting-upgrade");
-});
+
 
 app.get("/forgot-password", function (req, res) {
   res.render("forgotPassword", { layout: "default" });
@@ -130,6 +123,7 @@ app.use("/admin/tags", tagsmanagementRouter);
 app.use("/admin/persons", personsmanagementRouter);
 app.use("/admin/articles", articlesmanagementRouter);
 app.use("/posts", postsRouter);
+app.use("/AccountSetting", accountSettingRouter);
 
 // app.get("/editor", function (req, res) {
 //   res.render("editor", { layout: "admin", title: "Editor" });

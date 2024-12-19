@@ -2,31 +2,32 @@
 
 <div class = "accountsetting-myprofile-container">
     <p>My Profile</p>
-    <form class="accountsetting-myprofile-form-input">
-        <div class ="accountsetting-avatar">
+    <form class="accountsetting-myprofile-form-input" method="post">
+        {{!-- <div class ="accountsetting-avatar">
             <img src="/img/avatar.png">
             <label class="accountsetting-change-avatar-button">
                 Change Avatar
                 <input type="file" accept="image/*" style="display: none;" />
             </label>        
-        </div>
+        </div> --}}
         <div class="form-group" style="margin-bottom:26px;">
             <label for="email" style="color: #7E7F81; font-size: 12px; font-family: Open Sans; font-weight: 400; line-height: 12px; word-wrap: break-word">Email Address</label>
-            <input type="email" class="form-control" id="email" placeholder="name@example.com">
+            <input type="email" class="form-control" id="email" placeholder="name@example.com" value= "{{user.email}}">
         </div>
+        <div class="form-group" style="margin-bottom:26px; ">
+            <label for="firstname" style="color: #7E7F81; font-size: 12px; font-family: Open Sans; font-weight: 400; line-height: 12px; word-wrap: break-word">Full Name</label>
+            <input type="text" class="form-control" id="firstname" value="user.name">
+        </div>
+        <div class="form-group" style="margin-bottom:26px;">
+            <label for="lastname" style="color: #7E7F81; font-size: 12px; font-family: Open Sans; font-weight: 400; line-height: 12px; word-wrap: break-word">Date of Birth</label>
+            <input type="text" class="form-control" id="lastname">
+        </div>
+        {{#if (isEqual user.role "writer") }}
         <div class="form-group" style="margin-bottom:26px; width: 470px; height: 60px;">
             <label for="publicname" style="color: #7E7F81; font-size: 12px; font-family: Open Sans; font-weight: 400; line-height: 12px; word-wrap: break-word">Public Author Name</label>
             <input type="text" class="form-control" id="publicname">
-            <span>This is the name that will appear on your posts and public profile.</span>
-        </div>
-
-        <div class="form-group" style="margin-bottom:26px; ">
-            <label for="firstname" style="color: #7E7F81; font-size: 12px; font-family: Open Sans; font-weight: 400; line-height: 12px; word-wrap: break-word">First Name</label>
-            <input type="text" class="form-control" id="firstname">
-        </div>
-        <div class="form-group" style="margin-bottom:26px;">
-            <label for="lastname" style="color: #7E7F81; font-size: 12px; font-family: Open Sans; font-weight: 400; line-height: 12px; word-wrap: break-word">Last Name</label>
-            <input type="text" class="form-control" id="lastname">
+            <span>This is the name that will appear on your posts and public profile.
+            </span>
         </div>
         <button class="accountsetting-save-changes">SAVE CHANGES</button>
     </form>

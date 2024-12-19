@@ -186,6 +186,13 @@ app.post("/generate-pdf", async function (req, res) {
     res.status(500).send("Error generating PDF");
   }
 });
+app.post("/send-email", async function (req, res) {
+  const { email } = req.body;
+  console.log("Value: ", email);
+  res.json({
+    success: true,
+  });
+});
 
 app.listen(3000, function () {
   console.log("ecApp is running at http://localhost:3000");

@@ -2,21 +2,55 @@
   class="tw-flex tw-justify-center tw-items-center tw-min-h-screen tw-bg-gray-100"
 >
   <form
-    class="tw-flex tw-flex-col tw-items-center tw-justify-around tw-w-[500px] tw-bg-white tw-rounded-xl tw-p-5"
+    class="form tw-flex tw-flex-col tw-items-center tw-justify-around tw-w-[500px] tw-bg-white tw-rounded-xl tw-p-5"
   >
-    <div class="tw-text-xl tw-font-bold tw-text-black">OTP</div>
-    <div class="tw-text-xl tw-font-bold tw-text-black">Verification Code</div>
-    <p class="tw-text-gray-400 tw-text-sm tw-mt-1 tw-text-center">
+    {{! <div class="tw-text-xl tw-font-bold tw-text-black">OTP</div> }}
+    <div class="tw-text-xl tw-font-bold tw-text-black">Reset Password</div>
+    {{! <p class="tw-text-gray-400 tw-text-sm tw-mt-1 tw-text-center">
       We have sent a verification code to your email address
-    </p>
-    <div class="tw-flex tw-gap-3 tw-mt-2">
-      <input
-        id="otp"
-        name="otp"
-        type="text"
-        maxlength="4"
-        class="tw-w-full tw-h-8 tw-text-center tw-border-[1px] tw-border-black focus:tw-border-blue-500 tw-rounded-lg"
-      />
+    </p> }}
+    <div class="tw-flex tw-flex-col tw-gap-3 tw-mt-2">
+      <div>
+        <label for="otp" class="tw-text-[#151717] tw-font-medium">OTP code
+          (Check your email)</label>
+
+        <input
+          autocomplete="off"
+          id="otp"
+          name="otp"
+          type="text"
+          maxlength="6"
+          required
+          class="tw-w-full tw-h-8 tw-text-center tw-border-[1px] tw-border-black focus:tw-border-blue-500 tw-rounded-lg tw-font-bold tw-text-[#53aa51] tw-tracking-widest tw-text-2xl"
+        />
+      </div>
+      <div>
+        <label for="newpsd" class="tw-text-[#151717] tw-font-medium">New
+          password</label>
+        <input
+          id="newpsd"
+          name="otp"
+          type="password"
+          minlength="6"
+          required
+          class="tw-px-2 tw-w-full tw-h-8 tw-text-left tw-border-[1px] tw-border-black focus:tw-border-blue-500 tw-rounded-lg tw-text-[#53aa51] tw-text-2xl"
+        />
+      </div>
+      <div>
+        <label
+          for="confirmpsd"
+          class="tw-text-[#151717] tw-font-medium"
+          name="otp"
+        >Confirm password</label>
+        <input
+          id="confirmpsd"
+          name="otp"
+          type="password"
+          minlength="6"
+          required
+          class="tw-px-2 tw-w-full tw-h-8 tw-text-left tw-border-[1px] tw-border-black focus:tw-border-blue-500 tw-rounded-lg tw-text-[#53aa51] tw-text-2xl"
+        />
+      </div>
 
     </div>
     <button
@@ -26,3 +60,4 @@
     </button>
   </form>
 </div>
+<script src="/js/verify-otp.js"></script>

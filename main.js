@@ -1,8 +1,13 @@
+import bcrypt from "bcryptjs";
 import express from "express";
 import { engine } from "express-handlebars";
+import fs from "fs";
+import Redis from "ioredis";
+import otp_generator from "otp-generator";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import formatDateTime from "./helpers/formatDateTime.js";
+import genPDF from "./public/js/genPDF.js";
 import articlesmanagementRouter from "./routes/admin/articles.route.js";
 import writerArticleMangeRouter from "./routes/writer/articleMange.route.js";
 import writerCreateArticle from "./routes/writer/createArticle.route.js";
@@ -16,11 +21,10 @@ import accountSettingRouter from "./routes/account-setting.route.js";
 import postsRouter from "./routes/posts.route.js";
 import articleService from "./services/article.service.js";
 import categoryService from "./services/category.service.js";
-import genPDF from "./public/js/genPDF.js";
+import accountService from "./services/account.service.js";
 const __dirname = dirname(fileURLToPath(import.meta.url));
-import fs from "fs";
 const app = express();
-// const path = require("path");
+const redis = new Redis();
 app.use(
   express.urlencoded({
     extended: true,
@@ -55,13 +59,13 @@ app.use(express.static("public"));
 // setup local data for navigation
 app.use(async function (req, res, next) {
   const currentCategory = req.query.name || "";
-  console.log("Current Category: ", currentCategory);
+  // console.log("Current Category: ", currentCategory);
   const categories = await categoryService.getCategoryName();
   const listCategory = [];
   const parentCat = currentCategory
     ? await categoryService.getParentCategory(currentCategory)
     : "";
-  console.log("parent", parentCat);
+  // console.log("parent", parentCat);
   for (let index = 0; index < categories.length; index++) {
     listCategory.push({
       currentCategory: currentCategory,
@@ -72,7 +76,7 @@ app.use(async function (req, res, next) {
         currentCategory === categories[index].parent_name,
     });
   }
-  console.log(listCategory);
+  // console.log(listCategory);
   res.locals.categories = listCategory;
   next();
 });
@@ -202,6 +206,62 @@ app.post("/generate-pdf", async function (req, res) {
   } catch (error) {
     console.error("Error generating PDF:", error);
     res.status(500).send("Error generating PDF");
+  }
+});
+
+app.post("/send-email", async function (req, res) {
+  try {
+    const { email } = req.body;
+    console.log("Demo email", email);
+    const otpcode = otp_generator.generate(6, {
+      digits: true,
+      upperCaseAlphabets: false,
+      lowerCaseAlphabets: false,
+      specialChars: false,
+      alphabets: false, // Loại bỏ ký tự chữ, chỉ giữ chữ số
+    });
+    console.log(otpcode);
+    const validTime = 10; // Thời gian hợp lệ của mã OTP (phút)
+    const key = `otp:${email}`;
+    redis.set(key, otpcode, "EX", 60 * validTime); // Lưu mã OTP vào Redis với thời gian hết hạn
+    const value = await redis.get(key);
+    console.log("redis: ", value);
+    res.json({
+      success: true,
+      otp: otpcode,
+      validTime: validTime,
+    });
+  } catch (error) {
+    alert("Failed to send email.");
+  }
+});
+app.post("/reset-password", async function (req, res) {
+  const { otp, password, email } = req.body;
+  const hashPassword = await bcrypt.hash(password, 10);
+  const value = await redis.get(`otp:${email}`);
+  if (value === otp) {
+    const result = await accountService.updatePassword(email, hashPassword);
+    console.log(result);
+    if (result.success) {
+      console.log("Password changed successfully");
+      await redis.del(`otp:${email}`);
+      res.json({
+        status: "success",
+        message: "Password changed successfully",
+      });
+    } else {
+      console.log(result.errorMessage);
+      res.json({
+        status: "failed",
+        message: result.errorMessage,
+      });
+    }
+  } else {
+    console.log("OTP is incorrect");
+    res.json({
+      status: "failed",
+      message: "OTP is incorrect",
+    });
   }
 });
 

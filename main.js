@@ -1,6 +1,9 @@
+import bcrypt from "bcryptjs";
 import express from "express";
 import { engine } from "express-handlebars";
 import fs from "fs";
+import Redis from "ioredis";
+import otp_generator from "otp-generator";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import formatDateTime from "./helpers/formatDateTime.js";
@@ -13,11 +16,10 @@ import editormanagementRouter from "./routes/editor.route.js";
 import postsRouter from "./routes/posts.route.js";
 import articleService from "./services/article.service.js";
 import categoryService from "./services/category.service.js";
-import otp_generator from "otp-generator";
-import Redis from "ioredis";
+import accountService from "./services/account.service.js";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
-// const path = require("path");
+const redis = new Redis();
 app.use(
   express.urlencoded({
     extended: true,
@@ -188,10 +190,12 @@ app.post("/generate-pdf", async function (req, res) {
     res.status(500).send("Error generating PDF");
   }
 });
+
 app.post("/send-email", async function (req, res) {
   try {
     const { email } = req.body;
-    const otpcode = otp_generator.generate(4, {
+    console.log("Demo email", email);
+    const otpcode = otp_generator.generate(6, {
       digits: true,
       upperCaseAlphabets: false,
       lowerCaseAlphabets: false,
@@ -200,7 +204,6 @@ app.post("/send-email", async function (req, res) {
     });
     console.log(otpcode);
     const validTime = 10; // Thời gian hợp lệ của mã OTP (phút)
-    const redis = new Redis();
     const key = `otp:${email}`;
     redis.set(key, otpcode, "EX", 60 * validTime); // Lưu mã OTP vào Redis với thời gian hết hạn
     const value = await redis.get(key);
@@ -208,9 +211,39 @@ app.post("/send-email", async function (req, res) {
     res.json({
       success: true,
       otp: otpcode,
+      validTime: validTime,
     });
   } catch (error) {
     alert("Failed to send email.");
+  }
+});
+app.post("/reset-password", async function (req, res) {
+  const { otp, password, email } = req.body;
+  const hashPassword = await bcrypt.hash(password, 10);
+  const value = await redis.get(`otp:${email}`);
+  if (value === otp) {
+    const result = await accountService.updatePassword(email, hashPassword);
+    console.log(result);
+    if (result.success) {
+      console.log("Password changed successfully");
+      await redis.del(`otp:${email}`);
+      res.json({
+        status: "success",
+        message: "Password changed successfully",
+      });
+    } else {
+      console.log(result.errorMessage);
+      res.json({
+        status: "failed",
+        message: result.errorMessage,
+      });
+    }
+  } else {
+    console.log("OTP is incorrect");
+    res.json({
+      status: "failed",
+      message: "OTP is incorrect",
+    });
   }
 });
 

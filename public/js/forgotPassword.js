@@ -41,47 +41,42 @@ document.addEventListener("DOMContentLoaded", function () {
           }),
         });
         const result = await response.json();
-        console.log(result);
+        const user_Email = email.value;
         if (result.success) {
-          alert("Email sent successfully!");
-          this.reset();
-          window.location.href = "/verify-otp";
-        } else {
-          alert("Failed to send email.");
+          try {
+            emailjs.init({
+              publicKey: "FhN3nVUbb808XWXhm", // Khóa công khai của bạn
+            });
+
+            // Tạo tham số template
+            const templateParams = {
+              otp_code: result.otp, // Mã OTP (có thể thay đổi theo yêu cầu)
+              valid_minutes: result.validTime, // Thời gian hợp lệ (có thể thay đổi theo yêu cầu)
+              user: email.value.trim(), // Email người dùng nhập vào
+            };
+
+            // Gửi email qua EmailJS
+            const response = await emailjs.send(
+              "service_v92x03b", // Service ID của bạn
+              "template_ue8v0qs", // Template ID của bạn
+              templateParams
+            );
+
+            if (response.status === 200) {
+              console.log("SUCCESS!", response.status, response.text);
+              alert("Email sent successfully!");
+              this.reset();
+              window.location.href = `/verify-otp?email=${user_Email}`;
+              // Thông báo thành công
+            } else {
+              console.log("FAILED!", response);
+              alert("Failed to send email."); // Thông báo thất bại
+            }
+          } catch (error) {
+            console.error("Error sending email:", error);
+            alert("Error sending email, please try again later.");
+          }
         }
-        // try {
-        //   emailjs.init({
-        //     publicKey: "FhN3nVUbb808XWXhm", // Khóa công khai của bạn
-        //   });
-
-        //   // Tạo tham số template
-        //   const templateParams = {
-        //     otp_code: "1234", // Mã OTP (có thể thay đổi theo yêu cầu)
-        //     valid_minutes: "5", // Thời gian hợp lệ (có thể thay đổi theo yêu cầu)
-        //     user: email.value.trim(), // Email người dùng nhập vào
-        //   };
-
-        //   // Gửi email qua EmailJS
-        //   const response = await emailjs.send(
-        //     "service_v92x03b", // Service ID của bạn
-        //     "template_ue8v0qs", // Template ID của bạn
-        //     templateParams
-        //   );
-
-        //   if (response.status === 200) {
-        //     console.log("SUCCESS!", response.status, response.text);
-        //     alert("Email sent successfully!");
-        //     this.reset();
-        //     window.location.href = "/verify-otp";
-        //     // Thông báo thành công
-        //   } else {
-        //     console.log("FAILED!", response);
-        //     alert("Failed to send email."); // Thông báo thất bại
-        //   }
-        // } catch (error) {
-        //   console.error("Error sending email:", error);
-        //   alert("Error sending email, please try again later.");
-        // }
       }
     });
 });

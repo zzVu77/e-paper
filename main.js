@@ -4,9 +4,13 @@ import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import formatDateTime from "./helpers/formatDateTime.js";
 import articlesmanagementRouter from "./routes/admin/articles.route.js";
+import writerArticleMangeRouter from "./routes/writer/articleMange.route.js";
+import writerCreateArticle from "./routes/writer/createArticle.route.js";
+import writerEditArticle from "./routes/writer/editArticle.route.js";
 import categoriesmanagementRouter from "./routes/admin/categories.route.js";
 import personsmanagementRouter from "./routes/admin/persons.route.js";
 import tagsmanagementRouter from "./routes/admin/tags.route.js";
+
 import editormanagementRouter from "./routes/editor.route.js";
 import accountSettingRouter from "./routes/account-setting.route.js";
 import postsRouter from "./routes/posts.route.js";
@@ -31,11 +35,18 @@ app.engine(
     partialsDir: join(__dirname, "/views/components/"),
     helpers: {
       format_datetime: formatDateTime,
+      isEqual(value1, value2) {
+        return value1 === value2;
+      },
+      splitToArray(str) {
+        if (!str) return []; // Nếu chuỗi không tồn tại, trả về mảng rỗng
+        return str.split(",").map((item) => item.trim()); // Tách chuỗi và loại bỏ khoảng trắng
+      },
       compareStrings(str1, str2) {
         return str1 === str2; // Trả về true nếu hai chuỗi bằng nhau, ngược lại trả về false
       },
-    },
-  })
+
+  }})
 );
 app.use(express.json());
 app.set("view engine", "hbs");
@@ -65,6 +76,9 @@ app.use(async function (req, res, next) {
   res.locals.categories = listCategory;
   next();
 });
+app.use("/writer/article/manage", writerArticleMangeRouter);
+app.use("/writer/article/create", writerCreateArticle);
+app.use("/writer/article/edit", writerEditArticle);
 
 app.get("/features", function (req, res) {
   res.render("features");
@@ -94,27 +108,37 @@ app.get("/forgot-password", function (req, res) {
 app.get("/verify-otp", function (req, res) {
   res.render("verify-otp", { layout: "default" });
 });
-app.get("/article-writer-textEditor", function (req, res) {
-  res.render("article-writer-textEditor");
-});
-app.get("/article-writer-editTextEditor", function (req, res) {
-  res.render("article-writer-editTextEditor");
-});
-app.get("/article-manage-approved", function (req, res) {
-  res.render("article-manage-approved");
-});
-app.get("/article-manage-pending", function (req, res) {
-  res.render("article-manage-pending");
-});
-app.get("/article-manage-published", function (req, res) {
-  res.render("article-manage-published");
-});
-app.get("/article-manage-rejected", function (req, res) {
-  res.render("article-manage-rejected");
-});
-app.get("/article-manage-all", function (req, res) {
-  res.render("article-manage-all");
-});
+
+// function groupArticlesByTags(data) {
+//   const groupedData = [];
+
+//   data.forEach((item) => {
+//     // Tìm bài viết trong danh sách groupedData
+//     const existingArticle = groupedData.find(
+//       (article) => article.id === item.id
+//     );
+
+//     if (existingArticle) {
+//       // Nếu bài viết đã tồn tại, thêm tag vào mảng tags
+//       existingArticle.tags.push(item.tag_name);
+//     } else {
+//       // Nếu chưa tồn tại, thêm bài viết mới với mảng tags
+//       groupedData.push({
+//         id: item.id,
+//         authorId: item.author,
+//         title: item.title,
+//         abstract: item.abstract,
+//         content: item.content,
+//         updated_at: item.updated_at,
+//         tags: [item.tag_name], // Mảng chứa các tag ban đầu
+//         status: item.status,
+//         is_premium: item.is_premium,
+//       });
+//     }
+//   });
+
+//   return groupedData;
+// }
 // app.get('/admin/tags', function (req, res) {
 //   res.render('admin/tags', { layout: 'admin', title: 'Tags' });
 // });

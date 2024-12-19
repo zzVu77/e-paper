@@ -1,47 +1,131 @@
 <link rel="stylesheet" href="/css/article-writer-textEditor.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.js"></script>
 
-<div class="article-writer-textEditor-container">
-    <div class="article-writer-textEditor-title mb-3" style = "margin-bottom:50px;">
-      <textarea class="form-control" id="exampleFormControlTextarea1" rows="1" placeholder="Tiêu đề" style="padding-top: 10px; padding-bottom:10px;"></textarea>
-    </div>
+<form id ="article-writer-textEditor-createForm" action="" method="post" enctype="multipart/form-data">
+  <div class="article-writer-textEditor-container">
+      <div class="article-writer-textEditor-title mb-3" style = "margin-bottom:50px;">
+        <input
+          name="title"   
+          class="form-control" 
+          id="article-writer-textEditor-title" 
+          rows="1" 
+          placeholder="Tiêu đề" 
+          style="padding-top: 10px; padding-bottom:10px, white-space: nowrap;"
+          value ="{{article.title}}"
+        />
+      </div>
+      <div class="article-writer-textEditor-title mb-3" style="margin-bottom:50px;">
+        <input 
+          name="category" 
+          class="form-control awesomplete" 
+          id="article-writer-textEditor-categoryName" 
+          placeholder="Chuyên mục" 
+          style="padding-top: 10px; padding-bottom:10px; width:100%;" 
+          data-minchars="1" 
+          value="{{categoryName.name}}"
+        />
 
-    <div style="display: flex; justify-content: space-between; width: 100%; align-items: stretch; margin-bottom: 50px">
-      <div class="article-writer-textEditor-tagInput">
-        <ul>
-          <input type="text" spellcheck="false" placeholder="Nhập tối đa 5 nhãn cho bài viết">
+        <!-- Awesomplete sẽ tự động sử dụng danh sách gợi ý -->
+        <ul id="categoryList" style="display: none;">
+          {{#each categoryList}}
+            <li>{{this.name}}</li>
+          {{/each}}
         </ul>
-        <div class="article-writer-textEditor-tagsDetail">
-        <p>Có thể nhập thêm <span>5</span> nhãn</p>
-        {{!-- <button>Remove All</button> --}}
+      </div>
+      <div class="article-writer-textEditor-title mb-3" style = "margin-bottom:50px;">
+        <input 
+          name="abstract" 
+          class="form-control" 
+          id="article-writer-textEditor-abstract" 
+          rows="2" placeholder="Abstract" 
+          style="padding-top: 10px; padding-bottom:10px;"
+          value = "{{article.abstract}}"
+        />
+      </div>
+
+      <div style="display: flex; justify-content: space-between; width: 100%; align-items: stretch; margin-bottom: 10px">
+        <div class="article-writer-textEditor-tagInput">
+          <ul>
+            {{#each article.tags}}
+            <li name="{{this}}">
+              {{this}}
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16" onclick="removeTag(this, '{{this}}')">
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+              </svg> 
+            </li>
+            {{/each}}
+            <input type="text" spellcheck="false" placeholder="Nhập tối đa 3 nhãn cho bài viết">
+          </ul>
         </div>
-      </div>
 
-      <div class="article-writer-textEditor-thumbnail mb-3" style="box-sizing: border-box; max-width: 15%; vertical-align: top; margin: 0px; height: 100%;">
-          <button id="article-writer-textEditor-openImagePopup" class="btn btn-light" style="height: 100%; padding-top: 10px; padding-bottom: 10px;">Chọn ảnh thu nhỏ</button>
-      </div>
-      <!-- Popup -->
-      <div id="article-writer-textEditor-imagePopup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; padding: 20px; background: white; border: 1px solid #ccc; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000;">
-        <h3>Thêm hình ảnh thu nhỏ</h3>
-        <input type="file" id="article-writer-textEditor-imageFileInput" accept="image/*">
-        <div id="previewContainer" style="margin-top: 20px;">
-          <!-- Hiển thị ảnh thu nhỏ -->
-          <img id="article-writer-textEditor-thumbnailPreview" src="" alt="Thumbnail Preview" style="max-width: 100%; display: none;">
+        <div class="article-writer-textEditor-thumbnail mb-3" style="box-sizing: border-box; max-width: 15%; vertical-align: top; margin: 0px; height: 100%;">
+            <button type ="button" id="article-writer-textEditor-openImagePopup" class="btn btn-light" style="height: 100%; padding-top: 10px; padding-bottom: 10px;">Chọn ảnh thu nhỏ</button>
         </div>
-        <div style="text-align: center;">
-          <button id="article-writer-textEditor-closePopupBtn" class="btn btn-danger" style="margin-top: 20px;">Đóng</button>
+        <!-- Popup -->
+        <div id="article-writer-textEditor-imagePopup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; padding: 20px; background: white; border: 1px solid #ccc; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000;">
+          <h3>Thay đổi hình ảnh thu nhỏ</h3>
+          <!-- Input file để chọn ảnh -->
+          <input type="file" id="article-writer-editTextEditor-imageFileInput" accept="image/*" name="image_url" onchange="previewImage(event)">
+          
+          <div id="previewContainer" style="margin-top: 20px;">
+            <!-- Hiển thị ảnh thu nhỏ -->
+            <img id="article-writer-textEditor-thumbnailPreview" 
+                src="{{article.image_url}}" 
+                {{!-- src="img/cb6786c6-537b-4359-9b94-e844cf38325a.png" --}}
+                alt="Thumbnail" 
+                style="max-width: 100%; display: block;">
+          </div>
+          
+          <div style="text-align: center;">
+            <button type="button" id="article-writer-textEditor-closePopupBtn" class="btn btn-danger" style="margin-top: 20px;">Đóng</button>
+          </div>
         </div>
+
+        <!-- Overlay (nền tối) -->
+        <div id="article-writer-textEditor-popupOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
+          <button id="article-writer-textEditor-publish-button" type="button" class="btn btn-light" style="box-sizing: border-box; max-width: 15%; height: 100%; padding-top: 10px; padding-bottom: 10px;">Lưu bài viết</button>
+        </div>
+
+          <div class="article-writer-textEditor-tagsDetail">
+            <p>Có thể nhập thêm <span>3</span> nhãn</p>
+            <label>
+              Premium:
+              {{#if article.is_premium}}
+                <input type="checkbox" name="premium" checked/>
+              {{else}}
+                <input type="checkbox" name="premium"/>
+              {{/if}}
+            </label>
+          </div>
+
+
+
+
+      <div class="article-text-editor">
+        {{> article-writer-textEditor/editText-editor textHeight=500 content= article.content }}
       </div>
-
-      <!-- Overlay (nền tối) -->
-      <div id="article-writer-textEditor-popupOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
-        <button type="button" class="btn btn-light" style="box-sizing: border-box; max-width: 15%; height: 100%; padding-top: 10px; padding-bottom: 10px;">Xuất bản bài viết</button>
-      </div>
-
-
-
-
-    <div class="article-text-editor">
-        {{>article-writer-textEditor/editText-editor textHeight= 500}}
-   </div>
-</div>
+      <input type="hidden" name="id" value="{{article.id}}">  <!-- Thêm trường này -->
+      <input type="hidden" name="content" id="article-writer-textEditor-articleContent">
+      <input type="hidden" name="status" value="pending">  <!-- Thêm trường này -->
+      <input type="hidden" name="author" value=1>  <!-- Thêm trường này -->
+  </div>
+</form>
+<script>
+  const categories = {{{categoryListName}}};
+</script>
 <script src = "/js/article-writer-textEditor.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+var input = document.getElementById("article-writer-textEditor-categoryName");
+new Awesomplete(input, {list: "#categoryList"});
+</script>
+
+<style>
+  .awesomplete ul {
+    width: 50%; /* Khớp với input nếu cần */
+  }
+  .awesomplete{
+    width: 100%; /* Khớp với input nếu cần */
+  }
+</style>

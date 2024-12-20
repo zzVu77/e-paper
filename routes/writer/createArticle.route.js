@@ -16,7 +16,7 @@ const __dirname = path.dirname(__filename);
 
 router.get("/", async function (req, res) {
   const list = await categoryService.getAll();
-  res.render("article-writer-textEditor", {
+  res.render("writer/article-writer-textEditor", {
     categoryListName: JSON.stringify(list),
     categoryList: list,
 

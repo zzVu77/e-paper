@@ -37,10 +37,11 @@ router.get("/AllArticle", async function (req, res) {
 
   const nextPage= Number(current_page) + Number(1);
   const previousPage= Number(current_page) - Number(1);
-  res.render("article-manage-all", {
+  res.render("writer/article-manage-all", {
     list: list,
     empty: list.length === 0,
     pageNumbers: pageNumbers,
+    isFirstPage: previousPage < 1,
     isLastPage: Number(current_page) === Number(nPages),
     pagnitionName: "all",
     nextLink: `/writer/article/manage/AllArticle?page=${nextPage}`,
@@ -81,10 +82,11 @@ router.get("/ApprovedArticle", async function (req, res) {
 
   const nextPage= Number(current_page) + Number(1);
   const previousPage= Number(current_page) - Number(1);
-  res.render("article-manage-approved", {
+  res.render("writer/article-manage-approved", {
     list: list,
     empty: list.length === 0,
     pageNumbers: pageNumbers,
+    isFirstPage: previousPage < 1,
     isLastPage: Number(current_page) === Number(nPages),
     nextLink: `/writer/article/manage/ApprovedArticle?page=${nextPage}`,
     previousLink: `/writer/article/manage/ApprovedArticle?page=${previousPage}`,
@@ -124,10 +126,11 @@ router.get("/PublishedArticle", async function (req, res) {
 
   const nextPage= Number(current_page) + Number(1);
   const previousPage= Number(current_page) - Number(1);
-  res.render("article-manage-published", {
+  res.render("writer/article-manage-published", {
     list: list,
     empty: list.length === 0,
     pageNumbers: pageNumbers,
+    isFirstPage: previousPage < 1,
     isLastPage: Number(current_page) === Number(nPages),
     nextLink: `/writer/article/manage/PublishedArticle?page=${nextPage}`,
     previousLink: `/writer/article/manage/PublishedArticle?page=${previousPage}`,
@@ -167,9 +170,10 @@ router.get("/RejectedArticle", async function (req, res) {
 
   const nextPage= Number(current_page) + Number(1);
   const previousPage= Number(current_page) - Number(1);
-  res.render("article-manage-rejected", {
+  res.render("writer/article-manage-rejected", {
     list: list,
     empty: list.length === 0,
+    isFirstPage: previousPage < 1,
     pageNumbers: pageNumbers,
     isLastPage: Number(current_page) === Number(nPages),
     nextLink: `/writer/article/manage/RejectedArticle?page=${nextPage}`,
@@ -210,10 +214,11 @@ router.get("/PendingArticle", async function (req, res) {
 
   const nextPage= Number(current_page) + Number(1);
   const previousPage= Number(current_page) - Number(1);
-  res.render("article-manage-pending", {
+  res.render("writer/article-manage-pending", {
     list: list,
     empty: list.length === 0,
     pageNumbers: pageNumbers,
+    isFirstPage: previousPage < 1,
     isLastPage: Number(current_page) === Number(nPages),
     nextLink: `/writer/article/manage/PendingArticle?page=${nextPage}`,
     previousLink: `/writer/article/manage/PendingArticle?page=${previousPage}`,
@@ -336,10 +341,11 @@ router.get("/AllArticle-filter", async function (req, res) {
     // console.log(pageNumbers);
     const nextPage= Number(current_page) + Number(1);
     const previousPage= Number(current_page) - Number(1);
-    res.render("article-manage-all", {
+    res.render("writer/article-manage-all", {
       list: list,
       empty: list.length === 0,
       pageNumbers: pageNumbers,
+      isFirstPage: previousPage < 1,
       isLastPage: Number(current_page) === Number(nPages),
       pagnitionName: "AllArticle-filter",
       nextLink: `/writer/article/manage/AllArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${validTagIDs}&searchKeyWord=${searchKeyWord}&page=${nextPage}`,
@@ -447,10 +453,11 @@ router.get("/PublishedArticle-filter", async function (req, res) {
     // console.log(pageNumbers);
     const nextPage= Number(current_page) + Number(1);
     const previousPage= Number(current_page) - Number(1);
-    res.render("article-manage-all", {
+    res.render("writer/article-manage-all", {
       list: list,
       empty: list.length === 0,
       pageNumbers: pageNumbers,
+      isFirstPage: previousPage < 1,
       isLastPage: Number(current_page) === Number(nPages),
       pagnitionName: "AllArticle-filter",
       nextLink: `/writer/article/manage/PublishedArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${validTagIDs}&searchKeyWord=${searchKeyWord}&page=${nextPage}`,
@@ -558,10 +565,11 @@ router.get("/ApprovedArticle-filter", async function (req, res) {
     // console.log(pageNumbers);
     const nextPage= Number(current_page) + Number(1);
     const previousPage= Number(current_page) - Number(1);
-    res.render("article-manage-all", {
+    res.render("writer/article-manage-all", {
       list: list,
       empty: list.length === 0,
       pageNumbers: pageNumbers,
+      isFirstPage: previousPage < 1,
       isLastPage: Number(current_page) === Number(nPages),
       pagnitionName: "AllArticle-filter",
       nextLink: `/writer/article/manage/ApprovedArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${validTagIDs}&searchKeyWord=${searchKeyWord}&page=${nextPage}`,
@@ -669,10 +677,11 @@ router.get("/PendingArticle-filter", async function (req, res) {
     // console.log(pageNumbers);
     const nextPage= Number(current_page) + Number(1);
     const previousPage= Number(current_page) - Number(1);
-    res.render("article-manage-all", {
+    res.render("writer/article-manage-all", {
       list: list,
       empty: list.length === 0,
       pageNumbers: pageNumbers,
+      isFirstPage: previousPage < 1,
       isLastPage: Number(current_page) === Number(nPages),
       pagnitionName: "AllArticle-filter",
       nextLink: `/writer/article/manage/PendingArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${validTagIDs}&searchKeyWord=${searchKeyWord}&page=${nextPage}`,
@@ -780,10 +789,11 @@ router.get("/RejectedArticle-filter", async function (req, res) {
     // console.log(pageNumbers);
     const nextPage= Number(current_page) + Number(1);
     const previousPage= Number(current_page) - Number(1);
-    res.render("article-manage-all", {
+    res.render("writer/article-manage-all", {
       list: list,
       empty: list.length === 0,
       pageNumbers: pageNumbers,
+      isFirstPage: previousPage < 1,
       isLastPage: Number(current_page) === Number(nPages),
       pagnitionName: "AllArticle-filter",
       nextLink: `/writer/article/manage/RejectedArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${validTagIDs}&searchKeyWord=${searchKeyWord}&page=${nextPage}`,

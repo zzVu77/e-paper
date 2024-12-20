@@ -11,10 +11,24 @@ router.get("/", async function (req, res) {
 
   let data = await adminService.getPageArticles(itemsPerPage, offset); 
   const categories = await adminService.getAllCategories();
-  data = data.map(article => ({
-    ...article,
-    categories: categories, 
-  }));
+
+  data = data.map(article => {
+    let statusClass = '';
+
+    if (article.article_status === 'published') {
+      statusClass = 'tw-bg-green-400 tw-text-white tw-rounded-lg tw-text-center tw-text-base';
+    } else if (article.article_status === 'draft') {
+      statusClass = 'tw-bg-yellow-400 tw-text-white tw-rounded-lg tw-text-center tw-text-base';
+    } else if (article.article_status === 'rejected') {
+      statusClass = 'tw-bg-red-500 tw-text-white tw-rounded-lg tw-text-center tw-text-base';
+    }
+
+    return {
+      ...article,
+      categories: categories,
+      statusClass, 
+    };
+  });
   console.log(data);
   const totalArticles = await adminService.getTotalArticles();
   const totalItems = totalArticles.count;

@@ -1153,3 +1153,130 @@ VALUES
     ((SELECT id FROM articles WHERE title = 'Q&A: Transforming research through global collaborations'), (SELECT id FROM tags WHERE name = 'Universe')),
     ((SELECT id FROM articles WHERE title = 'Q&A: Transforming research through global collaborations'), (SELECT id FROM tags WHERE name = 'Myths')),
     ((SELECT id FROM articles WHERE title = 'Q&A: Transforming research through global collaborations'), (SELECT id FROM tags WHERE name = 'Innovation'));
+
+
+
+INSERT INTO users (
+    id, name, email, password, birthdate, role, subscription_expiry, created_at, updated_at
+) VALUES
+(UUID(), 'Emily Carter', 'emily.carter@example.com', 'hashed_password_subscriber_1', '1995-02-14', 'subscriber', '2025-12-31 23:59:59', NOW(), NOW()),
+(UUID(), 'Michael Green', 'michael.green@example.com', 'hashed_password_subscriber_2', '1988-07-07', 'subscriber', '2025-06-30 23:59:59', NOW(), NOW()),
+(UUID(), 'Rachel Adams', 'rachel.adams@example.com', 'hashed_password_subscriber_3', '1992-11-25', 'subscriber', '2026-01-01 23:59:59', NOW(), NOW()),
+(UUID(), 'Oliver Smith', 'oliver.smith@example.com', 'hashed_password_subscriber_4', '1997-09-14', 'subscriber', '2024-12-31 23:59:59', NOW(), NOW());
+
+
+INSERT INTO users (
+    id, name, email, password, birthdate, role, subscription_expiry, created_at, updated_at
+) VALUES
+(UUID(), 'Sophia Taylor', 'sophia.taylor@example.com', 'hashed_password_editor_1', '1990-03-12', 'editor', NULL, NOW(), NOW()),
+(UUID(), 'James Brown', 'james.brown@example.com', 'hashed_password_editor_2', '1982-11-20', 'editor', NULL, NOW(), NOW()),
+(UUID(), 'Charlotte Johnson', 'charlotte.johnson@example.com', 'hashed_password_editor_3', '1987-05-02', 'editor', NULL, NOW(), NOW()),
+(UUID(), 'Liam Williams', 'liam.williams@example.com', 'hashed_password_editor_4', '1991-01-18', 'editor', NULL, NOW(), NOW());
+
+
+INSERT INTO comments (
+    id, article_id, user_id, content, comment_date
+) VALUES
+(UUID(), '13', (SELECT id FROM users WHERE email = 'emily.carter@example.com'), 'Part 3 is just as informative as the first two!', NOW()),
+(UUID(), '13', (SELECT id FROM users WHERE email = 'michael.green@example.com'), 'These answers really simplify tough concepts.', NOW()),
+(UUID(), '13', (SELECT id FROM users WHERE email = 'rachel.adams@example.com'), 'I appreciate the focus on practical examples.', NOW()),
+(UUID(), '13', (SELECT id FROM users WHERE email = 'oliver.smith@example.com'), 'Great for last-minute prep!', NOW()),
+(UUID(), '13', (SELECT id FROM users WHERE email = 'emily.carter@example.com'), 'Wish I had this before my last interview.', NOW()),
+(UUID(), '13', (SELECT id FROM users WHERE email = 'michael.green@example.com'), 'Very detailed explanations!', NOW()),
+(UUID(), '13', (SELECT id FROM users WHERE email = 'rachel.adams@example.com'), 'Loved the breakdown of tricky questions.', NOW()),
+(UUID(), '13', (SELECT id FROM users WHERE email = 'oliver.smith@example.com'), 'Fantastic resource for JavaScript learners.', NOW()),
+(UUID(), '13', (SELECT id FROM users WHERE email = 'emily.carter@example.com'), 'Part 4 would be a great addition.', NOW()),
+(UUID(), '13', (SELECT id FROM users WHERE email = 'michael.green@example.com'), 'Bookmarking this for future use.', NOW()),
+
+-- Article 14: JavaScript Troubleshooting Guide: What Went Wrong?
+(UUID(), '14', (SELECT id FROM users WHERE email = 'emily.carter@example.com'), 'Super helpful for debugging issues!', NOW()),
+(UUID(), '14', (SELECT id FROM users WHERE email = 'michael.green@example.com'), 'Finally a guide that addresses real-world problems.', NOW()),
+(UUID(), '14', (SELECT id FROM users WHERE email = 'rachel.adams@example.com'), 'The step-by-step approach is great.', NOW()),
+(UUID(), '14', (SELECT id FROM users WHERE email = 'oliver.smith@example.com'), 'This helped me fix a bug I struggled with for days.', NOW()),
+(UUID(), '14', (SELECT id FROM users WHERE email = 'emily.carter@example.com'), 'Please cover more common errors in future.', NOW()),
+(UUID(), '14', (SELECT id FROM users WHERE email = 'michael.green@example.com'), 'I wish more articles were this practical.', NOW()),
+(UUID(), '14', (SELECT id FROM users WHERE email = 'rachel.adams@example.com'), 'Great for understanding the debugging process.', NOW()),
+(UUID(), '14', (SELECT id FROM users WHERE email = 'oliver.smith@example.com'), 'Fantastic guide, will share with my team.', NOW()),
+(UUID(), '14', (SELECT id FROM users WHERE email = 'emily.carter@example.com'), 'Can you cover async debugging in more detail?', NOW()),
+(UUID(), '14', (SELECT id FROM users WHERE email = 'michael.green@example.com'), 'Very clear and concise guide.', NOW()),
+
+
+(UUID(), '15', (SELECT id FROM users WHERE email = 'emily.carter@example.com'), 'A solid introduction to TypeScript interfaces!', NOW()),
+(UUID(), '15', (SELECT id FROM users WHERE email = 'michael.green@example.com'), 'Really liked the examples here.', NOW()),
+(UUID(), '15', (SELECT id FROM users WHERE email = 'rachel.adams@example.com'), 'TypeScript is so much clearer with this explanation.', NOW()),
+(UUID(), '15', (SELECT id FROM users WHERE email = 'oliver.smith@example.com'), 'Interfaces can be tricky, but this makes it easy.', NOW()),
+(UUID(), '15', (SELECT id FROM users WHERE email = 'emily.carter@example.com'), 'This is a great starting point for TypeScript.', NOW()),
+(UUID(), '15', (SELECT id FROM users WHERE email = 'michael.green@example.com'), 'Can you add more advanced use cases?', NOW()),
+(UUID(), '15', (SELECT id FROM users WHERE email = 'rachel.adams@example.com'), 'Good coverage of the basics!', NOW()),
+(UUID(), '15', (SELECT id FROM users WHERE email = 'oliver.smith@example.com'), 'Thanks for including common pitfalls.', NOW()),
+(UUID(), '15', (SELECT id FROM users WHERE email = 'emily.carter@example.com'), 'A must-read for TypeScript beginners.', NOW()),
+(UUID(), '15', (SELECT id FROM users WHERE email = 'michael.green@example.com'), 'Looking forward to more TypeScript articles.', NOW()),
+
+(UUID(), '1', (SELECT id FROM users WHERE email = 'emily.carter@example.com'), 'Amazing AI application!', NOW()),
+(UUID(), '1', (SELECT id FROM users WHERE email = 'michael.green@example.com'), 'AI is transforming the world.', NOW()),
+(UUID(), '1', (SELECT id FROM users WHERE email = 'rachel.adams@example.com'), 'This technology looks promising.', NOW()),
+(UUID(), '1', (SELECT id FROM users WHERE email = 'oliver.smith@example.com'), 'Great insights into AI capabilities.', NOW()),
+(UUID(), '1', (SELECT id FROM users WHERE email = 'emily.carter@example.com'), 'This could revolutionize image editing.', NOW()),
+(UUID(), '1', (SELECT id FROM users WHERE email = 'michael.green@example.com'), 'Really impressed by this!', NOW()),
+(UUID(), '1', (SELECT id FROM users WHERE email = 'rachel.adams@example.com'), 'How accessible is this tool?', NOW()),
+(UUID(), '1', (SELECT id FROM users WHERE email = 'oliver.smith@example.com'), 'Will this work in real-time?', NOW()),
+(UUID(), '1', (SELECT id FROM users WHERE email = 'emily.carter@example.com'), 'Hope they release it soon!', NOW()),
+(UUID(), '1', (SELECT id FROM users WHERE email = 'michael.green@example.com'), 'Can this work on videos too?', NOW()),
+
+-- Article 11
+(UUID(), '11', (SELECT id FROM users WHERE email = 'emily.carter@example.com'), 'These questions are so practical!', NOW()),
+(UUID(), '11', (SELECT id FROM users WHERE email = 'michael.green@example.com'), 'Great examples for interview prep.', NOW()),
+(UUID(), '11', (SELECT id FROM users WHERE email = 'rachel.adams@example.com'), 'Really helpful guide!', NOW()),
+(UUID(), '11', (SELECT id FROM users WHERE email = 'oliver.smith@example.com'), 'Looking forward to using these!', NOW()),
+(UUID(), '11', (SELECT id FROM users WHERE email = 'emily.carter@example.com'), 'The solutions are clear and concise.', NOW()),
+(UUID(), '11', (SELECT id FROM users WHERE email = 'michael.green@example.com'), 'Perfect for brushing up skills!', NOW()),
+(UUID(), '11', (SELECT id FROM users WHERE email = 'rachel.adams@example.com'), 'Learned something new here.', NOW()),
+(UUID(), '11', (SELECT id FROM users WHERE email = 'oliver.smith@example.com'), 'Thanks for this great resource.', NOW()),
+(UUID(), '11', (SELECT id FROM users WHERE email = 'emily.carter@example.com'), 'What’s in Part 2?', NOW()),
+(UUID(), '11', (SELECT id FROM users WHERE email = 'michael.green@example.com'), 'Looking forward to the next part.', NOW()),
+
+-- Article 12
+(UUID(), '12', (SELECT id FROM users WHERE email = 'emily.carter@example.com'), 'The continuation is even better!', NOW()),
+(UUID(), '12', (SELECT id FROM users WHERE email = 'michael.green@example.com'), 'The examples are very relatable.', NOW()),
+(UUID(), '12', (SELECT id FROM users WHERE email = 'rachel.adams@example.com'), 'Loving the format of this series.', NOW()),
+(UUID(), '12', (SELECT id FROM users WHERE email = 'oliver.smith@example.com'), 'This is great for interviews.', NOW()),
+(UUID(), '12', (SELECT id FROM users WHERE email = 'emily.carter@example.com'), 'Really great stuff here.', NOW()),
+(UUID(), '12', (SELECT id FROM users WHERE email = 'michael.green@example.com'), 'Awesome explanations!', NOW()),
+(UUID(), '12', (SELECT id FROM users WHERE email = 'rachel.adams@example.com'), 'Clear and concise examples.', NOW()),
+(UUID(), '12', (SELECT id FROM users WHERE email = 'oliver.smith@example.com'), 'Definitely worth sharing.', NOW()),
+(UUID(), '12', (SELECT id FROM users WHERE email = 'emily.carter@example.com'), 'Can’t wait for Part 3!', NOW()),
+(UUID(), '12', (SELECT id FROM users WHERE email = 'michael.green@example.com'), 'Part 3 should be amazing.', NOW()),
+(UUID(), '2', (SELECT id FROM users WHERE email = 'rachel.adams@example.com'), 'This article is so insightful!', NOW()),
+(UUID(), '2', (SELECT id FROM users WHERE email = 'oliver.smith@example.com'), 'I learned so much about TypeScript.', NOW()),
+(UUID(), '2', (SELECT id FROM users WHERE email = 'emily.carter@example.com'), 'TypeScript is finally making sense.', NOW()),
+(UUID(), '2', (SELECT id FROM users WHERE email = 'michael.green@example.com'), 'The examples really clarify things.', NOW()),
+(UUID(), '2', (SELECT id FROM users WHERE email = 'rachel.adams@example.com'), 'This will help a lot with my project.', NOW()),
+(UUID(), '2', (SELECT id FROM users WHERE email = 'oliver.smith@example.com'), 'Very useful for beginners.', NOW()),
+(UUID(), '2', (SELECT id FROM users WHERE email = 'emily.carter@example.com'), 'Any tips for advanced concepts?', NOW()),
+(UUID(), '2', (SELECT id FROM users WHERE email = 'michael.green@example.com'), 'Thanks for sharing this!', NOW()),
+(UUID(), '2', (SELECT id FROM users WHERE email = 'rachel.adams@example.com'), 'Looking forward to more.', NOW()),
+(UUID(), '2', (SELECT id FROM users WHERE email = 'oliver.smith@example.com'), 'Great explanations overall.', NOW()),
+
+-- Article 3
+(UUID(), '3', (SELECT id FROM users WHERE email = 'emily.carter@example.com'), 'JavaScript just got easier with this!', NOW()),
+(UUID(), '3', (SELECT id FROM users WHERE email = 'michael.green@example.com'), 'The syntax guide is brilliant.', NOW()),
+(UUID(), '3', (SELECT id FROM users WHERE email = 'rachel.adams@example.com'), 'This demystifies closures!', NOW()),
+(UUID(), '3', (SELECT id FROM users WHERE email = 'oliver.smith@example.com'), 'I needed this before my last project.', NOW()),
+(UUID(), '3', (SELECT id FROM users WHERE email = 'emily.carter@example.com'), 'Do you have more examples?', NOW()),
+(UUID(), '3', (SELECT id FROM users WHERE email = 'michael.green@example.com'), 'Perfect for developers.', NOW()),
+(UUID(), '3', (SELECT id FROM users WHERE email = 'rachel.adams@example.com'), 'Any plans for a deep dive?', NOW()),
+(UUID(), '3', (SELECT id FROM users WHERE email = 'oliver.smith@example.com'), 'Keep these coming!', NOW()),
+(UUID(), '3', (SELECT id FROM users WHERE email = 'emily.carter@example.com'), 'Simple and effective guide.', NOW()),
+(UUID(), '3', (SELECT id FROM users WHERE email = 'michael.green@example.com'), 'The examples are top-notch.', NOW()),
+
+-- Article 4
+(UUID(), '4', (SELECT id FROM users WHERE email = 'rachel.adams@example.com'), 'The debugging techniques are amazing.', NOW()),
+(UUID(), '4', (SELECT id FROM users WHERE email = 'oliver.smith@example.com'), 'I solved my bug using this!', NOW()),
+(UUID(), '4', (SELECT id FROM users WHERE email = 'emily.carter@example.com'), 'Clear and practical tips.', NOW()),
+(UUID(), '4', (SELECT id FROM users WHERE email = 'michael.green@example.com'), 'Thanks for the great resource.', NOW()),
+(UUID(), '4', (SELECT id FROM users WHERE email = 'rachel.adams@example.com'), 'How about advanced debugging?', NOW()),
+(UUID(), '4', (SELECT id FROM users WHERE email = 'oliver.smith@example.com'), 'A must-read for developers.', NOW()),
+(UUID(), '4', (SELECT id FROM users WHERE email = 'emily.carter@example.com'), 'Can you cover async debugging?', NOW()),
+(UUID(), '4', (SELECT id FROM users WHERE email = 'michael.green@example.com'), 'Very detailed guide.', NOW()),
+(UUID(), '4', (SELECT id FROM users WHERE email = 'rachel.adams@example.com'), 'This is pure gold.', NOW()),
+(UUID(), '4', (SELECT id FROM users WHERE email = 'oliver.smith@example.com'), 'The examples are spot-on.', NOW());

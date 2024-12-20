@@ -50,6 +50,7 @@ router.get("/security", function (req, res) {
     res.render("account-setting-security",{
         showErrors: false,
         id: 1,
+        isSent: false,
     });
 });
 router.post("/security", async function (req, res) {
@@ -61,13 +62,18 @@ router.post("/security", async function (req, res) {
         return res.render('account-setting-security', {
           showErrors: true,
           id: req.body.id,
+          isSent: true,
         });
     }
     const update ={
         password: bcrypt.hashSync(req.body.new_password, 8),
     }
     await userService.patch(req.body.id, update);
-    res.redirect("/AccountSetting/myprofile");
+    res.render("account-setting-security",{
+        showErrors: false,
+        id: req.body.id,
+        isSent: true,
+    });
 });
 
 export default router;

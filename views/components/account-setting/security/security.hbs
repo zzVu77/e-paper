@@ -3,10 +3,16 @@
 <div class="accountsetting-security-container">
     <p class="accountsetting-security-header">Security</p>
     <p class="accountsetting-security-header2">Change Password</p>
-    {{#if showErrors}}
-        <div class="alert alert-danger" role="alert">
-            Your current password is incorrect!
-        </div>
+    {{#if isSent}}
+        {{#if showErrors}}
+            <div class="alert alert-danger" role="alert">
+                Your current password is incorrect!
+            </div>
+        {{else}}
+            <div class="alert alert-success" role="alert">
+                Your password is updated!
+            </div>
+        {{/if}}
     {{/if}}
     <form class="accountsetting-security-form-input" method="post">
         <div class="form-group" style="margin-bottom:26px;">
@@ -74,7 +80,7 @@
                 // Nếu người dùng nhấn "Yes", hiển thị thông báo thành công
                 let timerInterval;
                 Swal.fire({
-                    title: "Changes saved successfully!",
+                    title: "Processing...",
                     html: "Autoclose after <b></b> seconds.",
                     timer: 2000,
                     timerProgressBar: true,

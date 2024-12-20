@@ -86,7 +86,7 @@ CREATE TABLE editor_assignments (
 -- Dummy data for users
 INSERT INTO users (id, name, pen_name, email, password, birthdate, role, subscription_expiry)
 VALUES
-    (1, 'Alice Johnson', 'AliceJ', 'alice@example.com', 'password123', '1990-05-20', 'writer', '2024-12-31 23:59:59'),
+    (1, 'Alice Johnson', 'AliceJ', 'alice@example.com', '$2a$08$kUA67J6iky3CvQivKyns3.msZZ/UNqffAHgH9VyiGPbmkkEaoTArC', '1990-05-20', 'writer', '2024-12-31 23:59:59'),
     (2, 'Bob Smith', NULL, 'bob@example.com', 'securepass', '1985-10-15', 'writer', NULL),
     (3, 'Charlie Brown', 'CharlieB', 'charlie@example.com', 'charliepass', '1975-03-05', 'writer', NULL);
 -- Dummy data for categories

@@ -44,8 +44,10 @@
                     {{this.article_tags}}
                     </div>
                 </td>
-                <td class="tw-px-6 tw-py-4">
-                    {{this.article_status}}
+                <td class="tw-px-6 tw-py-4 ">
+                    <div class="{{this.statusClass}} ">
+                        {{this.article_status}}
+                    </div>
                 </td>
                 <td class="tw-px-6 tw-py-4">{{this.rejection_note}}</td>
                 <td class="tw-px-6 tw-py-4">{{format_datetime this.article_publish_date}}</td>

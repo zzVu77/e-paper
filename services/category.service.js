@@ -30,7 +30,22 @@ export default {
         return result;
       });
   },
-
+  getCategoryIdByName(categoryName) {
+    return db("categories")
+      .select("id")
+      .where("name", categoryName)
+      .first(); // Lấy 1 kết quả đầu tiên
+  },
+  getCategoryNameById(id){
+    return db("categories")
+    .select("name")
+    .where("id", id)
+    .first(); // Lấy 1 kết quả đầu tiên
+  },
+  getAll() {
+    return db("categories")
+      .select("name")
+  },
   async getParentCategory(categoryName) {
     try {
       // Lấy thông tin category từ tên
@@ -59,7 +74,6 @@ export default {
       throw error;
     }
   },
-
   //get top 10 categories have the most articles:
   async getTopCategories() {
     return db("categories as c")

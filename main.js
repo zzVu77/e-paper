@@ -49,8 +49,8 @@ app.engine(
       compareStrings(str1, str2) {
         return str1 === str2; // Trả về true nếu hai chuỗi bằng nhau, ngược lại trả về false
       },
-
-  }})
+    },
+  })
 );
 app.use(express.json());
 app.set("view engine", "hbs");
@@ -104,8 +104,6 @@ app.get("/signup", function (req, res) {
   res.render("signup", { layout: "default" });
 });
 
-
-
 app.get("/forgot-password", function (req, res) {
   res.render("forgotPassword", { layout: "default" });
 });
@@ -151,7 +149,7 @@ app.use("/admin/tags", tagsmanagementRouter);
 app.use("/admin/persons", personsmanagementRouter);
 app.use("/admin/articles", articlesmanagementRouter);
 app.use("/posts", postsRouter);
-app.use("/AccountSetting", accountSettingRouter);
+app.use("/account-setting", accountSettingRouter);
 
 // app.get("/editor", function (req, res) {
 //   res.render("editor", { layout: "admin", title: "Editor" });

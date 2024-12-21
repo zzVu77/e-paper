@@ -1,21 +1,20 @@
-#admin-content{
-    display :flex;
-    gap: 20px;
-    height: 100vh;
+#admin-content {
+  display: flex;
+  gap: 20px;
+  height: 100vh;
 }
-#admin-container{
-    height: 100vh;
+#admin-container {
+  height: 100vh;
 }
-#admin-header{
-    background: linear-gradient(to bottom, white, #F0F8FF);
-}
-#admin-sidebar{
-    background: linear-gradient(to bottom, #F0F8FF, #BDF3FF);
-}
-#admin-footer
-{
-    background: linear-gradient(to bottom,  #BDF3FF, #87CEEB);  
+#admin-header {
+  background: linear-gradient(to bottom, white, #f0f8ff);
 }
 #admin-sidebar {
-    width: auto;
+  background: linear-gradient(to bottom, #f0f8ff, #bdf3ff);
+}
+#admin-footer {
+  background: linear-gradient(to bottom, #bdf3ff, #87ceeb);
+}
+#admin-sidebar {
+  width: auto;
 }

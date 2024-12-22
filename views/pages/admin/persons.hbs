@@ -14,15 +14,15 @@
             <div class="tw-inline-flex tw-flex-col tw-w-full  md:tw-flex-row" role="group">
                 <a href="/admin/persons?role=subscriber" 
                 class="tw-px-4 tw-py-2 tw-text-sm tw-font-medium tw-rounded-tl-lg tw-border-none hover:tw-bg-gray-100 hover:tw-text-primary-700 focus:tw-z-10 focus:tw-ring-2 focus:tw-ring-primary-700 focus:tw-text-primary-700 dark:tw-bg-cyan-200 dark:tw-text-slate-800 dark:hover:tw-text-white dark:hover:tw-bg-cyan-600 dark:focus:tw-ring-primary-500 dark:focus:tw-text-slate-800">
-                Độc giả
+                Subcriber
                 </a>
                 <a href="/admin/persons?role=writer" 
                 class="tw-px-4 tw-py-2 tw-text-sm tw-font-medium tw-border-none hover:tw-bg-gray-100 hover:tw-text-primary-700 focus:tw-z-10 focus:tw-ring-2 focus:tw-ring-primary-700 focus:tw-text-primary-700 dark:tw-bg-cyan-200 dark:tw-text-slate-800 dark:hover:tw-text-white dark:hover:tw-bg-cyan-600 dark:focus:tw-ring-primary-500 dark:focus:tw-text-slate-800">
-                Phóng viên
+                Writer
                 </a>
                 <a href="/admin/persons?role=editor" 
                 class="tw-px-4 tw-py-2 tw-text-sm tw-rounded-tr-lg tw-font-medium tw-border-none hover:tw-bg-gray-100 hover:tw-text-primary-700 focus:tw-z-10 focus:tw-ring-2 focus:tw-ring-primary-700 focus:tw-text-primary-700 dark:tw-bg-cyan-200 dark:tw-text-slate-800 dark:hover:tw-text-white dark:hover:tw-bg-cyan-600 dark:focus:tw-ring-primary-500 dark:focus:tw-text-slate-800">
-                Biên tập viên
+                Editor
                 </a>
             </div>
             <table class=" tw-w-full tw-text-sm tw-text-left rtl:tw-text-right tw-text-gray-500 dark:tw-text-gray-400">
@@ -54,12 +54,12 @@
                             <form action="/admin/persons/extend" method="post">
                                 <input type="hidden" name="id" value="{{this.id}}">
                                 <button type="submit" class="tw-border-none tw-bg-none tw-text-red-400 ">
-                                    Gia Hạn
+                                    Extend
                                 </button>
                             </form>
                             {{else}}
                             <button  class="tw-border-none tw-bg-none tw-text-cyan-400 ">
-                                Còn Hạn
+                                Unexpired
                             </button>
                             {{/if}}
                         </td>
@@ -68,15 +68,15 @@
                             <!-- Writer Fields -->
                             <td class="tw-px-6 tw-py-4">{{this.pen_name}}</td>
                             <td class="tw-px-6 tw-py-4">{{this.email}}</td>
-                            <td class="tw-px-6 tw-py-4">{{this.birthdate}}</td>
+                            <td class="tw-px-6 tw-py-4">{{format_datetime this.birthdate}}</td>
                             <td class="tw-px-6 tw-py-4">{{this.role}}</td>
 
                         {{/if}}
                         {{#if this.isEditor}}
                         <!-- Editor Fields -->
                         <td class="tw-px-6 tw-py-4">{{this.email}}</td>
-                        <td class="tw-px-6 tw-py-4">{{this.birthdate}}</td>
-                        <td class="tw-px-6 tw-py-4">{{#each this.category}}   {{this.category_name}}  {{/each}}</td>
+                        <td class="tw-px-6 tw-py-4">{{format_datetime this.birthdate}}</td>
+                        <td class="tw-px-6 tw-py-4">{{#each this.category}}   {{this.category_name}},  {{/each}}</td>
                         <td class="tw-px-6 tw-py-4">{{this.role}}</td>
                         <td class="tw-px-6 tw-py-4 ">
                         <button  class="popup-trigger  tw-border-none tw-bg-transparent" data-id="{{this.id}}">
@@ -115,7 +115,7 @@
             </ul>
         </div>
     </div>
-    {{!-- Popup update--}}
+    {{!-- Popup update --}}
     {{#each this.data}}
         <div id="admin-persons-popup-{{this.id}}" class="tw-invisible tw-backdrop-blur-sm tw-absolute tw-top-0 tw-left-0 tw-h-screen tw-w-full tw-flex tw-items-center tw-justify-center">
             <div class="tw-relative tw-p-4 tw-w-full tw-max-w-md tw-max-h-full tw-bg-white tw-rounded-lg dark:tw-bg-cyan-200">
@@ -127,25 +127,45 @@
                 <form action="/admin/persons/assignment" method="post" class="tw-p-4 tw-md:p-5">
                     <input type="hidden" name="id" value="{{this.id}}">
                     <div class="tw-grid tw-gap-4 tw-mb-4 tw-grid-cols-2">
-                        
                         <div class="tw-col-span-2 tw-sm:col-span-1">
-                            <label for="categoryID" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Thuộc thể loại</label>
-                            <select name="categoryID" id="categoryID-{{this.id}}" class="tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 tw-text-sm tw-rounded-lg focus:tw-ring-primary-500 focus:tw-border-primary-500 tw-block tw-w-full tw-p-2.5 dark:tw-bg-white dark:tw-border-cyan-200 dark:tw-placeholder-gray-300 dark:tw-text-gray-700 dark:focus:tw-ring-primary-500 dark:focus:tw-border-primary-500">
-                                <option selected>{{#each this.category}} {{category_name}} {{/each}}</option>
-                                {{!-- Update later --}}
-                                {{#each categories}}
-                                    <option value="{{this.id}}">{{this.name}}</option>
-                                {{/each}}
-                            </select>
+                            <label for="categoryID" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">
+                                Parent category
+                            </label>
+                            <!-- Dropdown container -->
+                            <div class="tw-relative">
+                                <div id="selectedCategories-{{this.id}}" 
+                                    class="tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 tw-text-sm tw-rounded-lg tw-w-full tw-flex tw-flex-wrap tw-items-center tw-gap-2 tw-px-4 tw-py-2 dark:tw-bg-white dark:tw-border-cyan-200 dark:tw-text-gray-700 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-primary-500">
+
+                                </div>
+
+                                <div id="dropdownMenu-{{this.id}}" 
+                                    class="tw-absolute tw-z-10 tw-w-full tw-bg-white tw-border tw-border-gray-300 tw-rounded-lg tw-shadow-lg tw-mt-2 tw-hidden">
+                                    <div class="tw-max-h-60 tw-overflow-y-auto tw-py-2 tw-px-4">
+                                        {{#each categories}}
+                                            <div class="tw-flex tw-items-center tw-mb-2">
+                                                <input type="checkbox" name="categoryID[]"  id="editor-{{../id}}-category-{{this.id}}" value="{{this.id}}" 
+                                                    class="tw-w-4 tw-h-4 tw-border-gray-300 tw-rounded focus:tw-ring-primary-500">
+                                                <label for="editor-{{../id}}-category-{{this.id}}" 
+                                                    class="tw-ml-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-gray-700">
+                                                    {{this.name}}
+                                                </label>
+                                            </div>
+                                        {{/each}}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <button type="submit" class="tw-text-white tw-inline-flex tw-items-center tw-bg-blue-700 tw-hover:bg-blue-800 tw-focus:ring-4 tw-focus:outline-none tw-focus:ring-blue-300 tw-font-medium tw-rounded-lg tw-text-sm tw-px-5 tw-py-2.5 tw-text-center tw-dark:bg-blue-600 tw-dark:hover:bg-blue-700 tw-dark:focus:ring-blue-800">
-                        Sửa {{title}}
+
+                    <button type="submit"
+                        class="tw-text-white tw-inline-flex tw-items-center tw-bg-blue-700 tw-hover:bg-blue-800 tw-focus:ring-4 tw-focus:outline-none tw-focus:ring-blue-300 tw-font-medium tw-rounded-lg tw-text-sm tw-px-5 tw-py-2.5 tw-text-center tw-dark:bg-blue-600 tw-dark:hover:bg-blue-700 tw-dark:focus:ring-blue-800">
+                        Update {{title}}
                     </button>
                 </form>
             </div>
         </div>
-    {{/each}}
+    {{/each}}   
+    
 </div>
 
 <script src="/js/admin/persons.js"> </script>

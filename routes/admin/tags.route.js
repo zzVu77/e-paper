@@ -1,5 +1,5 @@
 import express from "express";
-import tagAdminService from '../../services/tag-admin.service.js';
+import tagAdminService from '../../services/admin/tag-admin.service.js';
 
 
 

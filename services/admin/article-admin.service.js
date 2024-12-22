@@ -1,4 +1,4 @@
-import db from "../utils/db.js";
+import db from "../../utils/db.js";
 
 export default {
     async getPageArticles(limit = 10, offset = 0) {

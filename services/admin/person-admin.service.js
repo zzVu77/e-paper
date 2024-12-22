@@ -1,4 +1,4 @@
-import db from "../utils/db.js";
+import db from "../../utils/db.js";
 
 export default {
     async getPersonsRole(role, page, itemsPerPage) {
@@ -46,40 +46,32 @@ export default {
     async getCategoryNameByEditor(editorId) {
         return db('editor_assignments')
             .join('categories', 'editor_assignments.category_id', '=', 'categories.id')
-            .select('categories.name as category_name')
+            .select('categories.name as category_name', 'categories.id as id')
             .where('editor_assignments.editor_id', editorId);
     },
-    async updateCategoryEditor(editorId, categoryID) {
-        try {
-            const existingAssignment = await db('editor_assignments')
-                .where({ editor_id: editorId })
-                .first();
-    
-            if (existingAssignment) {
-                await db('editor_assignments')
-                    .where({ id: existingAssignment.id })
-                    .update({ category_id: categoryID });
-    
-                return { success: true, message: 'Category assignment updated successfully.' };
-            
-            } else {
-                const maxIdRow = await db('editor_assignments')
-                .max('id as maxId')
-                .first();
 
-                const newId = (maxIdRow?.maxId || 0) + 1; 
-                await db('editor_assignments').insert({
-                    id: newId,
-                    editor_id: editorId,
-                    category_id: categoryID,
-                });
-    
-                return { success: true, message: 'Category assigned to editor successfully.' };
-            }
-        } catch (error) {
-            console.error('Error updating/assigning category:', error);
-            throw new Error('Database error occurred while assigning the category.');
-        }
+    async deleteAssignmentsByEditor(editorId) {
+        return db('editor_assignments')
+            .where('editor_id', editorId)
+            .del();
     },
-    
+    async insertCategoryEditor(editorId, categoryId) {
+        try {
+            const maxIdRow = await db('editor_assignments')
+            .max('id as maxId')
+            .first();
+
+            const newId = (maxIdRow?.maxId || 0) + 1; 
+            await db('editor_assignments').insert({
+                id: newId,
+                editor_id: editorId,
+                category_id: categoryId,
+            });
+
+            return { success: true, message: 'Category assigned to editor successfully.' };
+        } catch (error) {
+            console.error('Error inserting category assignment:', error);
+            throw new Error('Error inserting category assignment');
+        }
+    }
 };

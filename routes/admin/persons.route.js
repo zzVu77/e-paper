@@ -1,5 +1,5 @@
 import express from  'express'
-import personService from '../../services/person-admin.service.js';
+import personService from '../../services/admin/person-admin.service.js';
 
 const router = express.Router();
 
@@ -49,16 +49,16 @@ router.get('/', async function (req, res) {
   console.log(filteredUsers);
   let tableHeaders = [];
   if (role === 'subscriber') {
-      tableHeaders = ['Tên', 'Email', 'Ngày sinh', 'Ngày hết hạn', 'Chức vụ','Gia Hạn'];
+      tableHeaders = ['Name', 'Email', 'Birthdate', 'Expired date', 'Role','Subscription expiry'];
   } else if (role === 'writer') {
-      tableHeaders = ['Tên', 'Bút danh', 'Email', 'Ngày sinh', 'Chức vụ'];
+      tableHeaders = ['Name', 'Pen name', 'Email', 'Birthdate', 'Role'];
   } else if (role === 'editor') {
-      tableHeaders = ['Tên', 'Email', 'Ngày sinh', 'Chuyên mục quản lý', 'Chức vụ','Phân Công'];
+      tableHeaders = ['Name', 'Email', 'Birthdate', 'Assignment', 'Role','Action'];
   }
 
   res.render('admin/persons', {
       layout: 'admin',
-      title: 'Người dùng',
+      title: 'Person',
       data: filteredUsers,
       headers: tableHeaders,
       catId: req.query.id,  
@@ -94,13 +94,29 @@ router.post('/extend', async function (req, res) {
 
 router.post('/assignment', async function (req, res) {
   const { categoryID, id } = req.body; 
-
+  const delAssignment = await personService.deleteAssignmentsByEditor(id);
   try {
-      const result = await personService.updateCategoryEditor(id, categoryID);
+      for (const catID of categoryID)
+      {
+        console.log(catID);
+        const result = await personService.insertCategoryEditor(id, catID);
+      }
       res.redirect('/admin/persons?role=editor');
   } catch (error) {
       console.error('Error assigning/updating category for editor:', error);
       res.status(500).json({ message: 'An error occurred while processing the category assignment.' });
+  }
+});
+
+router.get('/selected-categories/:id', async (req, res) => {
+  const { id } = req.params;  
+  console.log(id);
+  try {
+      const selectedCategories = await personService.getCategoryNameByEditor(id);
+      console.log(selectedCategories);
+      res.json(selectedCategories);  
+  } catch (error) {
+      res.status(500).json({ message: 'Error fetching selected categories' });
   }
 });
 

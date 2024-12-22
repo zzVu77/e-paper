@@ -113,7 +113,14 @@ document.querySelectorAll('.close-popup').forEach(button => {
         const id = this.getAttribute('data-id');
         const popup = document.getElementById('admin-persons-popup-' + id);
         const selectedCategoriesElement = popup.querySelector(`#selectedCategories-${id}`);
+        const dropdownMenu = popup.querySelector(`#dropdownMenu-${id}`);
+
+        const checkboxes = dropdownMenu.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = false;
+        });
         selectedCategoriesElement.innerHTML = '';
+        
         selectedCategoriesElement.addEventListener('click', () => {
             dropdownMenu.classList.add('tw-hidden');
         });

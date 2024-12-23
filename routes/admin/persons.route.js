@@ -41,15 +41,13 @@ router.get('/', async function (req, res) {
     const categories = await personService.getAllCategories();
     for (const user of filteredUsers) {
       const category = await personService.getCategoryNameByEditor(user.id);
-      console.log(category)
       user.category = category; 
       user.categories = categories; 
   }
   };
-  console.log(filteredUsers);
   let tableHeaders = [];
   if (role === 'subscriber') {
-      tableHeaders = ['Name', 'Email', 'Birthdate', 'Expired date', 'Role','Subscription expiry'];
+      tableHeaders = ['Name', 'Email', 'Birthdate', 'Expired date', 'Role','Subscription expiry','Status'];
   } else if (role === 'writer') {
       tableHeaders = ['Name', 'Pen name', 'Email', 'Birthdate', 'Role'];
   } else if (role === 'editor') {
@@ -100,7 +98,6 @@ router.post('/assignment', async function (req, res) {
     {
       for (const catID of categoryID)
       {
-        console.log(catID);
         const result = await personService.insertCategoryEditor(id, catID);
       }
     }
@@ -113,14 +110,29 @@ router.post('/assignment', async function (req, res) {
 
 router.get('/selected-categories/:id', async (req, res) => {
   const { id } = req.params;  
-  console.log(id);
   try {
       const selectedCategories = await personService.getCategoryNameByEditor(id);
-      console.log(selectedCategories);
       res.json(selectedCategories);  
   } catch (error) {
       res.status(500).json({ message: 'Error fetching selected categories' });
   }
 });
 
+
+router.post('/add', async (req, res) => {
+  const { name, pen_name, email, password, birthdate, role } = req.body;
+  console.log(role);
+  try {
+    const result = await personService.addUser({ name, pen_name, email, password, birthdate, role });
+    
+    if (result.success) {
+      res.redirect('/admin/persons');
+    } else {
+      res.status(500).send('Error adding the user');
+    }
+  } catch (error) {
+    console.error('Error adding user:', error);
+    res.status(500).send('Internal server error');
+  }
+});
 export default router;

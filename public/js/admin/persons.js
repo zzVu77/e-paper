@@ -1,3 +1,24 @@
+ // Get references to the elements
+ const addButton = document.getElementById('admin-persons-add');
+ const popup = document.getElementById('admin-persons-popup');
+ const closeButton = document.getElementById('admin-persons-close-popup');
+
+ addButton.addEventListener('click', () => {
+     popup.classList.remove('tw-invisible'); 
+ });
+
+ closeButton.addEventListener('click', () => {
+     popup.classList.add('tw-invisible'); 
+ });
+
+ window.addEventListener('click', (event) => {
+     if (event.target === popup) {
+         popup.classList.add('tw-invisible'); 
+     }
+ });
+
+
+
 document.querySelectorAll('.popup-trigger').forEach(button => {
     button.addEventListener('click', function () {
         const id = this.getAttribute('data-id');

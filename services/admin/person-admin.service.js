@@ -73,5 +73,33 @@ export default {
             console.error('Error inserting category assignment:', error);
             throw new Error('Error inserting category assignment');
         }
-    }
+    },
+    async addUser({ name, pen_name, email, password, birthdate, role }) {
+        try {
+          const userId = uuidv4();
+          
+          const newUser = {
+            id: userId,
+            name,
+            pen_name,
+            email,
+            password,  
+            birthdate,
+            role,
+            created_at: new Date(),
+            updated_at: new Date(),
+          };
+    
+          const result = await db('users').insert(newUser);
+          
+          if (result) {
+            return { success: true, message: 'User added successfully' };
+          } else {
+            return { success: false, message: 'Failed to add user' };
+          }
+        } catch (error) {
+          console.error('Error adding user:', error);
+          throw new Error('Error adding user');
+        }
+    },
 };

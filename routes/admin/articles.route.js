@@ -75,4 +75,22 @@ router.post("/update", async (req, res) => {
   }
 });
 
+router.post('/del', async (req, res) => {
+  try {
+    const articleId = req.body.id;
+    
+    const result = await adminService.deleteArticle(articleId);
+    
+    if (result.success) {
+      res.redirect('/admin/articles');
+    } else {
+      res.status(500).send('Error deleting the article');
+    }
+  } catch (error) {
+    console.error('Error deleting article:', error);
+    res.status(500).send('Internal server error');
+  }
+});
+
+
 export default router;

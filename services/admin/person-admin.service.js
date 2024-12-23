@@ -1,4 +1,5 @@
 import db from "../../utils/db.js";
+import { v4 as uuidv4 } from 'uuid';
 
 export default {
     async getPersonsRole(role, page, itemsPerPage) {
@@ -57,17 +58,16 @@ export default {
     },
     async insertCategoryEditor(editorId, categoryId) {
         try {
-            const maxIdRow = await db('editor_assignments')
-            .max('id as maxId')
-            .first();
-
-            const newId = (maxIdRow?.maxId || 0) + 1; 
+            // Generate a new UUID for the new record
+            const newId = uuidv4();
+    
+            // Insert the new editor-category assignment with the new UUID
             await db('editor_assignments').insert({
-                id: newId,
+                id: newId,  // Use the newly generated UUID
                 editor_id: editorId,
                 category_id: categoryId,
             });
-
+    
             return { success: true, message: 'Category assigned to editor successfully.' };
         } catch (error) {
             console.error('Error inserting category assignment:', error);

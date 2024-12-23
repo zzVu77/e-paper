@@ -58,14 +58,15 @@ app.set("views", "./views/pages");
 app.use(express.static("public"));
 // setup local data for navigation
 app.use(async function (req, res, next) {
-  const currentCategory = req.query.name || "";
-  // console.log("Current Category: ", currentCategory);
+  const currentCategory = req.query.categoryname || "";
+  console.log("Current Category: ", currentCategory);
   const categories = await categoryService.getCategoryName();
   const listCategory = [];
   const parentCat = currentCategory
     ? await categoryService.getParentCategory(currentCategory)
     : "";
-  // console.log("parent", parentCat);
+  // const parentCat = "";
+  console.log("parent", parentCat);
   for (let index = 0; index < categories.length; index++) {
     listCategory.push({
       currentCategory: currentCategory,

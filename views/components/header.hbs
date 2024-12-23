@@ -165,13 +165,13 @@
           {{#each categories}}
             <div class="menu tw-text-black"><a
                 class="tw-no-underline active-{{parent_cat_active}}"
-                href="/posts/byCat?name={{parent_name}}&page=1"
+                href="/posts/byCat?categoryname={{parent_name}}&page=1"
               >{{parent_name}}</a>
               <ul class="submenu">
                 {{#each child_categories}}
                   <a
                     class="tw-no-underline  "
-                    href="/posts/byCat?name={{this}}"
+                    href="/posts/byCat?categoryname={{this}}"
                   >
                     <li class=" tw-text-black child-active-{{ compareStrings this ../currentCategory }}">{{this}}</li>
                   </a>

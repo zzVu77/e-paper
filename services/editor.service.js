@@ -1,53 +1,84 @@
 import db from "../utils/db.js";
 
 export default {
-    async getPageArticles(limit = 10, offset = 0) {
+    async getPageArticles(limit = 10, offset = 0, editor_id = null, status = null) {
         return db("articles as a")
-          .leftJoin("article_tags as at", "a.id", "at.article_id")
-          .leftJoin("tags as t", "at.tag_id", "t.id")
-          .innerJoin("users as u", "a.author", "u.id")
-          .innerJoin("categories as c", "a.category_id", "c.id")
-          .leftJoin("rejection_notes as rn", "a.id", "rn.article_id") // Join with rejection_notes
-          .select(
-            "a.id as article_id",
-            "a.title as article_title",
-            "a.status as article_status",
-            "a.is_premium as article_is_premium",
-            "a.publish_date as article_publish_date",
-            "u.name as author_name",
-            "c.name as category_name",
-            db.raw("GROUP_CONCAT(t.name) as article_tags"),
-            "rn.note as rejection_note" 
-          )
-          .where("u.role", "writer")
-          .groupBy(
-            "a.id",
-            "a.title",
-            "a.status",
-            "a.is_premium",
-            "a.publish_date",
-            "u.name",
-            "c.name",
-            "rn.note" 
-          )
-          .limit(limit)
-          .offset(offset)
-          .then((rows) => {
-            return rows.map((row) => ({
-              article_id: row.article_id,
-              article_title: row.article_title,
-              article_status: row.article_status,
-              article_is_premium: row.article_is_premium,
-              article_publish_date: row.article_publish_date,
-              author_name: row.author_name,
-              category_name: row.category_name,
-              article_tags: row.article_tags ? row.article_tags.split(",") : [],
-              rejection_note: row.rejection_note || null, 
-            }));
-          });
+            .leftJoin("article_tags as at", "a.id", "at.article_id")
+            .leftJoin("tags as t", "at.tag_id", "t.id")
+            .innerJoin("users as u", "a.author", "u.id")
+            .innerJoin("categories as c", "a.category_id", "c.id")
+            .leftJoin("rejection_notes as rn", "a.id", "rn.article_id") // Join with rejection_notes
+            .modify((query) => {
+                // Filter based on editor_id and category
+                if (editor_id) {
+                    query.whereIn("c.id", function () {
+                        this.select("category_id")
+                            .from("editor_assignments")
+                            .where("editor_id", editor_id); // Filter categories based on editor_id
+                    });
+                }
+    
+                // Filter based on status if provided
+                if (status) {
+                    query.where("a.status", status); // Filter articles by status (e.g., 'pending', 'draft')
+                }
+            })
+            .select(
+                "a.id as article_id",
+                "a.title as article_title",
+                "a.status as article_status",
+                "a.is_premium as article_is_premium",
+                "a.publish_date as article_publish_date",
+                "u.name as author_name",
+                "c.name as category_name",
+                db.raw("GROUP_CONCAT(DISTINCT t.name) as article_tags"), // Use DISTINCT to avoid duplicate tags
+                "rn.note as rejection_note" // Include rejection note
+            )
+            .groupBy(
+                "a.id",
+                "a.title",
+                "a.status",
+                "a.is_premium",
+                "a.publish_date",
+                "u.name",
+                "c.name",
+                "rn.note" // Group by article-level fields only
+            )
+            .limit(limit)
+            .offset(offset)
+            .then((rows) => {
+                return rows.map((row) => ({
+                    article_id: row.article_id,
+                    article_title: row.article_title,
+                    article_status: row.article_status,
+                    article_is_premium: row.article_is_premium,
+                    article_publish_date: row.article_publish_date,
+                    author_name: row.author_name,
+                    category_name: row.category_name,
+                    article_tags: row.article_tags ? row.article_tags.split(",") : [],
+                    rejection_note: row.rejection_note || null,
+                }));
+            });
     },
-    async getTotalArticles() {
-        return db("articles").count("id as count").first();
+    async getTotalArticles(id_editor, status = null) {
+        try {
+            const query = db("articles as a")
+                .innerJoin("categories as c", "a.category_id", "c.id")
+                .innerJoin("editor_assignments as ea", "c.id", "ea.category_id")
+                .where("ea.editor_id", id_editor)
+                .count("a.id as count")
+                .first();
+    
+            // Apply status filter if provided
+            if (status) {
+                query.andWhere("a.status", status);
+            }
+    
+            return await query;
+        } catch (error) {
+            console.error("Error fetching total articles:", error);
+            throw error;
+        }
     },
     async getAllCategories() {
         try {
@@ -57,8 +88,8 @@ export default {
           console.error("Error fetching categories:", error);
           throw error; 
         }
-    },
-    async updateArticle(admin_id, article_id, tag, categories, reason, decision) {
+    }, 
+    async updateArticle(admin_id, article_id, tag, categories, reason, decision,publish_date) {
         try {
             const category = await db('categories').where('name', categories).first();
             if (!category) {
@@ -71,6 +102,7 @@ export default {
                 .update({
                     status: decision,
                     category_id: category_id,  
+                    publish_date: publish_date,
                 });
     
             if (tag) {

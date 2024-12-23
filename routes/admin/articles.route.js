@@ -21,8 +21,9 @@ router.get("/", async function (req, res) {
       statusClass = 'tw-bg-yellow-400 tw-text-white tw-rounded-lg tw-text-center tw-text-base';
     } else if (article.article_status === 'rejected') {
       statusClass = 'tw-bg-red-500 tw-text-white tw-rounded-lg tw-text-center tw-text-base';
+    } else if (article.article_status === 'pending'){
+      statusClass = 'tw-bg-cyan-200 tw-text-black tw-rounded-lg tw-text-center tw-text-base';
     }
-
     return {
       ...article,
       categories: categories,

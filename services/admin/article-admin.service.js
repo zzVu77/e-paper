@@ -71,6 +71,7 @@ export default {
                 .update({
                     status: decision,
                     category_id: category_id,  
+                    
                 });
     
             if (tag) {

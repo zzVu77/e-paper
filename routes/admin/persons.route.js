@@ -96,11 +96,14 @@ router.post('/assignment', async function (req, res) {
   const { categoryID, id } = req.body; 
   const delAssignment = await personService.deleteAssignmentsByEditor(id);
   try {
+    if (categoryID)
+    {
       for (const catID of categoryID)
       {
         console.log(catID);
         const result = await personService.insertCategoryEditor(id, catID);
       }
+    }
       res.redirect('/admin/persons?role=editor');
   } catch (error) {
       console.error('Error assigning/updating category for editor:', error);

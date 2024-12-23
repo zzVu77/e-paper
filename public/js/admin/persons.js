@@ -58,7 +58,7 @@ document.querySelectorAll('.popup-trigger').forEach(button => {
                 });
 
                 if (selectedCategoriesElement.children.length === 0) {
-                    selectedCategoriesElement.innerHTML = `<span class="tw-text-gray-500">Chọn thể loại</span>`;
+                    selectedCategoriesElement.innerHTML = `<span class="tw-text-gray-500">Choose category</span>`;
                 }
             })
             .catch(error => console.error('Error fetching selected categories:', error));

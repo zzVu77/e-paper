@@ -37,7 +37,7 @@ router.get("/byCat", async function (req, res) {
 
 
   //Arrange premium post for supscription users
-  const isPremium = false;
+  const isPremium = true;
   const articles = await articleService.getArticlesByCategory(
     name,
     limit,
@@ -88,7 +88,7 @@ router.get("/byTag", async function (req, res) {
   }
 
   //Arrange premium post for supscription users
-  const isPremium = false;
+  const isPremium = true;
   const articles = await articleService.getArticlesByTag(name, limit, offSet, isPremium);
   res.render("posts", {
     articles: articles,
@@ -132,10 +132,13 @@ router.get("/search", async function (req, res) {
       active: i + 1 === parseInt(current_page),
     });
   }
+  //Arrange premium post for supscription users
+  const isPremium = true;
   const articles = await articleService.searchArticlesByKeyword(
     keyword,
     limit,
-    offSet
+    offSet,
+    isPremium
   );
   res.render("posts", {
     articles: articles,

@@ -875,12 +875,12 @@ export default {
       });
   },
   // search article by word
-  async searchArticlesByKeyword(keyword, limit, offset) {
+  async searchArticlesByKeyword(keyword, limit, offset, isPremium) {
     if (!keyword || keyword.trim() === "") {
       throw new Error("Từ khóa tìm kiếm không được để trống");
     }
-
-    return db("articles as a")
+  
+    let query = db("articles as a")
       .leftJoin("article_tags as at", "a.id", "at.article_id")
       .leftJoin("tags as t", "at.tag_id", "t.id")
       .innerJoin("users as u", "a.author", "u.id")
@@ -903,6 +903,7 @@ export default {
         "MATCH(a.title, a.abstract, a.content) AGAINST(? IN NATURAL LANGUAGE MODE)",
         [keyword]
       )
+      .andWhere("a.status", "published") // Thêm điều kiện status = 'published'
       .groupBy(
         "a.id",
         "a.title",
@@ -917,25 +918,31 @@ export default {
         "c.name"
       )
       .limit(limit) // Giới hạn số lượng bài viết trả về
-      .offset(offset) // Bắt đầu từ vị trí offset
-
-      .then((rows) => {
-        return rows.map((row) => ({
-          article_id: row.article_id,
-          article_title: row.article_title,
-          article_abstract: row.article_abstract,
-          article_content: row.article_content,
-          article_image_url: row.article_image_url,
-          article_status: row.article_status,
-          article_is_premium: row.article_is_premium,
-          article_views: row.article_views,
-          article_publish_date: row.article_publish_date,
-          author_name: row.author_name,
-          category_name: row.category_name,
-          article_tags: row.article_tags ? row.article_tags.split(",") : [],
-        }));
-      });
+      .offset(offset); // Bắt đầu từ vị trí offset
+  
+    // Nếu isPremium là true, sắp xếp bài viết ưu tiên bài có is_premium = true
+    if (isPremium) {
+      query = query.orderByRaw("a.is_premium desc, a.publish_date desc"); // Sắp xếp theo is_premium và publish_date
+    }
+  
+    return query.then((rows) => {
+      return rows.map((row) => ({
+        article_id: row.article_id,
+        article_title: row.article_title,
+        article_abstract: row.article_abstract,
+        article_content: row.article_content,
+        article_image_url: row.article_image_url,
+        article_status: row.article_status,
+        article_is_premium: row.article_is_premium,
+        article_views: row.article_views,
+        article_publish_date: row.article_publish_date,
+        author_name: row.author_name,
+        category_name: row.category_name,
+        article_tags: row.article_tags ? row.article_tags.split(",") : [],
+      }));
+    });
   },
+  
   async countArticlesByKeyword(keyword) {
     try {
       if (!keyword || keyword.trim() === "") {
@@ -948,6 +955,7 @@ export default {
           "MATCH(title, abstract, content) AGAINST(? IN NATURAL LANGUAGE MODE)",
           [keyword]
         )
+        .andWhere("status", "published")  // Thêm điều kiện status = 'published'
         .count("* as total")
         .first();
 

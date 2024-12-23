@@ -136,10 +136,10 @@
   </div>
   {{! Comment section }}
   <div
-    class="comment-section tw-w-auto tw-h-[550px] tw-border-2 tw-border-solid tw-border-gray-300 tw-rounded-lg tw-mt-7 tw-mb-14 tw-mx-[128px]"
+    class="comment-section  tw-h-auto tw-max-h-[550px] tw-overflow-auto  tw-border-2 tw-border-solid tw-border-gray-300 tw-rounded-lg tw-mt-7 tw-mb-14 tw-mx-[128px]"
   >
     {{! Place for user comment }}
-    <form action="">
+    <form action="" class="form">
       <div class="tw-flex tw-justify-start tw-items-baseline">
         <div class="comment-icon tw-ml-5">
           <svg
@@ -211,8 +211,8 @@
               </g>
             </g></svg>
         </div>
-        <span class="tw-text-3xl tw-font-extrabold tw-ml-5 tw-w-full">Comment
-          (10)</span>
+        <span class="tw-text-3xl tw-font-extrabold tw-ml-5 tw-w-full">Comments
+          ({{numberofComment}})</span>
         <div class="tw-w-full tw-text-end tw-mr-5">
           <button
             class="tw-w-[100px] tw-h-[40px] tw-border-none tw-rounded-[30px] tw-bg-[#53AA51] tw-text-white tw-text-center tw-font-bold text-xl"
@@ -230,14 +230,18 @@
         ></textarea>
       </div>
     </form>
-    <div class="">
+    <div class="list-comment">
+      {{#each listComment}}
+        {{>article-detail/comment}}
+         
+      {{/each}}
+      {{!-- {{>article-detail/comment}}
       {{>article-detail/comment}}
       {{>article-detail/comment}}
       {{>article-detail/comment}}
       {{>article-detail/comment}}
       {{>article-detail/comment}}
-      {{>article-detail/comment}}
-      {{>article-detail/comment}}
+      {{>article-detail/comment}} --}}
     </div>
   </div>
   {{! Related posts }}
@@ -248,6 +252,7 @@
     {{/each}}
   </div>
 </div>
+<script src="/js/add-comment.js"></script>
 
  <script>
   async function downloadPDF() {

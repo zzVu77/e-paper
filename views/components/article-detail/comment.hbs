@@ -6,7 +6,7 @@
   <div class="user-avatar tw-w-[15%] tw-ml-5">
     <img
       class="tw-object-cover tw-object-top tw-w-[100px] tw-h-[100px] tw-block tw-rounded-[100%]"
-      src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+      src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
       alt=""
     />
   </div>
@@ -16,10 +16,10 @@
     <div class="flex tw-justify-between tw-items-center">
       <span
         class="user-name tw-font-bold tw-text-lg tw-text-center"
-      >Elizabeth</span>
+      >{{commenter_name}}</span>
       <span
         class="datetime tw-text-gray-600 tw-font-normal tw-text-sm text- tw-text-center"
-      >12/11/2024</span>
+      >{{comment_date}}</span>
     </div>
     {{! Comment content }}
     <textarea
@@ -27,6 +27,6 @@
       name=""
       readonly
       id=""
-    >Trời nắng trời nắng chạy đi tắm nắng</textarea>
+    >{{content}}</textarea>
   </div>
 </div>

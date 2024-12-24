@@ -14,14 +14,45 @@ import editormanagementRouter from "./routes/editor.route.js";
 import postsRouter from "./routes/posts.route.js";
 import articleService from "./services/article.service.js";
 import categoryService from "./services/category.service.js";
+import session from "express-session";
+import passport from "./auth/config/passportConfig.js";
+import cors from "cors";
+import authRoutes from "./routes/auth.route.js";
+import { ensureAuthenticated } from "./auth/middlewares/authMiddleware.js";
+import Handlebars from 'handlebars';
+import dotenv from "dotenv";
+dotenv.config();
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 // const path = require("path");
+
+app.use(cors());
+app.use(express.json());
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+      secure: false,
+      maxAge: 1000 * 60 * 60 * 24,
+    },
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(
   express.urlencoded({
     extended: true,
   })
 );
+
+Handlebars.registerHelper('json', function (context) {
+  return JSON.stringify(context);
+});
+
 app.engine(
   "hbs",
   engine({
@@ -61,6 +92,9 @@ app.use(async function (req, res, next) {
   }
   // console.log(listCategory);
   res.locals.categories = listCategory;
+  res.locals.user = req.user;
+  console.log("Session data:", req.session);
+  console.log("User data:", req.user);
   next();
 });
 
@@ -76,11 +110,11 @@ app.get("/admin", function (req, res) {
   res.render("admin/dashboard", { layout: "admin", title: "Admin Dashboard" });
 });
 
-app.get("/account-setting-myprofile", function (req, res) {
+app.get("/account-setting-myprofile", ensureAuthenticated, function (req, res) {
   res.render("account-setting-myprofile");
 });
 app.get("/account-setting-security", function (req, res) {
-  res.render("account-setting-security");
+  res.render("account-setting-security", {user: req.user});
 });
 app.get("/account-setting-upgrade", function (req, res) {
   res.render("account-setting-upgrade");
@@ -141,6 +175,7 @@ app.use("/admin/persons", personsmanagementRouter);
 app.use("/admin/articles", articlesmanagementRouter);
 app.use("/editor", editormanagementRouter);
 app.use("/account", accountmanagementRouter);
+app.use("/auth", authRoutes);
 app.post("/generate-pdf", async function (req, res) {
   try {
     const { content, title } = req.body;

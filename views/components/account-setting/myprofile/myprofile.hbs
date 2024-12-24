@@ -9,30 +9,62 @@
         <p>My Profile</p>
         {{#if isReader}}
             <h6 id="remaining-minutes">
-                {{#if (isEqual user.status "accepted")}}
-                Subscription expires in {{remainingMinutes}} minutes.
-                {{/if}}
-                {{#if (isEqual user.status null)}}
-                    <form class="accountsetting-myprofile-subscriptionform-input" method="post" action="/account-setting/myprofile/subscription">
-                        <button type="submit" id ="accountSetting-myprofile-subscriptionButton" class="btn btn-success">Subscribe</button>
-                        <input type="hidden" name="id" value="{{user.id}}">
-                    </form>
+                {{#if (isEqual remainingMinutes null)}}
+                    {{#if (isEqual user.status null)}}
+                        <form class="accountsetting-myprofile-subscriptionform-input" method="post" action="/account-setting/myprofile/subscription">
+                            <button type="submit" id="accountSetting-myprofile-subscriptionButton" class="btn btn-success">Subscribe</button>
+                            <input type="hidden" name="id" value="{{user.id}}">
+                        </form>
+                    {{/if}}
+                {{else}}
+                    {{#if (isEqual remainingMinutes 0)}}
+                        {{#if (isEqual user.status null)}}
+                            <form class="accountsetting-myprofile-subscriptionform-input" method="post" action="/account-setting/myprofile/subscription">
+                                <button type="submit" id="accountSetting-myprofile-subscriptionButton" class="btn btn-success">Extend</button>
+                                <input type="hidden" name="id" value="{{user.id}}">
+                            </form>
+                        {{/if}}
+
+                    {{else}}
+                        Subscription expires in {{remainingMinutes}} minutes.
+                    {{/if}}
                 {{/if}}
             </h6>
-        {{/if}}     
-    </div>
-    {{#if isReader}}
-        {{#if (isEqual user.status "pending")}}
-            <div class="alert alert-primary" role="alert" style="margin-bottom: 56px;">
-                Your subscription plan will be extent soon!
-            </div>
         {{/if}}
-        {{#if (isEqual user.status null) }}
-            <div class="alert alert-success" role="alert" style="margin-bottom: 56px;">
-                Subscibe to using premium features!
-            </div>
-        {{/if}}     
-    {{/if}}     
+    </div>
+
+    {{#if isReader}}
+        {{!-- guest --}}
+        {{#if (isEqual remainingMinutes null)}}
+            {{#if (isEqual user.status "pending")}}
+                <div class="alert alert-success" role="alert" style="margin-bottom: 56px;">
+                    Your subscription request has been submitted!               
+                </div>
+            {{else}}
+                <div class="alert alert-primary" role="alert" style="margin-bottom: 56px;">
+                    <p>Start your journey with us today</p>
+                    <p>Subscribe now to enjoy exclusive features and benefits!</p>             
+                </div>
+            {{/if}}
+        {{!-- expiry subscriber --}}
+        {{else}}
+            {{#if (isEqual remainingMinutes 0)}}
+                {{#if (isEqual user.status "pending")}}
+                    <div class="alert alert-success" role="alert" style="margin-bottom: 56px;">
+                        Your renewal request has been submitted!
+                    </div>
+                {{else}}
+                    <div class="alert alert-danger" role="alert" style="margin-bottom: 56px;">
+                        <p>Your subscription plan has expired</p>
+                        <p>Extend your subscription to continue using premium features </p>
+                    </div>  
+                {{/if}}
+            {{!-- valid subscriber --}}
+            {{else}}
+
+            {{/if}}
+        {{/if}}
+    {{/if}}
 
     <form class="accountsetting-myprofile-form-input" method="post">
         <div class="form-group" style="margin-bottom:26px; width: 470px; height: 60px;">

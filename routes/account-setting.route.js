@@ -14,17 +14,14 @@ function calculateRemainingMinutes(subscriptionExpiry) {
   const diffMs = expiry - now;
 
   if (diffMs <= 0) {
-    return null; // Nếu đã hết hạn, trả về 0
+    return 0; // Nếu đã hết hạn, trả về 0
   }
 
   return Math.floor(diffMs / (1000 * 60)); // Chuyển đổi từ ms sang phút
 }
-function isReader(role){
-
-}
 router.get("/myprofile", async function (req, res) {
   const user = await userService.getById(
-    "30c1eebb-c157-11ef-b002-0242ac130002"
+    "f7d0f7cd-c1a1-11ef-be2d-0242ac120002"
   );
   const remainingMinutes = calculateRemainingMinutes(
     user[0].subscription_expiry

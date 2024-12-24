@@ -7,14 +7,65 @@
 <div class="accountsetting-myprofile-container">
     <div class="accountsetting-myprofile-header">
         <p>My Profile</p>
-        <h6 id="remaining-minutes">
-            {{#if remainingMinutes}}
-            Subscription expires in {{remainingMinutes}} minutes.
-            {{else}}
-            No active subscription.
-            {{/if}}
-        </h6>
+        {{#if isReader}}
+            <h6 id="remaining-minutes">
+                {{#if (isEqual remainingMinutes null)}}
+                    {{#if (isEqual user.status null)}}
+                        <form class="accountsetting-myprofile-subscriptionform-input" method="post" action="/account-setting/myprofile/subscription">
+                            <button type="submit" id="accountSetting-myprofile-subscriptionButton" class="btn btn-success">Subscribe</button>
+                            <input type="hidden" name="id" value="{{user.id}}">
+                        </form>
+                    {{/if}}
+                {{else}}
+                    {{#if (isEqual remainingMinutes 0)}}
+                        {{#if (isEqual user.status null)}}
+                            <form class="accountsetting-myprofile-subscriptionform-input" method="post" action="/account-setting/myprofile/subscription">
+                                <button type="submit" id="accountSetting-myprofile-subscriptionButton" class="btn btn-success">Extend</button>
+                                <input type="hidden" name="id" value="{{user.id}}">
+                            </form>
+                        {{/if}}
+
+                    {{else}}
+                        Subscription expires in {{remainingMinutes}} minutes.
+                    {{/if}}
+                {{/if}}
+            </h6>
+        {{/if}}
     </div>
+
+    {{#if isReader}}
+        {{!-- guest --}}
+        {{#if (isEqual remainingMinutes null)}}
+            {{#if (isEqual user.status "pending")}}
+                <div class="alert alert-success" role="alert" style="margin-bottom: 56px;">
+                    Your subscription request has been submitted!               
+                </div>
+            {{else}}
+                <div class="alert alert-primary" role="alert" style="margin-bottom: 56px;">
+                    <p>Start your journey with us today</p>
+                    <p>Subscribe now to enjoy exclusive features and benefits!</p>             
+                </div>
+            {{/if}}
+        {{!-- expiry subscriber --}}
+        {{else}}
+            {{#if (isEqual remainingMinutes 0)}}
+                {{#if (isEqual user.status "pending")}}
+                    <div class="alert alert-success" role="alert" style="margin-bottom: 56px;">
+                        Your renewal request has been submitted!
+                    </div>
+                {{else}}
+                    <div class="alert alert-danger" role="alert" style="margin-bottom: 56px;">
+                        <p>Your subscription plan has expired</p>
+                        <p>Extend your subscription to continue using premium features </p>
+                    </div>  
+                {{/if}}
+            {{!-- valid subscriber --}}
+            {{else}}
+
+            {{/if}}
+        {{/if}}
+    {{/if}}
+
     <form class="accountsetting-myprofile-form-input" method="post">
         <div class="form-group" style="margin-bottom:26px; width: 470px; height: 60px;">
             <label for="email" style="color: #7E7F81; font-size: 12px; font-family: Open Sans; font-weight: 400; line-height: 12px; word-wrap: break-word">Email Address</label>
@@ -48,6 +99,53 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+    const subscriptionSubmitButton = document.getElementById("accountSetting-myprofile-subscriptionButton");
+    subscriptionSubmitButton.addEventListener("click", function (e) {
+        e.preventDefault(); // Ngừng hành động mặc định của nút (submit form)
+        // Hiển thị thông báo thành công và tự động đóng sau 2 giây
+        // Hiển thị thông báo xác nhận
+        Swal.fire({
+            title: "Confirm subscription",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes",
+            cancelButtonText: "No"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng nhấn "Yes", hiển thị thông báo thành công
+                let timerInterval;
+                Swal.fire({
+                    title: "Changes saved successfully!",
+                    html: "Autoclose after <b></b> seconds.",
+                    timer: 2000,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading();
+                        const timer = Swal.getPopup().querySelector("b");
+                        timerInterval = setInterval(() => {
+                            timer.textContent = Math.floor(Swal.getTimerLeft() / 1000);
+                        }, 100);
+                    },
+                    willClose: () => {
+                        clearInterval(timerInterval);
+                    },
+                }).then((result) => {
+                    // Gửi form sau khi thông báo đóng
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        document.querySelector('.accountsetting-myprofile-subscriptionform-input').submit();
+                    }
+                });
+            }
+        });
+    });
+
+
+
+
+
+
     const submitButton = document.getElementById("accountSetting-myprofile-button");
     submitButton.addEventListener("click", function (e) {
         e.preventDefault(); // Ngừng hành động mặc định của nút (submit form)

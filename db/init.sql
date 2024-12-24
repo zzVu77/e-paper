@@ -9,6 +9,7 @@ CREATE TABLE users (
     birthdate DATE NOT NULL,
     role ENUM('guest', 'subscriber', 'writer', 'editor', 'admin') NOT NULL,
     subscription_expiry DATETIME,
+    status ENUM('pending', 'accepted') DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );

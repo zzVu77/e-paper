@@ -60,6 +60,7 @@ router.get('/', async function (req, res) {
       data: filteredUsers,
       headers: tableHeaders,
       catId: req.query.id,  
+      role: role,
       pageNumbers: pageNumbers,
       prevPage: prevPage,
       nextPage: nextPage,
@@ -121,9 +122,10 @@ router.get('/selected-categories/:id', async (req, res) => {
 
 router.post('/add', async (req, res) => {
   const { name, pen_name, email, password, birthdate, role } = req.body;
+  const passwordhash = bcrypt.hashSync(password,8);
   console.log(role);
   try {
-    const result = await personService.addUser({ name, pen_name, email, password, birthdate, role });
+    const result = await personService.addUser({ name, pen_name, email, passwordhash, birthdate, role });
     
     if (result.success) {
       res.redirect('/admin/persons');

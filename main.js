@@ -31,7 +31,7 @@ app.use(cors());
 app.use(express.json());
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: Buffer.from(process.env.SESSION_SECRET, 'base64').toString('utf-8'),
     resave: true,
     saveUninitialized: true,
     cookie: {

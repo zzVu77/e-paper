@@ -9,11 +9,14 @@ dotenv.config();
 
 import fetch from 'node-fetch';
 
+const googleClientId = Buffer.from(process.env.GOOGLE_CLIENT_ID, 'base64').toString('utf-8');
+const googleClientSecret = Buffer.from(process.env.GOOGLE_CLIENT_SECRET, 'base64').toString('utf-8');
+
 passport.use(
     new GoogleStrategy(
         {
-            clientID: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            clientID: googleClientId,
+            clientSecret: googleClientSecret,
             callbackURL: "/auth/google/callback",
             scope: ["profile", "email", "https://www.googleapis.com/auth/user.birthday.read"],
         },
@@ -52,13 +55,14 @@ passport.use(
     )
 );
 
-
+const githubClientId = Buffer.from(process.env.GITHUB_CLIENT_ID, 'base64').toString('utf-8');
+const githubClientSecret = Buffer.from(process.env.GITHUB_CLIENT_SECRET, 'base64').toString('utf-8');
 
 passport.use(
     new GitHubStrategy(
         {
-            clientID: process.env.GITHUB_CLIENT_ID,
-            clientSecret: process.env.GITHUB_CLIENT_SECRET,
+            clientID: githubClientId,
+            clientSecret: githubClientSecret,
             callbackURL: "/auth/github/callback",
             scope: ["user:email"],
         },

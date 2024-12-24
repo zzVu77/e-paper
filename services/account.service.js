@@ -15,7 +15,7 @@ export default {
         email,
         birthdate,
         password,
-        role: "subscriber",
+        role: "guest",
         subscription_expiry,
       });
       return { success: true, id };

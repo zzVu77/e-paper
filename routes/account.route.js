@@ -29,7 +29,7 @@ router.post("/signup", async function (req, res) {
       email,
       dob,
       hashPassword,
-      "subscriber",
+      "guest",
       subscription_expiry
     );
     // Gửi phản hồi về phía client

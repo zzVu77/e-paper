@@ -10,7 +10,7 @@ CREATE TABLE users (
     oauth_id VARCHAR(255),
     oauth_token VARCHAR(255),
     birthdate DATE,
-    role ENUM('subscriber', 'writer', 'editor', 'admin') NOT NULL,
+    role ENUM('guest','subscriber', 'writer', 'editor', 'admin') NOT NULL,
     subscription_expiry DATETIME,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP

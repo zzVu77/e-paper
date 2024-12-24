@@ -62,10 +62,11 @@ app.use(async function (req, res, next) {
   // console.log("Current Category: ", currentCategory);
   const categories = await categoryService.getCategoryName();
   const listCategory = [];
-  const parentCat = currentCategory
-    ? await categoryService.getParentCategory(currentCategory)
-    : "";
+  // const parentCat = currentCategory
+  //   ? await categoryService.getParentCategory(currentCategory)
+  //   : "";
   // console.log("parent", parentCat);
+  const parentCat = "";
   for (let index = 0; index < categories.length; index++) {
     listCategory.push({
       currentCategory: currentCategory,

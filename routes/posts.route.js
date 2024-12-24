@@ -34,10 +34,15 @@ router.get("/byCat", async function (req, res) {
       active: i + 1 === parseInt(current_page),
     });
   }
+
+
+  //Arrange premium post for supscription users
+  const isPremium = true;
   const articles = await articleService.getArticlesByCategory(
     name,
     limit,
-    offSet
+    offSet,
+    isPremium
   );
   // console.log(name);
   res.render("posts", {
@@ -81,7 +86,10 @@ router.get("/byTag", async function (req, res) {
       active: i + 1 === parseInt(current_page),
     });
   }
-  const articles = await articleService.getArticlesByTag(name, limit, offSet);
+
+  //Arrange premium post for supscription users
+  const isPremium = true;
+  const articles = await articleService.getArticlesByTag(name, limit, offSet, isPremium);
   res.render("posts", {
     articles: articles,
     tagName: name,
@@ -124,10 +132,13 @@ router.get("/search", async function (req, res) {
       active: i + 1 === parseInt(current_page),
     });
   }
+  //Arrange premium post for supscription users
+  const isPremium = true;
   const articles = await articleService.searchArticlesByKeyword(
     keyword,
     limit,
-    offSet
+    offSet,
+    isPremium
   );
   res.render("posts", {
     articles: articles,

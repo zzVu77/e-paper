@@ -9,28 +9,41 @@ import multer from "multer";
 import path from "path";
 import { fileURLToPath } from 'url';
 import fs from 'fs';
+import authMiddleware from "../../auth/middlewares/authMiddleware.js";
+import userService from "../../services/user.service.js";
+import rejectionNoteService from "../../services/rejectionNote.service.js";
+
 const router = express.Router();
 // Tạo __dirname thủ công
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-router.get("/", async function (req, res) {
+router.get("/", authMiddleware.ensureAuthenticated,   authMiddleware.ensureWriter,async function (req, res) {
   const id = req.query.id || 0;
-
+  const user = await userService.getById(req.user.id);
   if (id != 0) {
     const article = await articleService.findById(id);
     const articleList = await categoryService.getAll();
-    console.log(article);
+    // console.log(article);
 
     const categoryName = await categoryService.getCategoryNameById(
       article.category_id
     );
     // console.log(categoryName);
-
+    let rejectionNotes = null;
+    let editor = null;
+    if(article.status == "rejected");{
+      rejectionNotes = await rejectionNoteService.getByArticleId(article.id);
+      editor = await userService.getById(rejectionNotes[0].editor_id)
+    }
+    console.log(editor);
     res.render("writer/article-writer-editTextEditor", {
       article: article,
       categoryName: categoryName,
       categoryListName: JSON.stringify(articleList),
       categoryList: articleList,
+      authorID: user[0].id,
+      rejectionNotes: rejectionNotes[0],
+      editor: editor[0].name,
     });
   }
 });
@@ -94,7 +107,7 @@ const upload = multer({ storage });
 //     res.status(500).json({ error: error.message });
 //   }
 // });
-router.post("/", upload.single("image_url"), async function (req, res) {
+router.post("/", upload.single("image_url"),authMiddleware.ensureWriter,async function (req, res) {
   try {
     // Lấy thông tin từ body
     const categoryName = req.body.category;
@@ -139,7 +152,7 @@ router.post("/", upload.single("image_url"), async function (req, res) {
     await articleService.patch(req.body.id, articleData);
 
     // Xử lý tags và các logic khác
-    res.redirect("/writer/article/manage/PendingArticle");
+    res.redirect("/writer/article/manage/DraftArticle");
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: error.message });

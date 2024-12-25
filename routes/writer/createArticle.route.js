@@ -7,6 +7,8 @@ import { v4 as uuidv4 } from "uuid"; // Import hàm v4 từ uuid
 import multer from "multer";
 import path from "path";
 import { fileURLToPath } from 'url';
+import authMiddleware from "../../auth/middlewares/authMiddleware.js";
+import userService from "../../services/user.service.js";
 
 
 const router = express.Router();
@@ -14,12 +16,13 @@ const router = express.Router();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-router.get("/", async function (req, res) {
+router.get("/",authMiddleware.ensureAuthenticated,  authMiddleware.ensureWriter, async function (req, res) {
   const list = await categoryService.getAll();
+  const user = await userService.getById(req.user.id);
   res.render("writer/article-writer-textEditor", {
     categoryListName: JSON.stringify(list),
     categoryList: list,
-
+    authorID: user[0].id,
   });
   // console.log(JSON.stringify(list));
 });
@@ -27,7 +30,7 @@ router.get("/", async function (req, res) {
 
 
 
-router.post("/", async function (req, res) {
+router.post("/",  authMiddleware.ensureWriter, async function (req, res) {
   try {
 
     // Tạo dữ liệu bài viết
@@ -113,7 +116,7 @@ router.post("/", async function (req, res) {
   } catch (error) {
     console.error("Error: ", error);
   }
-  res.redirect("/writer/article/manage/PendingArticle");
+  res.redirect("/writer/article/manage/DraftArticle");
 });
 
 

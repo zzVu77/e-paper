@@ -29,7 +29,7 @@ import session from "express-session";
 import passport from "./auth/config/passportConfig.js";
 import cors from "cors";
 import authRoutes from "./routes/auth.route.js";
-import { ensureAuthenticated } from "./auth/middlewares/authMiddleware.js";
+// import { ensureAuthenticated } from "./auth/middlewares/authMiddleware.js";
 import Handlebars from "handlebars";
 import dotenv from "dotenv";
 dotenv.config();
@@ -138,7 +138,7 @@ app.get("/login", function (req, res) {
 app.get("/signup", function (req, res) {
   res.render("signup", { layout: "default" });
 });
-app.get("/account-setting-myprofile", ensureAuthenticated, function (req, res) {
+app.get("/account-setting-myprofile", function (req, res) {
   res.render("account-setting-myprofile");
 });
 app.get("/account-setting-security", function (req, res) {

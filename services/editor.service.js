@@ -186,6 +186,6 @@ export default {
             console.error("Error updating article:", error);
             throw error;
         }
-    }
+    },
     
 };

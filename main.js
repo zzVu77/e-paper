@@ -140,15 +140,15 @@ app.get("/signup", function (req, res) {
   res.render("signup", { layout: "default" });
 });
 
-app.get("/account-setting-myprofile", function (req, res) {
-  res.render("account-setting-myprofile");
-});
-app.get("/account-setting-security", function (req, res) {
-  res.render("account-setting-security", { user: req.user });
-});
-app.get("/account-setting-upgrade", function (req, res) {
-  res.render("account-setting-upgrade");
-});
+// app.get("/account-setting-myprofile", function (req, res) {
+//   res.render("account-setting-myprofile");
+// });
+// app.get("/account-setting-security", function (req, res) {
+//   res.render("account-setting-security", { user: req.user });
+// });
+// app.get("/account-setting-upgrade", function (req, res) {
+//   res.render("account-setting-upgrade");
+// });
 
 app.get("/forgot-password", function (req, res) {
   res.render("forgotPassword", { layout: "default" });

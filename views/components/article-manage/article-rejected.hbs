@@ -76,7 +76,6 @@
                   aria-expanded="false"
                 ></i>
                 <ul class="dropdown-menu">
-                  {{#if (isEqual publish_date null)}}
                     <li><a
                         class="dropdown-item"
                         href="/writer/article/edit?id={{id}}"
@@ -87,19 +86,6 @@
                         <button type="submit" class="dropdown-item" id="article-manage-delBtn">Delete</button>
                       </form>
                     </li>
-                  {{else}}
-                    <li><a
-                        class="dropdown-item"
-                        href="#"
-                      >View</a></li>
-                    <li>
-                    <li>
-                      <form action="/writer/article/manage/del" method="post">
-                        <input type="hidden" name="id" value="{{id}}" />
-                        <button type="submit" class="dropdown-item" id="article-manage-delBtn">Delete</button>
-                      </form>
-                    </li>
-                  {{/if}}
                 </ul>
               </div>
             </div>

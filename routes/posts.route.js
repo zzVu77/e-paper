@@ -1,6 +1,8 @@
 import express from "express";
 import articleService from "../services/article.service.js";
 import commentService from "../services/comment.service.js";
+import userService from "../services/user.service.js";
+
 const router = express.Router();
 
 router.get("/", async function (req, res) {
@@ -158,12 +160,25 @@ router.get("/search", async function (req, res) {
 });
 
 router.get("/detail", async function (req, res) {
+  let user = null
+  if(req.user){
+     user = await userService.getById(req.user.id);
+  }
   const id = req.query.id;
   console.log(id);
   const listComment = await commentService.getCommentByArticleId(id);
   console.log("List comment", listComment);
   const detail = await articleService.getArticleById(id);
-  // console.log(detail);
+  if(detail.article_is_premium == 1){
+    if(user){
+      if(user[0].role="guest"){
+        res.redirect("/login")
+      }
+    }
+    else {
+      res.redirect("/login")
+    }
+      // console.log(detail);
   // console.log(detail.article_image_url);
   const relatedArticles = await articleService.getRelatedArticleByCategory(
     detail.category_name,
@@ -185,6 +200,33 @@ router.get("/detail", async function (req, res) {
     listComment: listComment,
     numberofComment: listComment.length,
   });
+  }
+  else{
+      // console.log(detail);
+  // console.log(detail.article_image_url);
+  const relatedArticles = await articleService.getRelatedArticleByCategory(
+    detail.category_name,
+    detail.article_id,
+    6
+  );
+  // console.log(relatedArticles);
+  res.render("article-detail", {
+    id: detail.article_id,
+    title: detail.article_title,
+    content: detail.article_content,
+    img_url: detail.article_image_url,
+    isPremium: detail.article_is_premium,
+    author: detail.author_name,
+    category: detail.category_name,
+    tags: detail.article_tags,
+    published_date: detail.article_publish_date,
+    relatedArticles: relatedArticles,
+    listComment: listComment,
+    numberofComment: listComment.length,
+  });
+  }
+  
+
 });
 
 router.post("/add-comment", async function (req, res) {

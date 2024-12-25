@@ -1,6 +1,7 @@
 import express from "express";
 import articleService from "../services/article.service.js";
 import commentService from "../services/comment.service.js";
+import userService from "../services/user.service.js";
 import moment from 'moment';
 
 const router = express.Router();
@@ -37,7 +38,6 @@ router.get("/byCat", async function (req, res) {
       active: i + 1 === parseInt(current_page),
     });
   }
-
 
   //Arrange premium post for supscription users
   const isPremium = true;
@@ -92,7 +92,12 @@ router.get("/byTag", async function (req, res) {
 
   //Arrange premium post for supscription users
   const isPremium = true;
-  const articles = await articleService.getArticlesByTag(name, limit, offSet, isPremium);
+  const articles = await articleService.getArticlesByTag(
+    name,
+    limit,
+    offSet,
+    isPremium
+  );
   res.render("posts", {
     articles: articles,
     tagName: name,
@@ -158,25 +163,43 @@ router.get("/search", async function (req, res) {
     isByKeyword: true,
   });
 });
-
 router.get("/detail", async function (req, res) {
+  let user = null;
+  if (req.user) {
+    user = await userService.getById(req.user.id);
+  }
   const id = req.query.id;
   console.log(id);
   const listComment = await commentService.getCommentByArticleId(id);
-  // console.log("List comment", listComment);
-  listComment.forEach(comment => {
-    comment.comment_date = moment(comment.comment_date).format('MMMM Do YYYY, h:mm:ss a'); // Ví dụ định dạng: December 25th 2024, 12:00:36 am
-    // console.log(comment);
+
+  // Format ngày giờ cho comment
+  listComment.forEach((comment) => {
+    comment.comment_date = moment(comment.comment_date).format(
+      "MMMM Do YYYY, h:mm:ss a"
+    );
   });
+
   const detail = await articleService.getArticleById(id);
-  // console.log(detail);
-  // console.log(detail.article_image_url);
+
+  // Kiểm tra quyền truy cập bài viết Premium
+  if (detail.article_is_premium === 1) {
+    if (!user) {
+      // Người dùng chưa đăng nhập
+      return res.redirect("/login");
+    }
+    if (user[0].role === "guest") {
+      // Người dùng là "guest"
+      return res.redirect("/account-setting/myprofile");
+    }
+  }
+
   const relatedArticles = await articleService.getRelatedArticleByCategory(
     detail.category_name,
     detail.article_id,
     6
   );
-  // console.log(relatedArticles);
+
+  // Render trang chi tiết bài viết
   res.render("article-detail", {
     id: detail.article_id,
     title: detail.article_title,
@@ -192,6 +215,7 @@ router.get("/detail", async function (req, res) {
     numberofComment: listComment.length,
   });
 });
+
 
 router.post("/add-comment", async function (req, res) {
   const { articleId, userId, content, comment_date } = req.body;

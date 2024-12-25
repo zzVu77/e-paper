@@ -1,4 +1,6 @@
 <link rel="stylesheet" href="/css/login.css" />
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 <div class="login-wrapper tw-flex tw-grid-flow-row tw-h-full">
   {{! Left section : Other way to login }}
   <div
@@ -147,6 +149,9 @@
             required
           />
         </div>
+
+        <div class="g-recaptcha" data-sitekey="6LdLmKUqAAAAANoLUPY2aJHw7k1gSoAsiqyF0nja"></div>
+
         <div class="flex-row tw-mt-3">
           <div>
             <p class="tw-font-bold">Choose your role</p>

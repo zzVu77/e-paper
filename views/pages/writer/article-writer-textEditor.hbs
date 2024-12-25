@@ -5,14 +5,14 @@
 <form id ="article-writer-textEditor-createForm"action="" method="post" enctype="multipart/form-data">
   <div class="article-writer-textEditor-container">
       <div class="article-writer-textEditor-title mb-3" style = "margin-bottom:50px;">
-        <textarea name="title"  class="form-control" id="article-writer-textEditor-title" rows="1" placeholder="Tiêu đề" style="padding-top: 10px; padding-bottom:10px;"></textarea>
+        <textarea name="title"  class="form-control" id="article-writer-textEditor-title" rows="1" placeholder="Title" style="padding-top: 10px; padding-bottom:10px;"></textarea>
       </div>
       <div class="article-writer-textEditor-title mb-3" style="margin-bottom:50px;">
         <input 
           name="category" 
           class="form-control awesomplete" 
           id="article-writer-textEditor-categoryName" 
-          placeholder="Chuyên mục" 
+          placeholder="Category" 
           style="padding-top: 10px; padding-bottom:10px; width:100%;" 
           data-minchars="1" 
         />
@@ -36,28 +36,28 @@
         </div>
 
         <div class="article-writer-textEditor-thumbnail mb-3" style="box-sizing: border-box; max-width: 15%; vertical-align: top; margin: 0px; height: 100%;">
-            <button type ="button" id="article-writer-textEditor-openImagePopup" class="btn btn-light" style="height: 100%; padding-top: 10px; padding-bottom: 10px;">Chọn ảnh thu nhỏ</button>
+            <button type ="button" id="article-writer-textEditor-openImagePopup" class="btn btn-light" style="height: 100%; padding-top: 10px; padding-bottom: 10px;">Add Thumbnail</button>
         </div>
         <!-- Popup -->
         <div id="article-writer-textEditor-imagePopup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; padding: 20px; background: white; border: 1px solid #ccc; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000;">
-          <h3>Thêm hình ảnh thu nhỏ</h3>
+          <h3>Add Thumbnail</h3>
           <input type="file" id="article-writer-textEditor-imageFileInput" accept="image/*" name="image_url">
           <div id="previewContainer" style="margin-top: 20px;">
             <!-- Hiển thị ảnh thu nhỏ -->
             <img id="article-writer-textEditor-thumbnailPreview" src="" alt="" style="max-width: 100%; display: none;">
           </div>
           <div style="text-align: center;">
-            <button type="button" id="article-writer-textEditor-closePopupBtn" class="btn btn-danger" style="margin-top: 20px;">Đóng</button>
+            <button type="button" id="article-writer-textEditor-closePopupBtn" class="btn btn-danger" style="margin-top: 20px;">Close</button>
           </div>
         </div>
 
         <!-- Overlay (nền tối) -->
         <div id="article-writer-textEditor-popupOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
-          <button id="article-writer-textEditor-publish-button" type="button" class="btn btn-light" style="box-sizing: border-box; max-width: 15%; height: 100%; padding-top: 10px; padding-bottom: 10px;">Xuất bản bài viết</button>
+          <button id="article-writer-textEditor-publish-button" type="button" class="btn btn-light" style="box-sizing: border-box; max-width: 15%; height: 100%; padding-top: 10px; padding-bottom: 10px;">Published</button>
         </div>
 
           <div class="article-writer-textEditor-tagsDetail">
-            <p>Có thể nhập thêm <span>3</span> nhãn</p>
+            <p>Can input <span>3</span> additional tag</p>
             <label>
               Premium:
               <input type="checkbox" name="premium" />
@@ -71,8 +71,8 @@
           {{>article-writer-textEditor/text-editor placeholderText="Write the content of the article" textHeight= 500}}
       </div>
       <input type="hidden" name="content" id="article-writer-textEditor-articleContent">
-      <input type="hidden" name="status" value="pending">  <!-- Thêm trường này -->
-      <input type="hidden" name="author" value=1>  <!-- Thêm trường này -->
+      <input type="hidden" name="status" value="draft">  <!-- Thêm trường này -->
+      <input type="hidden" name="author" value={{authorID}}>  <!-- Thêm trường này -->
 
 
   </div>

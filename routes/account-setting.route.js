@@ -2,6 +2,8 @@ import express from "express";
 import userService from "../services/user.service.js";
 import moment from "moment";
 import bcrypt from "bcryptjs";
+import authMiddleware from "../auth/middlewares/authMiddleware.js";
+import accountService from "../services/account.service.js";
 
 const router = express.Router();
 function calculateRemainingMinutes(subscriptionExpiry) {
@@ -19,12 +21,13 @@ function calculateRemainingMinutes(subscriptionExpiry) {
 
   return Math.floor(diffMs / (1000 * 60)); // Chuyển đổi từ ms sang phút
 }
-router.get("/myprofile", async function (req, res) {
-  const user = await userService.getById("105848255747222942031");
-  const remainingMinutes = calculateRemainingMinutes(
-    user[0].subscription_expiry
-  );
-  const formattedDate = moment(user[0].birthdate).format("YYYY-MM-DD"); // Chỉ lấy ngày, không có múi giờ
+router.get("/myprofile",authMiddleware.ensureAuthenticated, async function (req, res) {
+  const user = await userService.getById(req.user.id)
+  const remainingMinutes = calculateRemainingMinutes(user.subscription_expiry);
+  let formattedDate = null;
+  if(user[0].birthdate){
+    formattedDate = moment(user[0].birthdate).format("YYYY-MM-DD"); // Chỉ lấy ngày, không có múi giờ
+  }
 
   let isReader = false;
   if (user[0].role == "subscriber" || user[0].role == "guest") {
@@ -75,17 +78,18 @@ router.post("/myprofile/subscription", async function (req, res) {
   //   });
   res.redirect("/account-setting/myprofile");
 });
-router.get("/security", function (req, res) {
+router.get("/security",authMiddleware.ensureAuthenticated, async function (req, res) {
+  const user = await userService.getById(req.user.id)
   res.render("account-setting-security", {
     showErrors: false,
-    id: 1,
+    user: user[0],
     isSent: false,
   });
 });
 router.post("/security", async function (req, res) {
   const user = await userService.getById(req.body.id);
-  console.log(user);
-  console.log(req.body);
+  // console.log(user);
+  // console.log(req.body);
   console.log(bcrypt.hashSync("password123", 8));
   if (!bcrypt.compareSync(req.body.current_password, user[0].password)) {
     return res.render("account-setting-security", {
@@ -103,6 +107,17 @@ router.post("/security", async function (req, res) {
     id: req.body.id,
     isSent: true,
   });
+});
+router.post("/security/createPassword", async function (req, res) {
+  const user = await userService.getById(req.body.id);
+  // console.log(user);
+  // console.log(req.body);
+  // console.log(bcrypt.hashSync(user[0].password, 8));
+  const update = {
+    password: bcrypt.hashSync(req.body.new_password, 8),
+  };
+  await userService.patch(req.body.id, update);
+  res.redirect("/account-setting/security");
 });
 
 export default router;

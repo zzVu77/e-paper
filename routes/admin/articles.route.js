@@ -30,7 +30,6 @@ router.get("/", async function (req, res) {
       statusClass, 
     };
   });
-  console.log(data);
   const totalArticles = await adminService.getTotalArticles();
   const totalItems = totalArticles.count;
   const totalPages = Math.ceil(totalItems / itemsPerPage); 

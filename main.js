@@ -7,6 +7,7 @@ import otp_generator from "otp-generator";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import formatDateTime from "./helpers/formatDateTime.js";
+import formatDate from "./helpers/formatDate.js";
 import genPDF from "./public/js/genPDF.js";
 import accountmanagementRouter from "./routes/account.route.js";
 import articlesmanagementRouter from "./routes/admin/articles.route.js";
@@ -29,7 +30,8 @@ import session from "express-session";
 import passport from "./auth/config/passportConfig.js";
 import cors from "cors";
 import authRoutes from "./routes/auth.route.js";
-import { ensureAuthenticated } from "./auth/middlewares/authMiddleware.js";
+import authMiddleware from "./auth/middlewares/authMiddleware.js";
+
 import Handlebars from "handlebars";
 import dotenv from "dotenv";
 dotenv.config();
@@ -68,6 +70,7 @@ app.engine(
     partialsDir: join(__dirname, "/views/components/"),
     helpers: {
       format_datetime: formatDateTime,
+      format_date: formatDate,
       isEqual(value1, value2) {
         return value1 === value2;
       },
@@ -88,7 +91,6 @@ app.use(express.static("public"));
 // setup local data for navigation
 app.use(async function (req, res, next) {
   const currentCategory = req.query.categoryname || "";
-  console.log("Current Category: ", currentCategory);
   const categories = await categoryService.getCategoryName();
   const listCategory = [];
 
@@ -96,7 +98,6 @@ app.use(async function (req, res, next) {
     ? await categoryService.getParentCategory(currentCategory)
     : "";
   // const parentCat = "";
-  console.log("parent", parentCat);
 
   for (let index = 0; index < categories.length; index++) {
     listCategory.push({
@@ -138,15 +139,16 @@ app.get("/login", function (req, res) {
 app.get("/signup", function (req, res) {
   res.render("signup", { layout: "default" });
 });
-app.get("/account-setting-myprofile", ensureAuthenticated, function (req, res) {
-  res.render("account-setting-myprofile");
-});
-app.get("/account-setting-security", function (req, res) {
-  res.render("account-setting-security", { user: req.user });
-});
-app.get("/account-setting-upgrade", function (req, res) {
-  res.render("account-setting-upgrade");
-});
+
+// app.get("/account-setting-myprofile", function (req, res) {
+//   res.render("account-setting-myprofile");
+// });
+// app.get("/account-setting-security", function (req, res) {
+//   res.render("account-setting-security", { user: req.user });
+// });
+// app.get("/account-setting-upgrade", function (req, res) {
+//   res.render("account-setting-upgrade");
+// });
 
 app.get("/forgot-password", function (req, res) {
   res.render("forgotPassword", { layout: "default" });
@@ -188,10 +190,14 @@ app.get("/verify-otp", function (req, res) {
 // app.get('/admin/tags', function (req, res) {
 //   res.render('admin/tags', { layout: 'admin', title: 'Tags' });
 // });
-app.use("/admin/categories", categoriesmanagementRouter);
-app.use("/admin/tags", tagsmanagementRouter);
-app.use("/admin/persons", personsmanagementRouter);
-app.use("/admin/articles", articlesmanagementRouter);
+app.use(
+  "/admin/categories",
+  authMiddleware.authAdmin,
+  categoriesmanagementRouter
+);
+app.use("/admin/tags", authMiddleware.authAdmin, tagsmanagementRouter);
+app.use("/admin", authMiddleware.authAdmin, personsmanagementRouter);
+app.use("/admin/articles", authMiddleware.authAdmin, articlesmanagementRouter);
 app.use("/posts", postsRouter);
 app.use("/account-setting", accountSettingRouter);
 
@@ -209,11 +215,7 @@ app.get("/", async (req, res) => {
   });
 });
 
-app.use("/admin/categories", categoriesmanagementRouter);
-app.use("/admin/tags", tagsmanagementRouter);
-app.use("/admin/persons", personsmanagementRouter);
-app.use("/admin/articles", articlesmanagementRouter);
-app.use("/editor", editormanagementRouter);
+app.use("/editor", authMiddleware.authEditor, editormanagementRouter);
 app.use("/account", accountmanagementRouter);
 app.use("/auth", authRoutes);
 app.post("/generate-pdf", async function (req, res) {

@@ -10,59 +10,58 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 {{#if this.empty}}
   <div class="card-body">
-    Không có dữ liệu.
+    There are no posts
   </div>
 {{else}}
   <div class="article-manage-display" style="height:100%;">
     <div style="height:95%">
 
       <div class="article-manage-title">
-        <span>Bài viết đang chờ duyệt</span>
+        <span>Pending Articles</span>
         <hr />
       </div>
-      
-      <form id ="article-manage-filterForm"method ="GET" action="/writer/article/manage/PendingArticle-filter">
-      <div class="article-manage-search">
-        <div class="article-manage-filter">
-          <div class="article-manage-filterDate">
-            <i class="bi bi-calendar"></i>
-            <input
-              type="text"
-              id="startDatePicker"
-              name="startCreateDate"
-              placeholder="Ngày bắt đầu"
-            />
-            <span>-</span>
-            <input
-              type="text"
-              id="endDatePicker"
-              name="endCreateDate"
-              placeholder="Ngày kết thúc"
-            />
-          </div>
-          <div class="article-manage-filterTag">
-            <input type="text" name ="tags" placeholder="Thẻ" />
-          </div>
-        </div>
-        <div class="article-manage-searchBar">
-          <input type="text" name ="searchKeyWord" placeholder="Tìm kiếm" />
-          <div class="article-manage-searchBar-icon">
-            <i class="bi bi-search" id ="article-manage-searchBtn"></i>
+
+      <form
+        id="article-manage-filterForm"
+        method="GET"
+        action="/writer/article/manage/PendingArticle-filter"
+      >
+        <div class="article-manage-search">
+          <div class="article-manage-filter">
+            <div class="article-manage-filterDate">
+              <i class="bi bi-calendar"></i>
+              <input
+                type="text"
+                id="startDatePicker"
+                name="startCreateDate"
+                placeholder="Start Date"
+              />
+              <span>-</span>
+              <input
+                type="text"
+                id="endDatePicker"
+                name="endCreateDate"
+                placeholder="End Date"
+              />
             </div>
+            <div class="article-manage-filterTag">
+              <input type="text" name="tags" placeholder="Tags" />
+            </div>
+          </div>
+          <div class="article-manage-searchBar">
+            <input type="text" name="searchKeyWord" placeholder="Search" />
+            <div class="article-manage-searchBar-icon">
+              <i class="bi bi-search" id="article-manage-searchBtn"></i>
+            </div>
+          </div>
         </div>
-      </div>
       </form>
 
-
-      
       <div class="article-manage-posts" style="">
         {{#each this.list}}
           <div class="article-manage-post">
             <div class="article-manage-postHeader">
-                <i
-                  class="bi bi-hourglass-split"
-                  style="color:rgb(128, 128, 79)"
-                ></i>
+              <i class="bi bi-clock-history" style="color:orange"></i>
               <span class="article-manage-postTitle">{{title}}</span>
               <ul>
                 {{#each tags}}
@@ -71,7 +70,7 @@
               </ul>
             </div>
             <div class="article-manage-postEdit">
-              <span>Sửa lần cuối: {{format_datetime updated_at}}</span>
+              <span>Last Edited: {{format_datetime updated_at}}</span>
               <div class="article-manage-postEdit-dropdown">
                 <i
                   class="bi bi-three-dots dropdown-toggle"
@@ -79,16 +78,16 @@
                   aria-expanded="false"
                 ></i>
                 <ul class="dropdown-menu">
-                    <li><a
-                        class="dropdown-item"
-                        href="/writer/article/edit?id={{id}}"
-                      >Sửa</a></li>
-                    <li>
+                  <li><a
+                      class="dropdown-item"
+                      href="/posts/detail?id={{id}}"
+                    >Xem</a></li>
+                  {{!-- <li>
                       <form action="/writer/article/manage/del" method="post">
                         <input type="hidden" name="id" value="{{id}}" />
                         <button type="submit" class="dropdown-item" id="article-manage-delBtn">Xóa bài viết</button>
                       </form>
-                    </li>
+                    </li> --}}
                 </ul>
               </div>
             </div>
@@ -96,58 +95,54 @@
         {{/each}}
       </div>
     </div>
-    <div style="width: 100%; margin-top: 20px;">
-      <ul
-        class="pagination"
-        style="margin-top :20px; margin:0 auto; width: fit-content;"
-      >
-        {{#if isFirstPage}}
-          <li class="page-item disabled" style="width: 86px;">
-            <a class="page-link" href="#">Previous</a>
-          </li>
-        {{else}}
-          <li class="page-item" style="width: 86px;">
-            <a
-              class="page-link"
-              href={{previousLink}}
-            >Previous</a>
-          </li>
-        {{/if}}
-
-        {{#each this.pageNumbers}}
-          {{#if active}}
-            <li class="page-item active">
-              <a class="page-link" href="#">{{value}}</a>
+    {{#if (isEqual isFirstPage isLastPage)}}{{else}}
+      <div style="width: 100%; margin-top: 20px;">
+        <ul
+          class="pagination"
+          style="margin-top :20px; margin:0 auto; width: fit-content;"
+        >
+          {{#if isFirstPage}}
+            <li class="page-item disabled" style="width: 86px;">
+              <a class="page-link" href="#">Previous</a>
             </li>
           {{else}}
-            <li class="page-item">
-              <a
-                class="page-link"
-                href={{link}}
-              >{{value}}</a>
+            <li class="page-item" style="width: 86px;">
+              <a class="page-link" href={{previousLink}}>Previous</a>
             </li>
           {{/if}}
-        {{/each}}
-        {{#if isLastPage}}
-          <li class="page-item disabled" style="width: 86px; text-align:center">
-            <a class="page-link" href="#">Next</a>
-          </li>
-        {{else}}
-          <li class="page-item" style="width: 86px; text-align:center">
-            <a
-              class="page-link"
-              href={{nextLink}}
-            >Next</a>
-          </li>
-        {{/if}}
-      </ul>
-    </div>
+
+          {{#each this.pageNumbers}}
+            {{#if active}}
+              <li class="page-item active">
+                <a class="page-link" href="#">{{value}}</a>
+              </li>
+            {{else}}
+              <li class="page-item">
+                <a class="page-link" href={{link}}>{{value}}</a>
+              </li>
+            {{/if}}
+          {{/each}}
+          {{#if isLastPage}}
+            <li
+              class="page-item disabled"
+              style="width: 86px; text-align:center"
+            >
+              <a class="page-link" href="#">Next</a>
+            </li>
+          {{else}}
+            <li class="page-item" style="width: 86px; text-align:center">
+              <a class="page-link" href={{nextLink}}>Next</a>
+            </li>
+          {{/if}}
+        </ul>
+      </div>
+    {{/if}}
   </div>
 {{/if}}
 
 <script>
-  // Khởi tạo Flatpickr cho các input ngày 
-  flatpickr("#startDatePicker", {dateFormat: "Y-m-d" }); flatpickr("#endDatePicker", { dateFormat: "Y-m-d" });
+  // Khởi tạo Flatpickr cho các input ngày flatpickr("#startDatePicker",
+  {dateFormat: "Y-m-d" }); flatpickr("#endDatePicker", { dateFormat: "Y-m-d" });
 </script>
 <script src="/js/article-writer-manage.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

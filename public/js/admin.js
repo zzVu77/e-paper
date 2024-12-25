@@ -38,3 +38,23 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+function logout() {
+    fetch("/auth/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          // Redirect after successful logout
+          window.location.href = "/";
+        } else {
+          alert("Logout failed");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred during logout");
+      });
+  };

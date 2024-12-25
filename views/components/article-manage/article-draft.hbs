@@ -10,18 +10,18 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 {{#if this.empty}}
   <div class="card-body">
-    Không có dữ liệu.
+    There are no posts
   </div>
 {{else}}
   <div class="article-manage-display" style="height:100%;">
     <div style="height:95%">
 
       <div class="article-manage-title">
-        <span>Bài viết được duyệt và đang chờ xuất bản</span>
+        <span>Draft Articles</span>
         <hr />
       </div>
       
-      <form id ="article-manage-filterForm"method ="GET" action="/writer/article/manage/ApprovedArticle-filter">
+      <form id ="article-manage-filterForm"method ="GET" action="/writer/article/manage/PendingArticle-filter">
       <div class="article-manage-search">
         <div class="article-manage-filter">
           <div class="article-manage-filterDate">
@@ -30,22 +30,22 @@
               type="text"
               id="startDatePicker"
               name="startCreateDate"
-              placeholder="Ngày bắt đầu"
+              placeholder="Start Date"
             />
             <span>-</span>
             <input
               type="text"
               id="endDatePicker"
               name="endCreateDate"
-              placeholder="Ngày kết thúc"
+              placeholder="End Date"
             />
           </div>
           <div class="article-manage-filterTag">
-            <input type="text" name ="tags" placeholder="Thẻ" />
+            <input type="text" name ="tags" placeholder="Tags" />
           </div>
         </div>
         <div class="article-manage-searchBar">
-          <input type="text" name ="searchKeyWord" placeholder="Tìm kiếm" />
+          <input type="text" name ="searchKeyWord" placeholder="Search" />
           <div class="article-manage-searchBar-icon">
             <i class="bi bi-search" id ="article-manage-searchBtn"></i>
             </div>
@@ -59,7 +59,10 @@
         {{#each this.list}}
           <div class="article-manage-post">
             <div class="article-manage-postHeader">
-                <i class="bi bi-clock-history" style="color:orange"></i>
+                <i
+                  class="bi bi-hourglass-split"
+                  style="color:rgb(128, 128, 79)"
+                ></i>
               <span class="article-manage-postTitle">{{title}}</span>
               <ul>
                 {{#each tags}}
@@ -68,7 +71,7 @@
               </ul>
             </div>
             <div class="article-manage-postEdit">
-              <span>Sửa lần cuối: {{format_datetime updated_at}}</span>
+              <span>Last Edited: {{format_datetime updated_at}}</span>
               <div class="article-manage-postEdit-dropdown">
                 <i
                   class="bi bi-three-dots dropdown-toggle"
@@ -78,14 +81,14 @@
                 <ul class="dropdown-menu">
                     <li><a
                         class="dropdown-item"
-                        href="/posts/detail?id={{id}}"
-                      >Xem</a></li>
-                    {{!-- <li>
+                        href="/writer/article/edit?id={{id}}"
+                      >Edit</a></li>
+                    <li>
                       <form action="/writer/article/manage/del" method="post">
                         <input type="hidden" name="id" value="{{id}}" />
-                        <button type="submit" class="dropdown-item" id="article-manage-delBtn">Xóa bài viết</button>
+                        <button type="submit" class="dropdown-item" id="article-manage-delBtn">Delete</button>
                       </form>
-                    </li> --}}
+                    </li>
                 </ul>
               </div>
             </div>
@@ -93,6 +96,8 @@
         {{/each}}
       </div>
     </div>
+    {{#if (isEqual isFirstPage isLastPage)}}
+    {{else}}
     <div style="width: 100%; margin-top: 20px;">
       <ul
         class="pagination"
@@ -139,6 +144,7 @@
         {{/if}}
       </ul>
     </div>
+    {{/if}}
   </div>
 {{/if}}
 

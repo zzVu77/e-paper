@@ -32,12 +32,9 @@ function createTag() {
       ulTags.insertAdjacentHTML("afterbegin", liTag);
     });
   countTags();
-  console.log("đây là counttag");
 }
 
 function removeTag(element, tag) {
-  console.log("Tag được truyền vào:", tag);  // Kiểm tra tag truyền vào
-  console.log("Danh sách tag:", tags);  // Kiểm tra mảng tags
   let index = tags.indexOf(tag.trim());  // Loại bỏ khoảng trắng nếu có
 
 
@@ -48,8 +45,6 @@ function removeTag(element, tag) {
     element.parentElement.remove();
     countTags();
   } else {
-    console.error("Tag không tồn tại trong mảng.");
-    console.log(tags);
   }
 }
 
@@ -68,7 +63,6 @@ function addTag(e) {
       }
       e.target.value = "";
     }
-    // console.log(tags);
   }
 }
 tagInput.addEventListener("keyup", addTag);
@@ -79,14 +73,12 @@ const submitButton = document.getElementById(
 );
 
 submitButton.addEventListener("click", function (e) {
-  // console.log("hello");
   e.preventDefault();
 
   const categoryName = document.getElementById(
     "article-writer-textEditor-categoryName"
   ).value;
   if (categoryName.length === 0) {
-    // console.log(categoryName); // Kiểm tra giá trị
     Swal.fire({
       title: "Error!",
       text: "Category is required" + categoryName.length,
@@ -103,8 +95,8 @@ submitButton.addEventListener("click", function (e) {
     });
     return;
   }
-  const thumbnail = $("#article-writer-textEditor-imageFileInput").val();
-  if (!thumbnail) {
+  const thumbnail = $("#article-writer-textEditor-thumbnailPreview").attr("src");
+  if (!thumbnail || thumbnail.trim() === "") {
     Swal.fire({
       title: "Error!",
       text: "Thumbnail is required",
@@ -114,7 +106,6 @@ submitButton.addEventListener("click", function (e) {
   }
   // Thêm các input ẩn với giá trị của tags
 
-  // console.log(tags.length);
   if (tags.length === 0) {
     Swal.fire({
       title: "Error!",
@@ -139,8 +130,7 @@ submitButton.addEventListener("click", function (e) {
     });
     return;
   }
-  console.log(categoryName);
-  console.log(categories);
+
   if (!categories.some((category) => category.name === categoryName)) {
     Swal.fire({
       title: "Error!",
@@ -159,6 +149,7 @@ submitButton.addEventListener("click", function (e) {
     confirmButtonText: "Yes",
   }).then((result) => {
     if (result.isConfirmed) {
+      console.log(tags);
       tags.forEach((tag) => {
         let hiddenInput = `<input type="hidden" name="tags[]" value="${tag}">`;
         form.insertAdjacentHTML("beforeend", hiddenInput); // Thêm input ẩn vào form
@@ -207,6 +198,9 @@ const closePopupBtn = document.getElementById(
 const fileInput = document.getElementById(
   "article-writer-textEditor-imageFileInput"
 );
+// const editFileInput = document.getElementById(
+//   "article-writer-editTextEditor-imageFileInput"
+// );
 const thumbnailPreview = document.getElementById(
   "article-writer-textEditor-thumbnailPreview"
 );
@@ -240,3 +234,4 @@ fileInput.addEventListener("change", (event) => {
     reader.readAsDataURL(file);
   }
 });
+

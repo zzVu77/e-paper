@@ -1,4 +1,6 @@
 <link rel="stylesheet" href="/css/login.css" />
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 <div class="login-wrapper tw-flex tw-grid-flow-row tw-h-full">
   {{! Left section : Other way to login }}
   <div
@@ -152,6 +154,12 @@
             required
           />
         </div>
+
+        <div
+          class="g-recaptcha"
+          data-sitekey="6LdLmKUqAAAAANoLUPY2aJHw7k1gSoAsiqyF0nja"
+        ></div>
+
         <button class="button-submit tw-text-xl tw-tracking-wider">Sign In</button>
 
       </form>

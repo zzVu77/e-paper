@@ -8,6 +8,7 @@ import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import formatDateTime from "./helpers/formatDateTime.js";
 import genPDF from "./public/js/genPDF.js";
+import accountmanagementRouter from "./routes/account.route.js";
 import articlesmanagementRouter from "./routes/admin/articles.route.js";
 import writerArticleMangeRouter from "./routes/writer/articleMange.route.js";
 import writerCreateArticle from "./routes/writer/createArticle.route.js";
@@ -15,7 +16,6 @@ import writerEditArticle from "./routes/writer/editArticle.route.js";
 import categoriesmanagementRouter from "./routes/admin/categories.route.js";
 import personsmanagementRouter from "./routes/admin/persons.route.js";
 import tagsmanagementRouter from "./routes/admin/tags.route.js";
-
 import editormanagementRouter from "./routes/editor.route.js";
 import accountSettingRouter from "./routes/account-setting.route.js";
 import postsRouter from "./routes/posts.route.js";
@@ -25,11 +25,40 @@ import accountService from "./services/account.service.js";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 const redis = new Redis();
+import session from "express-session";
+import passport from "./auth/config/passportConfig.js";
+import cors from "cors";
+import authRoutes from "./routes/auth.route.js";
+import { ensureAuthenticated } from "./auth/middlewares/authMiddleware.js";
+import Handlebars from "handlebars";
+import dotenv from "dotenv";
+dotenv.config();
+
+app.use(cors());
+app.use(express.json());
+app.use(
+  session({
+    secret: Buffer.from(process.env.SESSION_SECRET, "base64").toString("utf-8"),
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+      secure: false,
+      maxAge: 1000 * 60 * 60 * 24,
+    },
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(
   express.urlencoded({
     extended: true,
   })
 );
+
+Handlebars.registerHelper("json", function (context) {
+  return JSON.stringify(context);
+});
+
 app.engine(
   "hbs",
   engine({
@@ -79,6 +108,9 @@ app.use(async function (req, res, next) {
   }
   // console.log(listCategory);
   res.locals.categories = listCategory;
+  res.locals.user = req.user;
+  console.log("Session data:", req.session);
+  console.log("User data:", req.user);
   next();
 });
 app.use("/writer/article/manage", writerArticleMangeRouter);
@@ -103,6 +135,15 @@ app.get("/login", function (req, res) {
 
 app.get("/signup", function (req, res) {
   res.render("signup", { layout: "default" });
+});
+app.get("/account-setting-myprofile", ensureAuthenticated, function (req, res) {
+  res.render("account-setting-myprofile");
+});
+app.get("/account-setting-security", function (req, res) {
+  res.render("account-setting-security", { user: req.user });
+});
+app.get("/account-setting-upgrade", function (req, res) {
+  res.render("account-setting-upgrade");
 });
 
 app.get("/forgot-password", function (req, res) {
@@ -170,6 +211,8 @@ app.use("/admin/tags", tagsmanagementRouter);
 app.use("/admin/persons", personsmanagementRouter);
 app.use("/admin/articles", articlesmanagementRouter);
 app.use("/editor", editormanagementRouter);
+app.use("/account", accountmanagementRouter);
+app.use("/auth", authRoutes);
 app.post("/generate-pdf", async function (req, res) {
   try {
     const { content, title } = req.body;

@@ -20,15 +20,13 @@ function calculateRemainingMinutes(subscriptionExpiry) {
   return Math.floor(diffMs / (1000 * 60)); // Chuyển đổi từ ms sang phút
 }
 router.get("/myprofile", async function (req, res) {
-  const user = await userService.getById(
-    "f7d0f7cd-c1a1-11ef-be2d-0242ac120002"
-  );
+  const user = await userService.getById("105848255747222942031");
   const remainingMinutes = calculateRemainingMinutes(
     user[0].subscription_expiry
   );
   const formattedDate = moment(user[0].birthdate).format("YYYY-MM-DD"); // Chỉ lấy ngày, không có múi giờ
 
-  let isReader =false;
+  let isReader = false;
   if (user[0].role == "subscriber" || user[0].role == "guest") {
     isReader = true;
   }
@@ -37,7 +35,7 @@ router.get("/myprofile", async function (req, res) {
     user: user[0],
     remainingMinutes,
     formattedDate,
-    isReader
+    isReader,
   });
   console.log(user);
 });
@@ -64,17 +62,17 @@ router.post("/myprofile", async function (req, res) {
 });
 router.post("/myprofile/subscription", async function (req, res) {
   // console.log(req.body);
-  await userService.patch(req.body.id, {status: 'pending'});
+  await userService.patch(req.body.id, { status: "pending" });
 
   const user = await userService.getById(req.body.id);
   const remainingMinutes = calculateRemainingMinutes(
     user[0].subscription_expiry
   );
-//   res.render("account-setting-myprofile", {
-//     user: user[0],
-//     remainingMinutes: remainingMinutes,
-//     formattedDate: user.birthdate,
-//   });
+  //   res.render("account-setting-myprofile", {
+  //     user: user[0],
+  //     remainingMinutes: remainingMinutes,
+  //     formattedDate: user.birthdate,
+  //   });
   res.redirect("/account-setting/myprofile");
 });
 router.get("/security", function (req, res) {

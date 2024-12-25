@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="css/login.css" />
+<link rel="stylesheet" href="/css/login.css" />
 <div class="login-wrapper tw-flex tw-grid-flow-row tw-h-full">
   {{! Left section : Other way to login }}
   <div
@@ -10,6 +10,7 @@
 
     <button
       class="tw-border-none tw-h-[40px] tw-w-[220px] tw-rounded-xl tw-font-bold tw-bg-white tw-inline-flex tw-justify-center tw-items-center tw-mb-[30px]"
+      onclick="window.location.href='/auth/google'"
     >
       <svg
         class="tw-mr-2"
@@ -40,11 +41,12 @@
             fill="#EB4335"
           ></path>
         </g></svg>
-      <span>Sigin with Google</span>
+      <span>Login with Google</span>
     </button>
 
     <button
       class="tw-border-none tw-h-[40px] tw-w-[220px] tw-rounded-xl tw-font-bold tw-bg-black tw-inline-flex tw-justify-center tw-items-center"
+      onclick="window.location.href='/auth/github'"
     >
       <svg
         class="tw-mr-2"
@@ -84,7 +86,7 @@
             </g>
           </g>
         </g></svg>
-      <span class="tw-text-white">Sigin with Github</span>
+      <span class="tw-text-white">Login with Github</span>
     </button>
 
   </div>
@@ -99,13 +101,13 @@
         <div class="tw-text-center tw-text-2xl">Don't have an account?
           <a
             class="sign-up-ref tw-font-bold tw-text-[#53AA51]"
-            href="/signup"
+            href="/account/signup"
           >Sign Up here</a></div>
       </div>
 
-      <form class="form">
+      <form id="loginForm" class="form" action="/auth/local/login" method="POST">
         <div class="flex-column">
-          <label>Username </label></div>
+          <label>Email </label></div>
         <div class="inputForm">
           <svg
             height="20"
@@ -118,8 +120,9 @@
           <input
             type="text"
             class="input"
-            name="username"
+            name="email"
             placeholder="Enter your Username"
+            required
           />
         </div>
 
@@ -141,12 +144,15 @@
             class="input"
             name="password"
             placeholder="Enter your Password"
+            required
           />
         </div>
         <div class="flex-row tw-mt-3">
           <div>
             <p class="tw-font-bold">Choose your role</p>
-            <div class="tw-ml-3">
+            <div
+              class="tw-ml-3 tw-grid tw-grid-cols-2 tw-gap-4 tw-w-auto tw-m-auto"
+            >
               <div class="tw-mt-2">
                 <input
                   type="radio"
@@ -154,6 +160,7 @@
                   id="subscriber"
                   name="role"
                   value="subscriber"
+                  checked
                 />
                 <label
                   for="subscriber"
@@ -203,9 +210,10 @@
           </div>
           <a class="span tw-font-bold" href="/forgot-password">Forgot password?</a>
         </div>
-        <button class="button-submit">Sign In</button>
+        <button class="button-submit tw-text-xl tw-tracking-wider">Sign In</button>
 
       </form>
     </div>
   </div>
+  <script src="/js/login.js"></script>
 </div>

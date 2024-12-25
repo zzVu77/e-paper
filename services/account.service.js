@@ -1,4 +1,5 @@
 import db from "../utils/db.js";
+import { v4 as uuidv4 } from "uuid";
 
 // ...existing code...
 export default {
@@ -14,7 +15,7 @@ export default {
         email,
         birthdate,
         password,
-        role: "subscriber",
+        role: "guest",
         subscription_expiry,
       });
       return { success: true, id };

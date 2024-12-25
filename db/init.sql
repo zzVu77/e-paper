@@ -1,13 +1,16 @@
 
 -- Table: users
 CREATE TABLE users (
-    id CHAR(36) NOT NULL PRIMARY KEY,
+    id CHAR(36) NOT NULL PRIMARY KEY DEFAULT (UUID()),
     name VARCHAR(255) NOT NULL,
     pen_name VARCHAR(255),
     email VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    birthdate DATE NOT NULL,
-    role ENUM('guest', 'subscriber', 'writer', 'editor', 'admin') NOT NULL,
+    provider ENUM('local', 'google', 'github') NOT NULL,
+    password VARCHAR(255),
+    oauth_id VARCHAR(255),
+    oauth_token VARCHAR(255),
+    birthdate DATE,
+    role ENUM('guest','subscriber', 'writer', 'editor', 'admin') NOT NULL,
     subscription_expiry DATETIME,
     status VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

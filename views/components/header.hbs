@@ -205,10 +205,22 @@
           </div>
         </div>
         <div class="client-header-navigation-login">
+          {{#if user}}
           <button
             class="client-header-loginButton"
-            onclick="window.location.href='/login';"
-          >Đăng nhập</button>
+            onclick="window.location.href='/account-setting-myprofile';"
+            style="width: auto;"
+          >
+          Welcome, {{user.name}}
+          </button>
+          {{else}}
+          <button
+            class="client-header-loginButton"
+            onclick="window.location.href='/account/login';"
+          >
+          Login
+          </button>
+          {{/if}}
         </div>
       </div>
     </div>

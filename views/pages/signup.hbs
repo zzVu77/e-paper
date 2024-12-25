@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="css/login.css" />
+<link rel="stylesheet" href="/css/login.css" />
 <div class="login-wrapper tw-flex tw-grid-flow-row tw-h-full">
   {{! Left section : Other way to login }}
   <div
@@ -10,6 +10,7 @@
 
     <button
       class="tw-border-none tw-h-[40px] tw-w-[220px] tw-rounded-xl tw-font-bold tw-bg-white tw-inline-flex tw-justify-center tw-items-center tw-mb-[30px]"
+      onclick="window.location.href='/auth/google/'"
     >
       <svg
         class="tw-mr-2"
@@ -45,6 +46,7 @@
 
     <button
       class="tw-border-none tw-h-[40px] tw-w-[220px] tw-rounded-xl tw-font-bold tw-bg-black tw-inline-flex tw-justify-center tw-items-center"
+      onclick="window.location.href='/auth/github/'"
     >
       <svg
         class="tw-mr-2"
@@ -87,7 +89,7 @@
       <span class="tw-text-white">Sigin with Github</span>
     </button>
 
-    <a href="/login">
+    <a href="/account/login">
       <button
         class="tw-border-none tw-h-[40px] tw-w-[220px] tw-rounded-xl tw-font-bold tw-bg-red-500 tw-inline-flex tw-justify-center tw-items-center tw-mt-[30px]"
       >
@@ -102,68 +104,90 @@
   >
     <div>
       <div class="tw-flex tw-flex-col">
-        <div class="tw-text-center tw-text-3xl tw-font-extrabold">Sign Up</div>
+        <div
+          class="tw-text-center tw-text-3xl tw-font-extrabold tw-text-[#53AA51] tw-tracking-widest"
+        >Sign Up</div>
       </div>
 
       <form class="form">
-
-        <div class="flex-column">
-          <label>Username </label>
-        </div>
-        <div class="inputForm">
-          <input
-            type="text"
-            class="input"
-            name="username"
-            placeholder="Enter your Username"
-          />
-        </div>
-
-        <div class="flex-column">
-          <label>Password </label>
-        </div>
-        <div class="inputForm">
-          <input
-            type="password"
-            class="input"
-            name="password"
-            placeholder="Enter your Password"
-          />
+        <div>
+          <div class="flex-column">
+            <label for="email">Email</label>
+          </div>
+          <div class="inputForm">
+            <input
+              type="text"
+              class="input"
+              id="email"
+              name="email"
+              placeholder="Enter your Email"
+            />
+          </div>
+          <div
+            class="error-message"
+            style="color: red; font-size: 0.875rem;"
+          ></div>
         </div>
 
-        <div class="flex-column">
-          <label>Full name </label>
-        </div>
-        <div class="inputForm">
-          <input
-            type="text"
-            class="input"
-            name="fullname"
-            placeholder="Enter your Full name"
-          />
-        </div>
-
-        <div class="flex-column">
-          <label>Email contact </label>
-        </div>
-        <div class="inputForm">
-          <input
-            type="text"
-            class="input"
-            name="email"
-            placeholder="Enter your Email"
-          />
+        <div>
+          <div class="flex-column">
+            <label for="password">Password</label>
+          </div>
+          <div class="inputForm">
+            <input
+              type="password"
+              class="input"
+              id="password"
+              name="password"
+              placeholder="Enter your Password"
+            />
+          </div>
+          <div
+            class="error-message"
+            style="color: red; font-size: 0.875rem;"
+          ></div>
         </div>
 
-        <div class="flex-column">
-          <label>Your birthday </label>
+        <div>
+          <div class="flex-column">
+            <label for="fullname">Full name</label>
+          </div>
+          <div class="inputForm">
+            <input
+              type="text"
+              class="input"
+              id="fullname"
+              name="fullname"
+              placeholder="Enter your Full name"
+            />
+          </div>
+          <div
+            class="error-message"
+            style="color: red; font-size: 0.875rem;"
+          ></div>
         </div>
-        <div class="inputForm">
-          <input type="date" class="input" name="birthday" />
-        </div>
-        <button class="button-submit">Sign Up</button>
 
+        <div>
+          <div class="flex-column">
+            <label for="birthday">Your birthday</label>
+          </div>
+          <div class="inputForm">
+            <input type="date" class="input" id="birthday" name="birthday" />
+          </div>
+          <div
+            class="error-message"
+            style="color: red; font-size: 0.875rem;"
+          ></div>
+        </div>
+
+        <button
+          class="button-submit tw-bg-[#53AA51] tw-text-xl tw-font-bold tw-tracking-wider"
+        >
+          Register
+        </button>
       </form>
+
     </div>
   </div>
 </div>
+<script src="/js/signup.js"></script>

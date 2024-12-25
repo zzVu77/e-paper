@@ -105,7 +105,12 @@
           >Sign Up here</a></div>
       </div>
 
-      <form id="loginForm" class="form" action="/auth/local/login" method="POST">
+      <form
+        id="loginForm"
+        class="form"
+        action="/auth/local/login"
+        method="POST"
+      >
         <div class="flex-column">
           <label>Email </label></div>
         <div class="inputForm">
@@ -146,69 +151,6 @@
             placeholder="Enter your Password"
             required
           />
-        </div>
-        <div class="flex-row tw-mt-3">
-          <div>
-            <p class="tw-font-bold">Choose your role</p>
-            <div
-              class="tw-ml-3 tw-grid tw-grid-cols-2 tw-gap-4 tw-w-auto tw-m-auto"
-            >
-              <div class="tw-mt-2">
-                <input
-                  type="radio"
-                  class="tw-mb-2"
-                  id="subscriber"
-                  name="role"
-                  value="subscriber"
-                  checked
-                />
-                <label
-                  for="subscriber"
-                  class="tw-text-[#53AA51] tw-font-medium"
-                >Subscriber</label><br />
-              </div>
-              <div class="mt-2">
-                <input
-                  type="radio"
-                  class="tw-mb-2"
-                  id="writer"
-                  name="role"
-                  value="writer"
-                />
-                <label
-                  for="writer"
-                  class="tw-text-purple-500 tw-font-medium"
-                >Writer</label><br />
-              </div>
-              <div class="mt-2">
-                <input
-                  type="radio"
-                  class="tw-mb-2"
-                  id="editor"
-                  name="role"
-                  value="editor"
-                />
-                <label
-                  for="editor"
-                  class="tw-text-gray-600 tw-font-medium"
-                >Editor</label><br />
-              </div>
-              <div class="mt-2">
-                <input
-                  type="radio"
-                  class="tw-mb-2"
-                  id="admin"
-                  name="role"
-                  value="admin"
-                />
-                <label
-                  for="admin"
-                  class="tw-text-yellow-300 tw-font-medium"
-                >Admin</label><br />
-              </div>
-            </div>
-          </div>
-          <a class="span tw-font-bold" href="/forgot-password">Forgot password?</a>
         </div>
         <button class="button-submit tw-text-xl tw-tracking-wider">Sign In</button>
 

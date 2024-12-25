@@ -10,7 +10,7 @@
 }
 .client-header-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   margin-top: 0.5%;
 }
@@ -78,4 +78,11 @@
 
 .client-header-navigation-menu .menu:hover .submenu {
   display: block; /* Hiển thị submenu khi hover vào menu */
+}
+
+.icon-avatar:hover .submenu {
+  display: block;
+}
+.icon-avatar {
+  cursor: pointer;
 }

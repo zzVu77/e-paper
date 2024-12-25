@@ -7,7 +7,7 @@ import otp_generator from "otp-generator";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import formatDateTime from "./helpers/formatDateTime.js";
-import formatDate from './helpers/formatDate.js'; 
+import formatDate from "./helpers/formatDate.js";
 import genPDF from "./public/js/genPDF.js";
 import accountmanagementRouter from "./routes/account.route.js";
 import articlesmanagementRouter from "./routes/admin/articles.route.js";
@@ -31,6 +31,7 @@ import passport from "./auth/config/passportConfig.js";
 import cors from "cors";
 import authRoutes from "./routes/auth.route.js";
 import authMiddleware from "./auth/middlewares/authMiddleware.js";
+
 import Handlebars from "handlebars";
 import dotenv from "dotenv";
 dotenv.config();
@@ -138,7 +139,8 @@ app.get("/login", function (req, res) {
 app.get("/signup", function (req, res) {
   res.render("signup", { layout: "default" });
 });
-app.get("/account-setting-myprofile", authMiddleware.ensureAuthenticated, function (req, res) {
+
+app.get("/account-setting-myprofile", function (req, res) {
   res.render("account-setting-myprofile");
 });
 app.get("/account-setting-security", function (req, res) {
@@ -188,10 +190,14 @@ app.get("/verify-otp", function (req, res) {
 // app.get('/admin/tags', function (req, res) {
 //   res.render('admin/tags', { layout: 'admin', title: 'Tags' });
 // });
-app.use("/admin/categories",authMiddleware.authAdmin ,categoriesmanagementRouter);
-app.use("/admin/tags",authMiddleware.authAdmin,tagsmanagementRouter);
-app.use("/admin" ,authMiddleware.authAdmin,personsmanagementRouter);
-app.use("/admin/articles" ,authMiddleware.authAdmin,articlesmanagementRouter);
+app.use(
+  "/admin/categories",
+  authMiddleware.authAdmin,
+  categoriesmanagementRouter
+);
+app.use("/admin/tags", authMiddleware.authAdmin, tagsmanagementRouter);
+app.use("/admin", authMiddleware.authAdmin, personsmanagementRouter);
+app.use("/admin/articles", authMiddleware.authAdmin, articlesmanagementRouter);
 app.use("/posts", postsRouter);
 app.use("/account-setting", accountSettingRouter);
 
@@ -209,7 +215,7 @@ app.get("/", async (req, res) => {
   });
 });
 
-app.use("/editor",authMiddleware.authEditor, editormanagementRouter);
+app.use("/editor", authMiddleware.authEditor, editormanagementRouter);
 app.use("/account", accountmanagementRouter);
 app.use("/auth", authRoutes);
 app.post("/generate-pdf", async function (req, res) {

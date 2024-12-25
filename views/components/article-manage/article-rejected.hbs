@@ -10,14 +10,14 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 {{#if this.empty}}
   <div class="card-body">
-    Không có dữ liệu.
+    There are no posts
   </div>
 {{else}}
   <div class="article-manage-display" style="height:100%;">
     <div style="height:95%">
 
       <div class="article-manage-title">
-        <span>Bài viết bị từ chối</span>
+        <span>Rejected Articles</span>
         <hr />
       </div>
       
@@ -30,22 +30,22 @@
               type="text"
               id="startDatePicker"
               name="startCreateDate"
-              placeholder="Ngày bắt đầu"
+              placeholder="Start Date"
             />
             <span>-</span>
             <input
               type="text"
               id="endDatePicker"
               name="endCreateDate"
-              placeholder="Ngày kết thúc"
+              placeholder="End Date"
             />
           </div>
           <div class="article-manage-filterTag">
-            <input type="text" name ="tags" placeholder="Thẻ" />
+            <input type="text" name ="tags" placeholder="Tags" />
           </div>
         </div>
         <div class="article-manage-searchBar">
-          <input type="text" name ="searchKeyWord" placeholder="Tìm kiếm" />
+          <input type="text" name ="searchKeyWord" placeholder="Search" />
           <div class="article-manage-searchBar-icon">
             <i class="bi bi-search" id ="article-manage-searchBtn"></i>
             </div>
@@ -68,7 +68,7 @@
               </ul>
             </div>
             <div class="article-manage-postEdit">
-              <span>Sửa lần cuối: {{format_datetime updated_at}}</span>
+              <span>Last Edited: {{format_datetime updated_at}}</span>
               <div class="article-manage-postEdit-dropdown">
                 <i
                   class="bi bi-three-dots dropdown-toggle"
@@ -80,23 +80,23 @@
                     <li><a
                         class="dropdown-item"
                         href="/writer/article/edit?id={{id}}"
-                      >Sửa</a></li>
+                      >Edit</a></li>
                     <li>
                       <form action="/writer/article/manage/del" method="post">
                         <input type="hidden" name="id" value="{{id}}" />
-                        <button type="submit" class="dropdown-item" id="article-manage-delBtn">Xóa bài viết</button>
+                        <button type="submit" class="dropdown-item" id="article-manage-delBtn">Delete</button>
                       </form>
                     </li>
                   {{else}}
                     <li><a
                         class="dropdown-item"
                         href="#"
-                      >Xem</a></li>
+                      >View</a></li>
                     <li>
                     <li>
                       <form action="/writer/article/manage/del" method="post">
                         <input type="hidden" name="id" value="{{id}}" />
-                        <button type="submit" class="dropdown-item" id="article-manage-delBtn">Xóa bài viết</button>
+                        <button type="submit" class="dropdown-item" id="article-manage-delBtn">Delete</button>
                       </form>
                     </li>
                   {{/if}}
@@ -107,6 +107,8 @@
         {{/each}}
       </div>
     </div>
+    {{#if (isEqual isFirstPage isLastPage)}}
+    {{else}}
     <div style="width: 100%; margin-top: 20px;">
       <ul
         class="pagination"
@@ -153,6 +155,7 @@
         {{/if}}
       </ul>
     </div>
+    {{/if}}
   </div>
 {{/if}}
 

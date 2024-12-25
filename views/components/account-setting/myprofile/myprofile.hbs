@@ -75,10 +75,18 @@
             <label for="firstname" style="color: #7E7F81; font-size: 12px; font-family: Open Sans; font-weight: 400; line-height: 12px; word-wrap: break-word">Full Name</label>
             <input type="text" class="form-control" id="accountsetting-myprofile-name" value="{{user.name}}" name="name">
         </div>
+        {{#if (isEqual formattedDate null) }}
+        <div class="form-group" style="margin-bottom:26px; width: 470px; height: 60px;">
+            <label for="lastname" style="color: #7E7F81; font-size: 12px; font-family: Open Sans; font-weight: 400; line-height: 12px; word-wrap: break-word">Date of Birth</label>
+            <input type="text" id="accountsetting-myprofile-dateofbirth" name="birthdate" class="form-control" />        
+        </div>
+        {{else}}
         <div class="form-group" style="margin-bottom:26px; width: 470px; height: 60px;">
             <label for="lastname" style="color: #7E7F81; font-size: 12px; font-family: Open Sans; font-weight: 400; line-height: 12px; word-wrap: break-word">Date of Birth</label>
             <input type="text" id="accountsetting-myprofile-dateofbirth" name="birthdate" class="form-control" value="{{formattedDate}}" />        
         </div>
+        {{/if}}
+        
         {{#if (isEqual user.role "writer") }}
         <div class="form-group" style="margin-bottom:26px; width: 470px; height: 60px;">
             <label for="publicname" style="color: #7E7F81; font-size: 12px; font-family: Open Sans; font-weight: 400; line-height: 12px; word-wrap: break-word">Public Author Name</label>

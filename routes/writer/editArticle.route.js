@@ -23,19 +23,23 @@ router.get("/", authMiddleware.ensureAuthenticated,   authMiddleware.ensureWrite
   if (id != 0) {
     const article = await articleService.findById(id);
     const articleList = await categoryService.getAll();
-    // console.log(article);
+    console.log(article);
 
     const categoryName = await categoryService.getCategoryNameById(
       article.category_id
     );
     // console.log(categoryName);
-    let rejectionNotes = null;
-    let editor = null;
-    if(article.status == "rejected");{
+    let rejectionNotes = []; // Khởi tạo một mảng rỗng
+    rejectionNotes[0] = null; // Gán giá trị null cho phần tử đầu tiên
+    let editor = [];
+    editor[0] = {}; // Khởi tạo phần tử đầu tiên là một đối tượng
+    editor[0].name = null; // Gán giá trị null cho thuộc tính `name`
+    if(article.status == "rejected"){
       rejectionNotes = await rejectionNoteService.getByArticleId(article.id);
       editor = await userService.getById(rejectionNotes[0].editor_id)
+      // console.log("hahaha")
     }
-    console.log(editor);
+    console.log(article);
     res.render("writer/article-writer-editTextEditor", {
       article: article,
       categoryName: categoryName,
@@ -132,7 +136,7 @@ router.post("/", upload.single("image_url"),authMiddleware.ensureWriter,async fu
 
       imageUrl = `/img/${newFilename}`; // Cập nhật đường dẫn mới
     }
-
+    console.log(req.body.premium);
     // Cập nhật dữ liệu bài viết
     const articleData = {
       id: req.body.id,

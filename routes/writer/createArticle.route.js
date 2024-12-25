@@ -73,8 +73,10 @@ router.post("/",  authMiddleware.ensureWriter, async function (req, res) {
     // Sau khi upload thành công, lấy tên file ảnh từ req
     const fileExtension = path.extname(req.file.originalname); // Lấy đuôi file ảnh
     const imageUrl = `/img/${articleId}${fileExtension}`; // Đường dẫn hình ảnh
-    console.log(imageUrl);
-    console.log(fileExtension);
+    // console.log(imageUrl);
+    // console.log(fileExtension);
+    console.log("PREMIUM CHECK")
+    console.log(req.body.premium)
     const articleData = {   
       id: articleId,
       title: req.body.title,

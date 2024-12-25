@@ -5,21 +5,32 @@ const router = express.Router();
 
 
 router.get("/", async function (req, res) {
+  const id_editor = 'a949c012-be77-11ef-9eda-0242ac130002';
+  
   const currentPage = parseInt(req.query.page) || 1; 
   const itemsPerPage = 5; 
-  const offset = (currentPage - 1) * itemsPerPage; 
+  const offset = (currentPage - 1) * itemsPerPage;
 
-  let data = await editorService.getPageArticles(itemsPerPage, offset); 
+  const status = req.query.status || null;  // Get status filter from query parameter
+
+  // Fetch filtered articles based on status
+  let data = await editorService.getPageArticles(itemsPerPage, offset, id_editor, status); 
+  
+  // Fetch categories as usual
   const categories = await editorService.getAllCategories();
+
+  // Attach categories to each article
   data = data.map(article => ({
     ...article,
     categories: categories, 
   }));
-  console.log(data);
-  const totalArticles = await editorService.getTotalArticles();
+
+  // Fetch total articles count (filtered by editor_id and possibly status)
+  const totalArticles = await editorService.getTotalArticles(id_editor, status);
   const totalItems = totalArticles.count;
   const totalPages = Math.ceil(totalItems / itemsPerPage); 
 
+  // Pagination logic
   const maxVisiblePages = 5; 
   const pageNumbers = [];
 
@@ -34,12 +45,14 @@ router.get("/", async function (req, res) {
     pageNumbers.push({ value: i, active: i === currentPage });
   }
 
+  // Render the editor page with filtered articles and pagination
   res.render("editor", {
     layout: "editor",
     title: "Editor",
     data: data,
     pageNumbers,
     catId: req.query.id || "", 
+    status: status || "",  // Pass status filter to the view
     hasNextPage: currentPage < totalPages,
     hasPrevPage: currentPage > 1,
     nextPage: currentPage + 1,
@@ -47,11 +60,12 @@ router.get("/", async function (req, res) {
   });
 });
 
+
 router.post("/update", async (req, res) => {
-  const { article_id, tag, categories, reason, decision } = req.body; 
-  const admin_id = '1';
+  const { article_id, tag, categories, reason, decision, publish_date } = req.body; 
+  const admin_id = 'a949c012-be77-11ef-9eda-0242ac130002';
   try {
-      await editorService.updateArticle(admin_id,article_id, tag, categories, reason, decision);
+      await editorService.updateArticle(admin_id,article_id, tag, categories, reason, decision,publish_date);
       // update later (middleware to save url previous)
       res.redirect("/editor"); 
   } catch (error) {

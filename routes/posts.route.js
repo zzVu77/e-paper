@@ -9,7 +9,7 @@ router.get("/", async function (req, res) {
 });
 
 router.get("/byCat", async function (req, res) {
-  const name = req.query.name || "";
+  const name = req.query.categoryname || "";
   const current_page = req.query.page || 1;
   const limit = 6;
   const offSet = (+current_page - 1) * limit;

@@ -1,4 +1,4 @@
-import db from "../utils/db.js"; 
+import db from "../../utils/db.js"; 
 
 const categoryAdminService = {
     async getPageCategories(itemsPerPage, offset) {

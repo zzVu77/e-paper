@@ -1,5 +1,5 @@
 import express from  'express'
-import categoryAdminService from '../../services/category-admin.service.js';
+import categoryAdminService from '../../services/admin/category-admin.service.js';
 
 
 const router = express.Router();
@@ -42,10 +42,9 @@ router.get('/', async function (req, res) {
       ...category,
       categories: categories, 
     }));
-    console.log(data);
     res.render('admin/categories', {
       layout: 'admin',
-      title: 'Chuyên mục', 
+      title: 'Category', 
       data: data,
       pageNumbers: pageNumbers, 
       hasNextPage: currentPage < totalPages, 

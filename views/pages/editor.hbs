@@ -9,21 +9,37 @@
             <div class="tw-font-normal tw-text-gray-500">Active {{title}}</div>
         </div> 
       
-        
+        {{!-- Filter --}}
+        <div>
+            <button id="dropdownActionButton" data-tw-dropdown-toggle="dropdownAction" class="tw-inline-flex tw-items-center tw-text-gray-500 tw-bg-white tw-border tw-border-gray-300 focus:tw-outline-none hover:tw-bg-gray-100 focus:tw-ring-4 focus:tw-ring-gray-100 tw-font-medium tw-rounded-lg tw-text-sm tw-px-3 tw-py-1.5 dark:tw-bg-gray-100 dark:tw-text-gray-400 dark:tw-border-blue-300 hover:dark:tw-bg-blue-500 hover:dark:tw-border-blue-300 focus:dark:tw-ring-blue-300" type="button">
+                <span class="tw-sr-only">Action button</span>
+                filter
+                <svg class="tw-w-2.5 tw-h-2.5 tw-ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                </svg>
+            </button>
+            <!-- Dropdown menu -->
+            <div id="dropdownAction" class="tw-absolute tw-z-10 tw-hidden tw-bg-white tw-divide-y tw-divide-gray-100 tw-rounded-lg tw-shadow tw-w-44 dark:tw-bg-blue-200 dark:tw-divide-blue-300">
+                <a href="/editor" class="tw-block tw-px-4 tw-py-2 hover:tw-bg-gray-100 dark:hover:tw-bg-cyan-200 dark:hover:tw-text-white">All</a>
+                <a href="?status=pending" class="tw-block tw-px-4 tw-py-2 hover:tw-bg-gray-100 dark:hover:tw-bg-cyan-200 dark:hover:tw-text-white">Pending</a>
+                <a href="?status=draft" class="tw-block tw-px-4 tw-py-2 hover:tw-bg-gray-100 dark:hover:tw-bg-cyan-200 dark:hover:tw-text-white">Draft</a>
+                <a href="?status=published" class="tw-block tw-px-4 tw-py-2 hover:tw-bg-gray-100 dark:hover:tw-bg-cyan-200 dark:hover:tw-text-white">Published</a>
+            </div>
+        </div>
     </div>
     {{!-- Table --}}
     <div>
         <table class="tw-mt-4 tw-ml-4 tw-w-full tw-text-sm tw-text-left rtl:tw-text-right tw-text-gray-500 dark:tw-text-gray-400">
             <thead class="tw-text-xs tw-text-gray-700 tw-uppercase tw-bg-gray-50 dark:tw-bg-gray-700 dark:tw-text-gray-400">
                 <tr>
-                    <th scope="col" class="tw-p-4">Tác giả</th>
-                    <th scope="col" class="tw-px-6 tw-py-3">Chuyên mục</th>
-                    <th scope="col" class="tw-px-6 tw-py-3">Tiêu đề</th>
-                    <th scope="col" class="tw-px-6 tw-py-3">Nhãn</th>
-                    <th scope="col" class="tw-px-6 tw-py-3">Trạng thái</th>
-                    <th scope="col" class="tw-px-6 tw-py-3">Lí do từ chối</th>
-                    <th scope="col" class="tw-px-6 tw-py-3">Ngày đăng</th>
-                    <th scope="col" class="tw-px-8 tw-py-3 tw-text-left">Hành động</th>
+                    <th scope="col" class="tw-p-4">Author</th>
+                    <th scope="col" class="tw-px-6 tw-py-3">Categories</th>
+                    <th scope="col" class="tw-px-6 tw-py-3">Title</th>
+                    <th scope="col" class="tw-px-6 tw-py-3">Tags</th>
+                    <th scope="col" class="tw-px-6 tw-py-3">Status</th>
+                    <th scope="col" class="tw-px-6 tw-py-3">Reason</th>
+                    <th scope="col" class="tw-px-6 tw-py-3">Public date</th>
+                    <th scope="col" class="tw-px-8 tw-py-3 tw-text-left">Action</th>
                 </tr>
             </thead>
             {{!-- body --}}
@@ -49,11 +65,11 @@
                         <td class="tw-px-6 tw-py-4">{{format_datetime this.article_publish_date}}</td>
                         <td class="tw-px-6 tw-py-4 tw-justify-center tw-items-center">
                             <button  class="popup-trigger  tw-border-none tw-bg-transparent" data-id="{{this.article_id}}">
-                                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 48 48">
+                                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20" viewBox="0 0 48 48">
                                 <path d="M 36 5.0097656 C 34.205301 5.0097656 32.410791 5.6901377 31.050781 7.0507812 L 8.9160156 29.183594 C 8.4960384 29.603571 8.1884588 30.12585 8.0253906 30.699219 L 5.0585938 41.087891 A 1.50015 1.50015 0 0 0 6.9121094 42.941406 L 17.302734 39.974609 A 1.50015 1.50015 0 0 0 17.304688 39.972656 C 17.874212 39.808939 18.39521 39.50518 18.816406 39.083984 L 40.949219 16.949219 C 43.670344 14.228094 43.670344 9.7719064 40.949219 7.0507812 C 39.589209 5.6901377 37.794699 5.0097656 36 5.0097656 z M 36 7.9921875 C 37.020801 7.9921875 38.040182 8.3855186 38.826172 9.171875 A 1.50015 1.50015 0 0 0 38.828125 9.171875 C 40.403 10.74675 40.403 13.25325 38.828125 14.828125 L 36.888672 16.767578 L 31.232422 11.111328 L 33.171875 9.171875 C 33.957865 8.3855186 34.979199 7.9921875 36 7.9921875 z M 29.111328 13.232422 L 34.767578 18.888672 L 16.693359 36.962891 C 16.634729 37.021121 16.560472 37.065723 16.476562 37.089844 L 8.6835938 39.316406 L 10.910156 31.521484 A 1.50015 1.50015 0 0 0 10.910156 31.519531 C 10.933086 31.438901 10.975086 31.366709 11.037109 31.304688 L 29.111328 13.232422 z"></path>
                                 </svg>
                             </button>
-                            <a href="/posts/detail" class="">
+                            <a href="/posts/detail?id={{this.article_id}}" class="">
                                 <i class="fa fa-eye" aria-hidden="true"></i>
                             </a>
                         </td>
@@ -65,7 +81,7 @@
     <div class="tw-relative tw-grid tw-justify-items-stretch tw-mt-4"> 
         <ul class="pagination tw-justify-self-end">
             <li class="page-item {{#unless hasPrevPage}}disabled{{/unless}}">
-                <a class="page-link" href="?id={{catId}}&page={{prevPage}}">Previous</a>
+                <a class="page-link" href="?status={{../status}}&id={{catId}}&page={{prevPage}}">Previous</a>
             </li>
             {{#each pageNumbers}}
                 {{#if isEllipsis}}
@@ -74,12 +90,12 @@
                     </li>
                 {{else}}
                     <li class="page-item {{#if active}}active{{/if}}">
-                        <a class="page-link" href="?id={{../catId}}&page={{value}}">{{value}}</a>
+                        <a class="page-link" href="?status={{../status}}&id={{../catId}}&page={{value}}">{{value}}</a>
                     </li>
                 {{/if}}
             {{/each}}
             <li class="page-item {{#unless hasNextPage}}disabled{{/unless}}">
-                <a class="page-link" href="?id={{catId}}&page={{nextPage}}">Next</a>
+                <a class="page-link" href="?status={{../status}}&id={{catId}}&page={{nextPage}}">Next</a>
             </li>
         </ul>
     </div>
@@ -98,11 +114,15 @@
                     <input type="hidden" name="article_id" value="{{this.article_id}}">
                     <div class="tw-grid tw-gap-4 tw-mb-4 tw-grid-cols-2">
                         <div class="tw-col-span-2">
-                            <label for="tag" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Nhãn</label>
+                            <label for="tag" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Tag</label>
                             <input type="text" name="tag" id="tag-{{this.article_id}}" class="tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 tw-text-sm tw-rounded-lg focus:tw-ring-primary-600 focus:tw-border-primary-600 tw-block tw-w-full tw-p-2.5 dark:tw-bg-white dark:tw-border-cyan-100 dark:tw-placeholder-gray-300 dark:tw-text-gray-700 dark:focus:tw-ring-primary-500 dark:focus:tw-border-primary-500" placeholder="category name" value="{{this.article_tags}}" required="">
                         </div>
+                        <div class="tw-col-span-2">
+                            <label for="publish_date" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Publish date</label>
+                            <input type="datetime-local" name="publish_date" id="publish_date-{{this.article_id}}" class="tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 tw-text-sm tw-rounded-lg focus:tw-ring-primary-600 focus:tw-border-primary-600 tw-block tw-w-full tw-p-2.5 dark:tw-bg-white dark:tw-border-cyan-100 dark:tw-placeholder-gray-300 dark:tw-text-gray-700 dark:focus:tw-ring-primary-500 dark:focus:tw-border-primary-500"  required="">
+                        </div>
                         <div class="tw-col-span-2 tw-sm:col-span-1">
-                            <label for="categories" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Chuyên mục</label>
+                            <label for="categories" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Category</label>
                             <select name="categories" id="editor-{{this.article_id}}" class="tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 tw-text-sm tw-rounded-lg focus:tw-ring-primary-500 focus:tw-border-primary-500 tw-block tw-w-full tw-p-2.5 dark:tw-bg-white dark:tw-border-cyan-200 dark:tw-placeholder-gray-300 dark:tw-text-gray-700 dark:focus:tw-ring-primary-500 dark:focus:tw-border-primary-500">
                                 <option selected>{{this.category_name}}</option>
 
@@ -113,7 +133,7 @@
                             </select>
                         </div>
                         <div class="tw-col-span-2">
-                            <label for="reason" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Lí do</label>
+                            <label for="reason" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Reason</label>
                             <textarea 
                                 name="reason" 
                                 id="reason-{{this.article_id}}" 
@@ -121,18 +141,17 @@
                             </textarea>
                         </div>
                         <div class="tw-col-span-2 tw-sm:col-span-1">
-                            <label for="decision" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Quyết định</label>
+                            <label for="decision" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Action</label>
                             <select name="decision" id="decision-{{this.article_id}}" class="tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 tw-text-sm tw-rounded-lg focus:tw-ring-primary-500 focus:tw-border-primary-500 tw-block tw-w-full tw-p-2.5 dark:tw-bg-white dark:tw-border-cyan-200 dark:tw-placeholder-gray-300 dark:tw-text-gray-700 dark:focus:tw-ring-primary-500 dark:focus:tw-border-primary-500">
                                 <option selected>{{this.article_status}}</option>
                                 {{!-- Update later --}}
-                                <option >published</option>
-                                <option >draft</option>
+                                <option >pending</option>
                                 <option >rejected</option>
                             </select>
                         </div>
                     </div>
                     <button type="submit" class="tw-text-white tw-inline-flex tw-items-center tw-bg-blue-700 tw-hover:bg-blue-800 tw-focus:ring-4 tw-focus:outline-none tw-focus:ring-blue-300 tw-font-medium tw-rounded-lg tw-text-sm tw-px-5 tw-py-2.5 tw-text-center tw-dark:bg-blue-600 tw-dark:hover:bg-blue-700 tw-dark:focus:ring-blue-800">
-                        Sửa 
+                        Update 
                     </button>
                 </form>
             </div>

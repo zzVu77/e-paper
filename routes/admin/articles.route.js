@@ -1,5 +1,5 @@
 import express from "express";
-import adminService from '../../services/article-admin.service.js';
+import adminService from '../../services/admin/article-admin.service.js';
 
 const router = express.Router();
 
@@ -21,8 +21,9 @@ router.get("/", async function (req, res) {
       statusClass = 'tw-bg-yellow-400 tw-text-white tw-rounded-lg tw-text-center tw-text-base';
     } else if (article.article_status === 'rejected') {
       statusClass = 'tw-bg-red-500 tw-text-white tw-rounded-lg tw-text-center tw-text-base';
+    } else if (article.article_status === 'pending'){
+      statusClass = 'tw-bg-cyan-200 tw-text-black tw-rounded-lg tw-text-center tw-text-base';
     }
-
     return {
       ...article,
       categories: categories,
@@ -73,5 +74,23 @@ router.post("/update", async (req, res) => {
       res.status(500).send("Something went wrong while updating the article.");
   }
 });
+
+router.post('/del', async (req, res) => {
+  try {
+    const articleId = req.body.id;
+    
+    const result = await adminService.deleteArticle(articleId);
+    
+    if (result.success) {
+      res.redirect('/admin/articles');
+    } else {
+      res.status(500).send('Error deleting the article');
+    }
+  } catch (error) {
+    console.error('Error deleting article:', error);
+    res.status(500).send('Internal server error');
+  }
+});
+
 
 export default router;

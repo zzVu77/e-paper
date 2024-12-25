@@ -1,5 +1,5 @@
 import express from  'express'
-import personService from '../../services/person-admin.service.js';
+import personService from '../../services/admin/person-admin.service.js';
 
 const router = express.Router();
 
@@ -35,33 +35,32 @@ router.get('/', async function (req, res) {
     user.isWriter = user.role === 'writer';
     user.isEditor = user.role === 'editor';
   });
-  
+  console.log(filteredUsers);
   if (role === 'editor')
   {
     const categories = await personService.getAllCategories();
     for (const user of filteredUsers) {
       const category = await personService.getCategoryNameByEditor(user.id);
-      console.log(category)
       user.category = category; 
       user.categories = categories; 
   }
   };
-  console.log(filteredUsers);
   let tableHeaders = [];
   if (role === 'subscriber') {
-      tableHeaders = ['Tên', 'Email', 'Ngày sinh', 'Ngày hết hạn', 'Chức vụ','Gia Hạn'];
+      tableHeaders = ['Name', 'Email', 'Birthdate', 'Expired date', 'Role','Subscription expiry','Status','Action'];
   } else if (role === 'writer') {
-      tableHeaders = ['Tên', 'Bút danh', 'Email', 'Ngày sinh', 'Chức vụ'];
+      tableHeaders = ['Name', 'Pen name', 'Email', 'Birthdate', 'Role','Action'];
   } else if (role === 'editor') {
-      tableHeaders = ['Tên', 'Email', 'Ngày sinh', 'Chuyên mục quản lý', 'Chức vụ','Phân Công'];
+      tableHeaders = ['Name', 'Email', 'Birthdate', 'Assignment', 'Role','Action'];
   }
 
   res.render('admin/persons', {
       layout: 'admin',
-      title: 'Người dùng',
+      title: 'Person',
       data: filteredUsers,
       headers: tableHeaders,
       catId: req.query.id,  
+      role: role,
       pageNumbers: pageNumbers,
       prevPage: prevPage,
       nextPage: nextPage,
@@ -94,9 +93,15 @@ router.post('/extend', async function (req, res) {
 
 router.post('/assignment', async function (req, res) {
   const { categoryID, id } = req.body; 
-
+  const delAssignment = await personService.deleteAssignmentsByEditor(id);
   try {
-      const result = await personService.updateCategoryEditor(id, categoryID);
+    if (categoryID)
+    {
+      for (const catID of categoryID)
+      {
+        const result = await personService.insertCategoryEditor(id, catID);
+      }
+    }
       res.redirect('/admin/persons?role=editor');
   } catch (error) {
       console.error('Error assigning/updating category for editor:', error);
@@ -104,4 +109,32 @@ router.post('/assignment', async function (req, res) {
   }
 });
 
+router.get('/selected-categories/:id', async (req, res) => {
+  const { id } = req.params;  
+  try {
+      const selectedCategories = await personService.getCategoryNameByEditor(id);
+      res.json(selectedCategories);  
+  } catch (error) {
+      res.status(500).json({ message: 'Error fetching selected categories' });
+  }
+});
+
+
+router.post('/add', async (req, res) => {
+  const { name, pen_name, email, password, birthdate, role } = req.body;
+  const passwordhash = bcrypt.hashSync(password,8);
+  console.log(role);
+  try {
+    const result = await personService.addUser({ name, pen_name, email, passwordhash, birthdate, role });
+    
+    if (result.success) {
+      res.redirect('/admin/persons');
+    } else {
+      res.status(500).send('Error adding the user');
+    }
+  } catch (error) {
+    console.error('Error adding user:', error);
+    res.status(500).send('Internal server error');
+  }
+});
 export default router;

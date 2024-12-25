@@ -16,17 +16,17 @@
             <ul class="pagination">
               <li class="page-item prev-button hasPrev-{{hasPreviousPage}}"><a
                   class="page-link tw-font-extrabold tw-text-lg"
-                  href="/posts/byCat?name={{catName}}&page={{previousPage}}"
+                  href="/posts/byCat?categoryname={{catName}}&page={{previousPage}}"
                 >Prev</a></li>
               {{#each pageNumber}}
                 <li class="page-item"><a
                     class="page-link tw-font-extrabold tw-text-lg is-selected-{{active}}"
-                    href="/posts/byCat?name={{catName}}&page={{this.value}}"
+                    href="/posts/byCat?categoryname={{catName}}&page={{this.value}}"
                   >{{this.value}}</a></li>
               {{/each}}
               <li class="page-item next-button hasNext-{{hasNextPage}}"><a
                   class="page-link tw-font-extrabold tw-text-lg"
-                  href="/posts/byCat?name={{catName}}&page={{nextPage}}"
+                  href="/posts/byCat?categoryname={{catName}}&page={{nextPage}}"
                 >Next</a></li>
             </ul>
           </nav>

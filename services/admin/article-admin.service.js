@@ -1,4 +1,4 @@
-import db from "../utils/db.js";
+import db from "../../utils/db.js";
 
 export default {
     async getPageArticles(limit = 10, offset = 0) {
@@ -71,6 +71,7 @@ export default {
                 .update({
                     status: decision,
                     category_id: category_id,  
+                    
                 });
     
             if (tag) {
@@ -135,4 +136,20 @@ export default {
             throw error;
         }
     },
+    async deleteArticle(articleId) {
+        try {
+          const deleted = await db('articles')
+            .where('id', articleId)
+            .del();
+    
+          if (deleted) {
+            return { success: true, message: 'Article deleted successfully' };
+          } else {
+            return { success: false, message: 'Article not found' };
+          }
+        } catch (error) {
+          console.error('Error deleting article:', error);
+          throw new Error('Error deleting article');
+        }
+      },
 };

@@ -289,7 +289,6 @@ export default {
         db.raw("GROUP_CONCAT(t.name) as article_tags")
       )
       .where("a.id", articleId)
-      .andWhere("a.status", "published") // Điều kiện kiểm tra status là 'published'
       .groupBy(
         "a.id",
         "a.title",

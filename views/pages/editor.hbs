@@ -40,6 +40,7 @@
                     <th scope="col" class="tw-px-6 tw-py-3">Status</th>
                     <th scope="col" class="tw-px-6 tw-py-3">Reason</th>
                     <th scope="col" class="tw-px-6 tw-py-3">Public date</th>
+                    <th scope="col" class="tw-px-6 tw-py-3">Premium</th>
                     <th scope="col" class="tw-px-8 tw-py-3 tw-text-left">Action</th>
                 </tr>
             </thead>
@@ -47,7 +48,6 @@
             <tbody>
                 {{#each this.data}}
                     <tr id="admin-articles-row" class="tw-bg-white tw-border-b dark:tw-bg-cyan-50	 dark:tw-border-cyan-300 hover:tw-bg-gray-50 dark:hover:tw-bg-cyan-200">
-                        
 
                         <td class="tw-px-6 tw-py-4">
                             <div class="tw-flex tw-items-center">{{this.author_name}}</div>
@@ -64,6 +64,13 @@
                         </td>
                         <td class="tw-px-6 tw-py-4">{{this.rejection_note}}</td>
                         <td class="tw-px-6 tw-py-4">{{format_datetime this.article_publish_date}}</td>
+                        {{#if this.article_is_premium}}
+                            <td class="tw-px-6 tw-py-4 ">Premium</td>
+                        {{else}}
+                            <td class="tw-px-6 tw-py-4 "></td>
+                        {{/if}}
+
+
                         <td class="tw-px-6 tw-py-4 tw-justify-center tw-items-center">
                             <button  class="popup-trigger  tw-border-none tw-bg-transparent" data-id="{{this.article_id}}">
                                 <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20" viewBox="0 0 48 48">

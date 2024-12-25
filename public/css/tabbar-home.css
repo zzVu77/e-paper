@@ -1,30 +1,155 @@
-.custom-tabbar {
-    background:  no-repeat center center;
+/* Custom button style for the "Explore Now" button */
+.explore-now-btn {
+    background-color: #53aa51; /* Set the button background color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .explore-now-btn:hover {
+    background-color: #449e43; /* Darker shade for hover effect */
+  }
+  
+  .explore-now-btn:focus {
+    outline: none;
+  }
+  
+  /* Additional class for the "Explore Now" button inside custom-tabbar context */
+  .custom-tabbar .explore-now-btn {
+    background-color: #53aa51; /* Same green as active tab */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-top: 20px; /* Increased margin to create more space between the button and the abstract */
+  }
+  
+  .custom-tabbar .explore-now-btn:hover {
+    background-color: #449e43; /* Darker shade on hover */
+    color: #fff; /* Keep text white on hover */
+  }
+  
+  .custom-tabbar .explore-now-btn:focus {
+    outline: none;
+  }
+  
+  /* Styles for tabs (already existing) */
+  .custom-tabbar {
+    background: no-repeat center center;
     background-size: cover;
     border: none;
     padding: 20px 0;
-}
-
-.custom-tabbar .nav-item {
+  }
+  
+  .custom-tabbar .nav-item {
     margin-bottom: -1px;
-}
-
-.custom-tabbar .nav-link {
-    color: #7E7F81;
+  }
+  
+  .custom-tabbar .nav-link {
+    color: #7e7f81;
     font-weight: bold;
     background-color: transparent;
     border: none;
     margin-right: 20px;
     transition: color 0.3s, background-color 0.3s;
-}
-
-.custom-tabbar .nav-link.active {
-    color: #53AA51;
+  }
+  
+  .custom-tabbar .nav-link.active {
+    color: #53aa51;
     background-color: transparent;
-    border-bottom: 3px solid #53AA51;
-}
-
-.custom-tabbar .nav-link:hover {
-    color: #53AA51;
+    border-bottom: 3px solid #53aa51;
+  }
+  
+  .custom-tabbar .nav-link:hover {
+    color: #53aa51;
     background-color: transparent;
-}
+  }
+  
+  /* Carousel styles (already existing) */
+  .carousel-inner {
+    position: relative;
+  }
+  
+  .carousel-overlay {
+    position: relative;
+  }
+  
+  .carousel-overlay img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .dark-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+  
+  .carousel-caption {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.8);
+    text-align: center;
+    z-index: 2;
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
+  
+  .carousel-caption h5 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+  
+  .carousel-caption p {
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin: 0 auto 20px; /* Added bottom margin to increase space between abstract and button */
+    width: 100%;
+    max-width: 80%;
+    text-align: center;
+    position: relative;
+    left: 0;
+    line-height: 1.4;
+    overflow-wrap: break-word;
+  }
+  
+  @media (max-width: 768px) {
+    .carousel-caption h5 {
+      font-size: 6vw;
+    }
+  
+    .carousel-caption p {
+      font-size: 4vw;
+      max-width: 90%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .carousel-caption h5 {
+      font-size: 8vw;
+    }
+  
+    .carousel-caption p {
+      font-size: 5vw;
+      max-width: 90%;
+    }
+  }
+  

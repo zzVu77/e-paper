@@ -1282,3 +1282,12 @@ INSERT INTO comments (
 (UUID(), '4', (SELECT id FROM users WHERE email = 'michael.green@example.com'), 'Very detailed guide.', NOW()),
 (UUID(), '4', (SELECT id FROM users WHERE email = 'rachel.adams@example.com'), 'This is pure gold.', NOW()),
 (UUID(), '4', (SELECT id FROM users WHERE email = 'oliver.smith@example.com'), 'The examples are spot-on.', NOW());
+
+
+INSERT INTO users (id, name, pen_name, email, provider, password, oauth_id, oauth_token, birthdate, role, subscription_expiry, status, created_at, updated_at)
+VALUES
+    (UUID(), 'Guest 5', 'guest_1', 'guest5@example.com', 'local', 'password123', NULL, NULL, '1990-01-01', 'guest', NULL, 'pending', NOW(), NOW()),
+    (UUID(), 'Guest 6', 'guest_2', 'guest6@example.com', 'local', 'password123', NULL, NULL, '1992-02-02', 'guest', NULL, 'pending', NOW(), NOW()),
+    (UUID(), 'Guest 7', 'guest_3', 'guest7@example.com', 'local', 'password123', NULL, NULL, '1985-03-03', 'guest', NULL, 'pending', NOW(), NOW()),
+    (UUID(), 'Guest 8', 'guest_4', 'guest8@example.com', 'local', 'password123', NULL, NULL, '2000-04-04', 'guest', NULL, 'pending', NOW(), NOW()),
+    (UUID(), 'Huy Phan', 'Huy', 'phantrieuhuy2004@gmail.com', 'local', '$2a$12$AkExXfh6ZzCbXqJLTJKIhO5Qv1AnUmLoLSUL91iGWu1Y60T33Aua6', NULL, NULL, '2000-04-04', 'admin', NULL, NULL, NOW(), NOW());

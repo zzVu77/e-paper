@@ -4,10 +4,10 @@ import editorService from "../services/editor.service.js";
 const router = express.Router();
 
 router.get("/", async function (req, res) {
-  const id_editor = "105848255747222942031";
-
-  const currentPage = parseInt(req.query.page) || 1;
-  const itemsPerPage = 5;
+  const id_editor = req.user.id;
+  
+  const currentPage = parseInt(req.query.page) || 1; 
+  const itemsPerPage = 5; 
   const offset = (currentPage - 1) * itemsPerPage;
 
   const status = req.query.status || null; // Get status filter from query parameter
@@ -65,21 +65,12 @@ router.get("/", async function (req, res) {
 });
 
 router.post("/update", async (req, res) => {
-  const { article_id, tag, categories, reason, decision, publish_date } =
-    req.body;
-  const admin_id = "a949c012-be77-11ef-9eda-0242ac130002";
+  const { article_id, tag, categories, reason, decision, publish_date } = req.body; 
+  const id_editor = req.user.id;
   try {
-    await editorService.updateArticle(
-      admin_id,
-      article_id,
-      tag,
-      categories,
-      reason,
-      decision,
-      publish_date
-    );
-    // update later (middleware to save url previous)
-    res.redirect("/editor");
+      await editorService.updateArticle(id_editor,article_id, tag, categories, reason, decision,publish_date);
+      // update later (middleware to save url previous)
+      res.redirect("/editor"); 
   } catch (error) {
     console.error("Error updating article:", error);
     res.status(500).send("Something went wrong while updating the article.");

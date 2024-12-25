@@ -166,6 +166,8 @@ passport.serializeUser((user, done) => {
     email: user.email,
     provider: user.provider,
     role: user.role,
+    is_admin: user.role==="admin",
+    is_editor: user.role ==="editor"
   };
   console.log("sessionData", sessionData);
   done(null, sessionData);

@@ -16,7 +16,6 @@ export default {
         birthdate,
         password,
         role: "guest",
-        subscription_expiry,
       });
       return { success: true, id };
     } catch (error) {

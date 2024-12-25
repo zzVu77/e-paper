@@ -176,7 +176,7 @@ router.get("/detail", async function (req, res) {
   const detail = await articleService.getArticleById(id);
   if(detail.article_is_premium == 1){
     if(user){
-      if(user[0].role="guest"){
+      if(user[0].role == "guest"){
         res.redirect("/login")
       }
     }

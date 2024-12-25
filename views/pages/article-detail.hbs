@@ -93,38 +93,61 @@
     <div
       class="tw-self-end tw-w-full tw-text-end flex tw-items-center tw-justify-between tw-h-auto"
     >
+      {{#if user}}
+      {{#if (eq user.role "guest")}}
       <button
         class="tw-w-[auto] tw-h-[38px] tw-border-none tw-rounded-[30px] tw-bg-[#53AA51] tw-text-white tw-text-center tw-text-sm tw-font-medium tw-px-4"
-        type="button"
-        id="downloadBtn"
-      >
-        <svg
-          width="28px"
-          height="28px"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
-            id="SVGRepo_tracerCarrier"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          ></g><g id="SVGRepo_iconCarrier">
+        type="button" onclick="window.location.href='/account-setting/myprofile'">
+        <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+          <g id="SVGRepo_iconCarrier">
             <path
               d="M13.5 3H12H7C5.89543 3 5 3.89543 5 5V19C5 20.1046 5.89543 21 7 21H7.5M13.5 3L19 8.625M13.5 3V7.625C13.5 8.17728 13.9477 8.625 14.5 8.625H19M19 8.625V9.75V12V19C19 20.1046 18.1046 21 17 21H16.5"
-              stroke="#ffffff"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            ></path>
+              stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M12 12V20M12 20L9.5 17.5M12 20L14.5 17.5" stroke="#ffffff" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </g>
+        </svg>
+        Subscribe to Download PDF
+      </button>
+      {{else}}
+      <button
+        class="tw-w-[auto] tw-h-[38px] tw-border-none tw-rounded-[30px] tw-bg-[#53AA51] tw-text-white tw-text-center tw-text-sm tw-font-medium tw-px-4"
+        type="button" id="downloadBtn">
+        <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+          <g id="SVGRepo_iconCarrier">
             <path
-              d="M12 12V20M12 20L9.5 17.5M12 20L14.5 17.5"
-              stroke="#ffffff"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            ></path>
-          </g></svg>
-        Download PDF</button>
+              d="M13.5 3H12H7C5.89543 3 5 3.89543 5 5V19C5 20.1046 5.89543 21 7 21H7.5M13.5 3L19 8.625M13.5 3V7.625C13.5 8.17728 13.9477 8.625 14.5 8.625H19M19 8.625V9.75V12V19C19 20.1046 18.1046 21 17 21H16.5"
+              stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M12 12V20M12 20L9.5 17.5M12 20L14.5 17.5" stroke="#ffffff" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </g>
+        </svg>
+        Download PDF
+      </button>
+      {{/if}}
+      {{else}}
+      <button
+        class="tw-w-[auto] tw-h-[38px] tw-border-none tw-rounded-[30px] tw-bg-[#53AA51] tw-text-white tw-text-center tw-text-sm tw-font-medium tw-px-4"
+        type="button" onclick="window.location.href='/account-setting/myprofile'">
+        <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+          <g id="SVGRepo_iconCarrier">
+            <path
+              d="M13.5 3H12H7C5.89543 3 5 3.89543 5 5V19C5 20.1046 5.89543 21 7 21H7.5M13.5 3L19 8.625M13.5 3V7.625C13.5 8.17728 13.9477 8.625 14.5 8.625H19M19 8.625V9.75V12V19C19 20.1046 18.1046 21 17 21H16.5"
+              stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M12 12V20M12 20L9.5 17.5M12 20L14.5 17.5" stroke="#ffffff" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </g>
+        </svg>
+        Subscribe to Download PDF
+      </button>
+      {{/if}}
+
     </div>
 
   </div>

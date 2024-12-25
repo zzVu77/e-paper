@@ -23,7 +23,11 @@ import postsRouter from "./routes/posts.route.js";
 import articleService from "./services/article.service.js";
 import categoryService from "./services/category.service.js";
 import accountService from "./services/account.service.js";
+import Handlebars from "handlebars";
 const __dirname = dirname(fileURLToPath(import.meta.url));
+Handlebars.registerHelper('eq', function (a, b) {
+  return a === b;
+});
 const app = express();
 
 import session from "express-session";
@@ -32,7 +36,7 @@ import cors from "cors";
 import authRoutes from "./routes/auth.route.js";
 import authMiddleware from "./auth/middlewares/authMiddleware.js";
 
-import Handlebars from "handlebars";
+
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -76,6 +80,8 @@ app.use(
 Handlebars.registerHelper("json", function (context) {
   return JSON.stringify(context);
 });
+
+
 
 app.engine(
   "hbs",
@@ -234,7 +240,15 @@ app.get("/", async (req, res) => {
 app.use("/editor", authMiddleware.authEditor, editormanagementRouter);
 app.use("/account", accountmanagementRouter);
 app.use("/auth", authRoutes);
-app.post("/generate-pdf", async function (req, res) {
+
+function ensureNotGuest(req, res, next) {
+  if (req.user && req.user.role !== "guest") {
+    return next();
+  }
+  res.status(403).send("Forbidden. Guests are not allowed to download PDFs.");
+}
+
+app.post("/generate-pdf", authMiddleware.ensureAuthenticated, ensureNotGuest, async function (req, res) {
   try {
     const { content, title } = req.body;
 
@@ -251,7 +265,6 @@ app.post("/generate-pdf", async function (req, res) {
     res.download(filePath, (err) => {
       if (err) {
         console.error("Error while downloading the file:", err);
-
         // Nếu xảy ra lỗi khi gửi file, xóa file để tránh lưu trữ không cần thiết
         if (fs.existsSync(filePath)) {
           fs.unlinkSync(filePath);

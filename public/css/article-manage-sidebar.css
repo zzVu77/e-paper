@@ -1,0 +1,36 @@
+#article-manage-sidebar{
+    background-color: #f5f7fa;
+    height: 100%;
+    width: 100%;
+}
+#article-manage-sidebar span{
+    color: #303133;
+    font-size: 16px;
+    line-height: 50px;
+}
+#article-manage-sidebar a{
+    text-decoration: none;
+}
+#article-manage-sidebar li {
+    list-style-type: none;
+    margin-bottom: 10px;
+    padding: 0px 25px;
+}
+#article-manage-sidebar i {
+    margin-right: 10px;
+}
+#article-manage-sidebar li:first-child {
+    background: linear-gradient(to bottom, #f5f7fa, #e1e5ea);
+    color: #303133;
+    font-size: 16px;
+    line-height: 56px;
+    padding: 0px 40px;
+}
+/* Hiệu ứng hover */
+#article-manage-sidebar li:hover {
+    background-color: #e7ecf3; /* Màu nền khi hover */
+}
+
+#article-manage-sidebar li:not(:first-child):hover span {
+    color: #5488c7; /* Màu chữ khi hover */
+}

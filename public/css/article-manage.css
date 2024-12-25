@@ -1,0 +1,17 @@
+.article-manage-container {
+  display: flex;
+  margin: 32px auto;
+  min-height: 100vh;
+  max-width: 95%;
+}
+.article-manage-sidebar {
+  width: 270px;
+  height: 100%;
+  margin-right: 50px;
+  /* position: sticky;
+  top: 100; Đặt vị trí cố định từ đỉnh khi cuộn */
+}
+.article-manage-content {
+  width: calc(100% - 270px);
+  height: 100%;
+}

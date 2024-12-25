@@ -1,0 +1,32 @@
+<link rel="stylesheet" href="/css/comment.css" />
+<div
+  class="comment-container tw-w-[99%] tw-h-[180px] tw-flex tw-justify-start tw-items-center tw-border-[0.5px] tw-border-solid tw-rounded-lg tw-border-gray-300 tw-m-auto tw-mt-5"
+>
+  {{! User avatar }}
+  <div class="user-avatar tw-w-[15%] tw-ml-5">
+    <img
+      class="tw-object-cover tw-object-top tw-w-[100px] tw-h-[100px] tw-block tw-rounded-[100%]"
+      src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+      alt=""
+    />
+  </div>
+  {{! Comment detail }}
+  <div class="comment-detail tw-ml-2 tw-mt-2 flex tw-flex-col tw-w-[80%]">
+    {{! User info and posted time }}
+    <div class="flex tw-justify-between tw-items-center">
+      <span
+        class="user-name tw-font-bold tw-text-lg tw-text-center"
+      >{{commenter_name}}</span>
+      <span
+        class="datetime tw-text-gray-600 tw-font-normal tw-text-sm text- tw-text-center"
+      >{{comment_date}}</span>
+    </div>
+    {{! Comment content }}
+    <textarea
+      class="tw-w-[100%] tw-h-[100px] tw-border-none tw-overflow-y-auto tw-mt-3 tw-font-light"
+      name=""
+      readonly
+      id=""
+    >{{content}}</textarea>
+  </div>
+</div>

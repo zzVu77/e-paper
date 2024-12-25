@@ -10,7 +10,7 @@
 }
 .client-header-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   margin-top: 0.5%;
 }
@@ -45,7 +45,7 @@
 .client-header-loginButton {
   border-radius: 30px;
   background-color: #53aa51;
-  height: 35px;
+  height: 40px;
   width: 120px;
   border-color: transparent;
   cursor: pointer;
@@ -78,4 +78,11 @@
 
 .client-header-navigation-menu .menu:hover .submenu {
   display: block; /* Hiển thị submenu khi hover vào menu */
+}
+
+.icon-avatar:hover .submenu {
+  display: block;
+}
+.icon-avatar {
+  cursor: pointer;
 }

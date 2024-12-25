@@ -1,29 +1,94 @@
-<div class="tw-font-extrabold tw-text-[40px] tw-ml-4 tw-mt-2">All posts</div>
-<div class="tw-grid tw-grid-cols-3 gap-3 tw-mt-5">
-{{>posts/post-card}}
-{{>posts/post-card}}
-{{>posts/post-card}}
-{{>posts/post-card}}
-{{>posts/post-card}}
-{{>posts/post-card}}
-{{>posts/post-card}}
-{{>posts/post-card}}
-{{>posts/post-card}}
-{{>posts/post-card}}
-{{>posts/post-card}}
-{{>posts/post-card}}
-</div>
-{{!-- pagination --}}
-<div class="tw-mb-[200px] tw-m-auto tw-flex tw-justify-center tw-items-center">
-  <div>
-<nav aria-label="Page navigation example">
-  <ul class="pagination">
-    <li class="page-item"><a class="page-link tw-text-[#53aa51] tw-font-extrabold tw-text-lg" href="#">Prev</a></li>
-    <li class="page-item"><a class="page-link tw-text-[#53aa51] tw-font-extrabold tw-text-lg" href="#">1</a></li>
-    <li class="page-item"><a class="page-link tw-text-[#53aa51] tw-font-extrabold tw-text-lg" href="#">2</a></li>
-    <li class="page-item"><a class="page-link tw-text-[#53aa51] tw-font-extrabold tw-text-lg" href="#">3</a></li>
-    <li class="page-item"><a class="page-link tw-text-[#53aa51] tw-font-extrabold tw-text-lg" href="#">Next</a></li>
-  </ul> 
-</nav>
- </div>
-</div>
+<div class="tw-font-extrabold tw-text-[40px] tw-ml-4 tw-mt-5">{{title}}</div>
+{{#if articles}}
+  <div class="tw-grid tw-grid-cols-3 gap-5 container mt-5">
+    {{#each articles}}
+      {{>posts/post-card  }}     
+    {{/each}}
+  </div>
+  {{! pagination }}
+  <div
+    class="tw-mb-[200px] tw-m-auto tw-flex tw-justify-center tw-items-center"
+  >
+    {{#if hasPagination}}
+      {{#if isByCategory}}
+        <div>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item prev-button hasPrev-{{hasPreviousPage}}"><a
+                  class="page-link tw-font-extrabold tw-text-lg"
+                  href="/posts/byCat?categoryname={{catName}}&page={{previousPage}}"
+                >Prev</a></li>
+              {{#each pageNumber}}
+                <li class="page-item"><a
+                    class="page-link tw-font-extrabold tw-text-lg is-selected-{{active}}"
+                    href="/posts/byCat?categoryname={{catName}}&page={{this.value}}"
+                  >{{this.value}}</a></li>
+              {{/each}}
+              <li class="page-item next-button hasNext-{{hasNextPage}}"><a
+                  class="page-link tw-font-extrabold tw-text-lg"
+                  href="/posts/byCat?categoryname={{catName}}&page={{nextPage}}"
+                >Next</a></li>
+            </ul>
+          </nav>
+        </div>
+      {{/if}}
+
+      {{#if isByTagName}}
+        <div>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item prev-button hasPrev-{{hasPreviousPage}}"><a
+                  class="page-link tw-font-extrabold tw-text-lg"
+                  href="/posts/byTag?name={{tagName}}&page={{previousPage}}"
+                >Prev</a></li>
+              {{#each pageNumber}}
+                <li class="page-item"><a
+                    class="page-link tw-font-extrabold tw-text-lg is-selected-{{active}}"
+                    href="/posts/byTag?name={{tagName}}&page={{this.value}}"
+                  >{{this.value}}</a></li>
+              {{/each}}
+              <li class="page-item next-button hasNext-{{hasNextPage}}"><a
+                  class="page-link tw-font-extrabold tw-text-lg"
+                  href="/posts/byTag?name={{tagName}}&page={{nextPage}}"
+                >Next</a></li>
+            </ul>
+          </nav>
+        </div>
+      {{/if}}
+
+      {{#if isByKeyword}}
+        <div>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item prev-button hasPrev-{{hasPreviousPage}}"><a
+                  class="page-link tw-font-extrabold tw-text-lg"
+                  href="/posts/search?keyword={{keyword}}&page={{previousPage}}"
+                >Prev</a></li>
+              {{#each pageNumber}}
+                <li class="page-item"><a
+                    class="page-link tw-font-extrabold tw-text-lg is-selected-{{active}}"
+                    href="/posts/search?keyword={{this.keyword}}&page={{this.value}}"
+                  >{{this.value}}</a></li>
+              {{/each}}
+              <li class="page-item next-button hasNext-{{hasNextPage}}"><a
+                  class="page-link tw-font-extrabold tw-text-lg"
+                  href="/posts/search?keyword={{keyword}}&page={{nextPage}}"
+                >Next</a></li>
+            </ul>
+          </nav>
+        </div>
+      {{/if}}
+
+    {{/if}}
+  </div>
+{{else}}
+  <div class="tw-mt-auto tw-text-center tw-mb-10 tw-text-3xl tw-font-medium">No
+    posts</div>
+{{/if}}
+
+<style>
+  .page-link { color: #53aa51; } .is-selected-true { background-color: #53aa51;
+  /* Màu nền bạn muốn */ color: white; /* Màu chữ bạn muốn */ } .hasPrev-false >
+  a , .hasNext-false > a { pointer-events: none; color: #9ede9d; }
+
+</style>

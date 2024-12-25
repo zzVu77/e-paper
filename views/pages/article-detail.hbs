@@ -1,9 +1,367 @@
-<div class="tw-font-extrabold tw-text-[40px] tw-ml-4 tw-mt-2">Related posts</div>
-<div class="tw-grid tw-grid-cols-4 gap-1 tw-mt-5">
-{{>article-detail/post-card-related}}
-{{>article-detail/post-card-related}}
-{{>article-detail/post-card-related}}
-{{>article-detail/post-card-related}}
+<link rel="stylesheet" href="/css/article-detail.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="/js/genPDF.js"></script>
+<!-- Download Notification Modal -->
+<div id="downloadModal" class="modal">
+  <div class="modal-content">
+    <p class="tw-font-bold tw-text-xl tw-tracking-widest">Downloading, please wait...</p>
+    <div class="spinner"></div>
+  </div>
+</div>
+  {{! Cover image }}
+  <div class="tw-text-center">
+    <img
+      class="tw-h-[410px] tw-w-full tw-object-cover tw-object-top"
+      src="{{img_url}}"
+      alt=""
+    />
+  </div>
+<div class="tw-flex tw-flex-col tw-h-auto container " id="article-detail" data-article-id="{{article_id}}">
+  {{! Title and Category  }}
+  <div class="tw-mx-[128px]">
 
+    <div
+      class="tw-font-extrabold tw-text-2xl tw-m-5 tw-mt-3 tw-underline tw-text-[#53aa51]"
+    >{{category}}</div>
+    {{#if title}}   
+      <div
+        class="tw-font-semibold tw-text-[40px] tw-tracking-wide tw-leading-[1.1] tw-text-left tw-m-5"
+        id="article-title"
+      >{{title}}</div>
+    {{/if}}
+
+  </div>
+  {{! Tags, Author, Date and Download button }}
+  {{! Author and Date }}
+  <div class="article-info tw-mt-5 tw-mx-[128px] tw-w-auto tw-px-5 tw-mb-5">
+    <span class="article-info-author tw-mr-2 tw-font-normal">{{author}}
+    </span>
+    <span class="article-info-datetime tw-text-gray-500">{{published_date}}</span>
+  </div>
+  {{! Tags and Button download }}
+  <div
+    class="article-info-wrapper tw-flex tw-items-end tw-justify-start tw-px-10 tw-pl-5 tw-ml-[128px]"
+  >
+      {{#if isPremium}}
+      <a
+        href="/posts/byTag?name=Premium&page=1"
+        class="tw-no-underline tw-text-black tw-mr-3"
+      >
+        <div         
+          class="tw-bg-gray-200 tw-mr-3 tw-cursor-pointer tw-max-w-[120px] tw-w-full tw-h-[30px] tw-border-red-600 tw-rounded-[50px] tw-text-center tw-inline-flex tw-items-center tw-justify-center tw-text-[#54A651] tw-text-xs tw-font-medium tw-px-1"
+        >
+          <div class="tw-mr-1">
+            <svg
+              version="1.1"
+              id="Layer_1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              width="20px"
+              height="20px"
+              viewBox="0 0 128 128"
+              enable-background="new 0 0 128 128"
+              xml:space="preserve"
+              fill="#000000"
+            ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></g><g id="SVGRepo_iconCarrier">
+                <path
+                  fill="#FFA000"
+                  d="M112,36c-6.629,0-12,5.375-12,12c0,1.68,0.352,3.273,0.973,4.727L84,60L69.801,34.445 C73.48,32.391,76,28.508,76,24c0-6.625-5.371-12-12-12s-12,5.375-12,12c0,4.508,2.52,8.391,6.199,10.445L44,60l-16.973-7.273 C27.648,51.273,28,49.68,28,48c0-6.625-5.371-12-12-12S4,41.375,4,48s5.371,12,12,12c0.93,0,1.822-0.133,2.695-0.328L28,100v8 c0,4.422,3.582,8,8,8h56c4.418,0,8-3.578,8-8v-8l9.309-40.328C110.176,59.875,111.07,60,112,60c6.629,0,12-5.375,12-12 S118.629,36,112,36z M64,20c2.207,0,4,1.797,4,4s-1.793,4-4,4s-4-1.797-4-4S61.793,20,64,20z M12,48c0-2.203,1.793-4,4-4 s4,1.797,4,4s-1.793,4-4,4S12,50.203,12,48z M92,108H36v-8h56V108z M93.633,92H34.367L27.34,61.563l13.508,5.789 C41.871,67.789,42.941,68,43.996,68c2.828,0,5.547-1.5,6.996-4.117L64,40.477l13.008,23.406C78.457,66.5,81.176,68,84.004,68 c1.055,0,2.125-0.211,3.148-0.648l13.508-5.789L93.633,92z M112,52c-2.207,0-4-1.797-4-4s1.793-4,4-4s4,1.797,4,4S114.207,52,112,52 z"
+                ></path>
+              </g></svg>
+          </div>
+          Premium
+        </div>
+      </a>
+    {{/if}}
+  {{#each tags}}
+     <a
+        href="/posts/byTag?name={{this}}&page=1"
+        class="tw-no-underline tw-text-black tw-mr-3 tw-max-w-[120px] tw-w-full"
+      >
+        <div
+          class="tw-bg-gray-200 tw-mr-3 tw-cursor-pointer tw-max-w-[120px] tw-w-full tw-h-[30px] tw-border-red-600 tw-rounded-[50px] tw-text-center tw-inline-flex tw-items-center tw-justify-center tw-text-gray-600 tw-text-xs tw-font-medium tw-px-1"
+        >
+          {{this}}
+        </div>
+      </a>
+  {{/each}}
+    {{! Button download }}
+    <div
+      class="tw-self-end tw-w-full tw-text-end flex tw-items-center tw-justify-between tw-h-auto"
+    >
+      <button
+        class="tw-w-[auto] tw-h-[38px] tw-border-none tw-rounded-[30px] tw-bg-[#53AA51] tw-text-white tw-text-center tw-text-sm tw-font-medium tw-px-4"
+        type="button"
+        id="downloadBtn"
+      >
+        <svg
+          width="28px"
+          height="28px"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+            id="SVGRepo_tracerCarrier"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          ></g><g id="SVGRepo_iconCarrier">
+            <path
+              d="M13.5 3H12H7C5.89543 3 5 3.89543 5 5V19C5 20.1046 5.89543 21 7 21H7.5M13.5 3L19 8.625M13.5 3V7.625C13.5 8.17728 13.9477 8.625 14.5 8.625H19M19 8.625V9.75V12V19C19 20.1046 18.1046 21 17 21H16.5"
+              stroke="#ffffff"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+            <path
+              d="M12 12V20M12 20L9.5 17.5M12 20L14.5 17.5"
+              stroke="#ffffff"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </g></svg>
+        Download PDF</button>
+    </div>
+
+  </div>
+  {{! Article content }}
+  <div id="content" class="tw-mx-[148px] tw-text-left tw-my-10 tw-mt-5 tw-mb-24">
+
+    {{{this.content}}}
+
+  </div>
+  {{! Comment section }}
+  <div
+    class="comment-section  tw-h-auto tw-max-h-[550px] tw-overflow-auto  tw-border-2 tw-border-solid tw-border-gray-300 tw-rounded-lg tw-mt-7 tw-mb-14 tw-mx-[128px]"
+  >
+    {{! Place for user comment }}
+    <form action="" class="form">
+      <div class="tw-flex tw-justify-start tw-items-baseline">
+        <div class="comment-icon tw-ml-5">
+          <svg
+            version="1.1"
+            id="_x34_"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            viewBox="0 0 512 512"
+            xml:space="preserve"
+            width="72px"
+            height="72px"
+            fill="#ffffff"
+            stroke="#ffffff"
+          ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+              id="SVGRepo_tracerCarrier"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></g><g id="SVGRepo_iconCarrier">
+              <g>
+                <g>
+                  <path
+                    style="fill:#53AA51;"
+                    d="M381.311,126.474v212.251c0,14.281-10.497,26.069-24.176,28.134 c-1.463,0.343-2.926,0.43-4.388,0.43H222.403l-95.156,73.56l1.893-73.56H28.478c-1.549,0-3.011-0.086-4.474-0.43 c-12.131-1.807-21.681-11.443-23.574-23.574c-0.344-1.464-0.43-3.012-0.43-4.56V126.474c0-15.744,12.733-28.477,28.478-28.477 h324.27C368.492,97.996,381.311,110.729,381.311,126.474z"
+                  ></path>
+                  <path
+                    style="fill:#53AA51;"
+                    d="M512,28.048v269.207c0,15.487-12.562,28.048-28.048,28.048H79.411 c-15.486,0-27.962-12.561-27.962-28.048V28.048C51.449,12.562,63.925,0,79.411,0h404.541c2.323,0,4.56,0.258,6.711,0.861 c10.067,2.409,18.068,10.41,20.477,20.476C511.742,23.488,512,25.725,512,28.048z"
+                  ></path>
+                  <path
+                    style="fill:#53AA51;"
+                    d="M512,34.5v256.388c0,8.087-2.753,15.573-7.485,21.423c-0.861,1.118-1.807,2.151-2.839,3.183 c-0.775,0.774-1.635,1.463-2.495,2.151c-0.947,0.86-1.979,1.549-3.098,2.237c-0.688,0.516-1.549,0.946-2.323,1.377 c2.065-2.668,3.7-5.679,4.904-8.948c1.376-3.699,2.151-7.742,2.151-11.959V43.965c0-19.014-15.487-34.414-34.501-34.414H74.679 c-5.85,0-11.271,1.376-16.089,3.957C64.871,5.335,74.765,0,85.864,0h391.722c5.936,0,11.528,1.549,16.433,4.216 c5.85,3.184,10.668,8.002,13.852,13.853C510.451,22.972,512,28.565,512,34.5z"
+                  ></path>
+                  <polygon
+                    style="fill:#53AA51;"
+                    points="205.116,295.741 355.257,295.741 358.321,414.179 "
+                  ></polygon>
+                  <path
+                    style="opacity:0.06;fill:#53AA51;"
+                    d="M504.526,312.304c-6.312,7.935-16.055,13.022-26.962,13.022H356.018l2.298,88.853 l-114.927-88.853H85.874c-10.908,0-20.651-5.086-26.962-13.022h179.33l113.946,88.087l-2.267-88.087H504.526z"
+                  ></path>
+                  <g>
+                    <rect
+                      x="143.843"
+                      y="63.866"
+                      style="fill:#93CEB2;"
+                      width="269.624"
+                      height="29.107"
+                    ></rect>
+                    <rect
+                      x="143.843"
+                      y="144.031"
+                      style="fill:#93CEB2;"
+                      width="297.199"
+                      height="29.107"
+                    ></rect>
+                    <rect
+                      x="143.843"
+                      y="223.693"
+                      style="fill:#93CEB2;"
+                      width="162.004"
+                      height="29.107"
+                    ></rect>
+                  </g>
+                </g>
+                <path
+                  style="opacity:0.06;fill:#53AA51;"
+                  d="M211.787,375.495l10.616-8.207h75.262l60.651,46.89v-0.003l0.005,0.003l-1.224-47.315 c0.013-0.004,0.026-0.001,0.038-0.004c13.679-2.065,24.176-13.853,24.176-28.134v-13.399h96.252c0.069,0,0.131-0.023,0.2-0.023 h6.19c15.486,0,28.048-12.561,28.048-28.048v-6.367V75.282L211.787,375.495z"
+                ></path>
+              </g>
+            </g></svg>
+        </div>
+        <span class="tw-text-3xl tw-font-extrabold tw-ml-5 tw-w-full">Comments
+          ({{numberofComment}})</span>
+        <div class="tw-w-full tw-text-end tw-mr-5">
+          {{!-- <button
+            class="tw-w-[100px] tw-h-[40px] tw-border-none tw-rounded-[30px] tw-bg-[#53AA51] tw-text-white tw-text-center tw-font-bold text-xl"
+            type="submit"
+          >Send</button> --}}
+          {{#if user}}
+          <button
+            class="tw-w-[100px] tw-h-[40px] tw-border-none tw-rounded-[30px] tw-bg-[#53AA51] tw-text-white tw-text-center tw-font-bold text-xl"
+            type="submit"
+          >
+            Send
+          </button>
+          {{else}}
+            <button
+            onclick="window.location.href='/login'"
+            type="button"
+            class="tw-w-auto tw-h-[40px] tw-border-none tw-rounded-[30px] tw-bg-[#53AA51] tw-text-white tw-text-center tw-font-bold text-xl tw-inline-flex tw-items-center tw-justify-center tw-px-4"
+            >
+            Login to comment
+            </button>
+          {{/if}}
+        </div>
+      </div>
+
+      <div>
+        <textarea
+          class="tw-w-full tw-h-[100px] tw-text-black tw-p-3"
+          name="comment"
+          id="comment"
+          placeholder="Share your opinion here..."
+        ></textarea>
+      </div>
+    </form>
+    <div class="list-comment">
+      {{#each listComment}}
+        {{>article-detail/comment}}
+         
+      {{/each}}
+      {{!-- {{>article-detail/comment}}
+      {{>article-detail/comment}}
+      {{>article-detail/comment}}
+      {{>article-detail/comment}}
+      {{>article-detail/comment}}
+      {{>article-detail/comment}}
+      {{>article-detail/comment}} --}}
+    </div>
+  </div>
+  {{! Related posts }}
+  <div class="tw-font-extrabold tw-text-[40px] tw-ml-4 tw-mt-2">Related posts</div>
+  <div class="tw-grid tw-grid-cols-3 gap-5 tw-mb-10  container tw-mt-10">
+    {{#each relatedArticles}}
+        {{>posts/post-card  }}    
+    {{/each}}
+  </div>
 </div>
-</div>
+<script src="/js/add-comment.js"></script>
+
+ <script>
+  async function downloadPDF() {
+    const article_title = document.getElementById("article-title").innerHTML;
+    const article_content = document.getElementById("content").innerHTML;
+    console.log(article_title);
+
+    // Show modal when download button is clicked
+    document.getElementById("downloadModal").style.display = "block";
+
+    const newHTML = `
+    <div style="">
+      <div style="font-weight: 600; font-size: 38px; text-align: left; letter-spacing: 0.025em; line-height: 1.1; ">
+        ${article_title}
+      </div>
+    </div>
+    `;
+    const finalContent = newHTML + article_content;
+    console.log(finalContent);
+
+    try {
+      const response = await fetch("/generate-pdf", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ content: finalContent, title: article_title.trim() }),
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${article_title}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      } else {
+        console.error("Error generating PDF");
+      }
+    } catch (error) {
+      console.error("Download failed:", error);
+    } finally {
+      // Hide modal when download is complete
+      document.getElementById("downloadModal").style.display = "none";
+    }
+  }
+
+  document.getElementById("downloadBtn").addEventListener("click", downloadPDF);
+  
+  // If the user clicks outside the modal, close the modal
+  
+</script>
+
+  <style>
+  /* CSS for Modal */
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  .modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 5px;
+    width: 30%;
+    height: 22%;
+    border-radius: 10px;
+    text-align: center;
+    opacity: 0.8;
+  }
+  .spinner {
+    margin: 10px auto;
+    border: 4px solid #f3f3f3; /* Background color */
+    border-top: 4px solid #53AA51; /* Spinner color */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+</style>
+
+<script>
+  
+</script>

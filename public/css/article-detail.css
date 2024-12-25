@@ -1,0 +1,7 @@
+.comment-section {
+  overflow-y: auto;
+  padding: 10px;
+}
+.comment-section::-webkit-scrollbar {
+  display: none;
+}

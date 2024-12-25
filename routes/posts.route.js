@@ -1,6 +1,8 @@
 import express from "express";
 import articleService from "../services/article.service.js";
 import commentService from "../services/comment.service.js";
+import moment from 'moment';
+
 const router = express.Router();
 
 router.get("/", async function (req, res) {
@@ -161,7 +163,11 @@ router.get("/detail", async function (req, res) {
   const id = req.query.id;
   console.log(id);
   const listComment = await commentService.getCommentByArticleId(id);
-  console.log("List comment", listComment);
+  // console.log("List comment", listComment);
+  listComment.forEach(comment => {
+    comment.comment_date = moment(comment.comment_date).format('MMMM Do YYYY, h:mm:ss a'); // Ví dụ định dạng: December 25th 2024, 12:00:36 am
+    // console.log(comment);
+  });
   const detail = await articleService.getArticleById(id);
   // console.log(detail);
   // console.log(detail.article_image_url);

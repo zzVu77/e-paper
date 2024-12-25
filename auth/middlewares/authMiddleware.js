@@ -13,7 +13,7 @@ function ensureAdmin(req, res, next) {
 }
 
 function ensureWriter(req, res, next) {
-  if (req.user && (req.user.role === "writer" || req.user.role === "")) {
+  if (req.user && (req.user.role === "writer" || req.user.role === "admin")) {
     return next();
   }
   res.render("404");

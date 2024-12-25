@@ -1,5 +1,5 @@
 {{!< layouts/home-layout }} <!-- Slideshow/Carousel -->
-    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="1700">
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
                 aria-current="true" aria-label="Slide 1"></button>
@@ -9,15 +9,19 @@
                 aria-label="Slide 3"></button>
         </div>
         <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="https://via.placeholder.com/800x400" class="d-block w-100" alt="...">
+        {{#each slideshow}}
+        <div class="carousel-item {{#if @first}}active{{/if}}">
+            <div class="carousel-overlay">
+            <img src="{{this.article_image_url}}" class="d-block w-100" alt="..." style="width: 800px; height: 400px; object-fit: cover;">
+            <div class="dark-overlay"></div>
+            <div class="carousel-caption">
+                <h5>{{this.article_title}}</h5>
+                <p>{{this.article_abstract}}</p>
+                <a href="/posts/detail?id={{this.article_id}}" class="explore-now-btn" >Explore Now</a>
             </div>
-            <div class="carousel-item">
-                <img src="https://via.placeholder.com/800x400" class="d-block w-100" alt="...">
             </div>
-            <div class="carousel-item">
-                <img src="https://via.placeholder.com/800x400" class="d-block w-100" alt="...">
-            </div>
+        </div>
+        {{/each}}
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
             data-bs-slide="prev">

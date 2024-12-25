@@ -205,6 +205,7 @@ app.get("/", async (req, res) => {
     mostViewed: await articleService.getMostViewedArticles(),
     latestPosts: await articleService.getLatestArticles(),
     topCategories: await articleService.getLatestArticleOfTopCategories(),
+    slideshow: await articleService.getImageUrlOfTop3Article(),
   });
 });
 

@@ -1,37 +1,41 @@
 import express from "express";
-import editorService from '../services/editor.service.js';
+import editorService from "../services/editor.service.js";
 
 const router = express.Router();
 
-
 router.get("/", async function (req, res) {
-  const id_editor = 'a949c012-be77-11ef-9eda-0242ac130002';
-  
-  const currentPage = parseInt(req.query.page) || 1; 
-  const itemsPerPage = 5; 
+  const id_editor = "105848255747222942031";
+
+  const currentPage = parseInt(req.query.page) || 1;
+  const itemsPerPage = 5;
   const offset = (currentPage - 1) * itemsPerPage;
 
-  const status = req.query.status || null;  // Get status filter from query parameter
+  const status = req.query.status || null; // Get status filter from query parameter
 
   // Fetch filtered articles based on status
-  let data = await editorService.getPageArticles(itemsPerPage, offset, id_editor, status); 
-  
+  let data = await editorService.getPageArticles(
+    itemsPerPage,
+    offset,
+    id_editor,
+    status
+  );
+
   // Fetch categories as usual
   const categories = await editorService.getAllCategories();
 
   // Attach categories to each article
-  data = data.map(article => ({
+  data = data.map((article) => ({
     ...article,
-    categories: categories, 
+    categories: categories,
   }));
 
   // Fetch total articles count (filtered by editor_id and possibly status)
   const totalArticles = await editorService.getTotalArticles(id_editor, status);
   const totalItems = totalArticles.count;
-  const totalPages = Math.ceil(totalItems / itemsPerPage); 
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   // Pagination logic
-  const maxVisiblePages = 5; 
+  const maxVisiblePages = 5;
   const pageNumbers = [];
 
   let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
@@ -51,8 +55,8 @@ router.get("/", async function (req, res) {
     title: "Editor",
     data: data,
     pageNumbers,
-    catId: req.query.id || "", 
-    status: status || "",  // Pass status filter to the view
+    catId: req.query.id || "",
+    status: status || "", // Pass status filter to the view
     hasNextPage: currentPage < totalPages,
     hasPrevPage: currentPage > 1,
     nextPage: currentPage + 1,
@@ -60,17 +64,25 @@ router.get("/", async function (req, res) {
   });
 });
 
-
 router.post("/update", async (req, res) => {
-  const { article_id, tag, categories, reason, decision, publish_date } = req.body; 
-  const admin_id = 'a949c012-be77-11ef-9eda-0242ac130002';
+  const { article_id, tag, categories, reason, decision, publish_date } =
+    req.body;
+  const admin_id = "a949c012-be77-11ef-9eda-0242ac130002";
   try {
-      await editorService.updateArticle(admin_id,article_id, tag, categories, reason, decision,publish_date);
-      // update later (middleware to save url previous)
-      res.redirect("/editor"); 
+    await editorService.updateArticle(
+      admin_id,
+      article_id,
+      tag,
+      categories,
+      reason,
+      decision,
+      publish_date
+    );
+    // update later (middleware to save url previous)
+    res.redirect("/editor");
   } catch (error) {
-      console.error("Error updating article:", error);
-      res.status(500).send("Something went wrong while updating the article.");
+    console.error("Error updating article:", error);
+    res.status(500).send("Something went wrong while updating the article.");
   }
 });
 

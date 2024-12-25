@@ -9,7 +9,7 @@
 .mainbox {
   box-sizing: border-box;
   position: relative;
-  width: 230px;
+  width: 180px;
   height: 40px;
   display: flex;
   flex-direction: row-reverse;
@@ -30,7 +30,8 @@
 }
 
 .checkbox:checked ~ .mainbox {
-  width: 50px;
+  width: 40px;
+  height: 40px;
 }
 
 .checkbox:checked ~ .mainbox .search_input {
@@ -57,7 +58,7 @@
 .search_input {
   box-sizing: border-box;
   height: 100%;
-  width: 170px;
+  width: 130px;
   background-color: transparent;
   border: none;
   outline: none;

@@ -20,7 +20,7 @@
         {{!-- Table --}}
         <div>
             <div class="tw-inline-flex tw-flex-col tw-w-full  md:tw-flex-row" role="group">
-                <a href="/admin/persons?role=subscriber" 
+                <a href="/admin/persons?role=user" 
                 class="tw-px-4 tw-py-2 tw-text-sm tw-font-medium tw-rounded-tl-lg tw-border-none hover:tw-bg-gray-100 hover:tw-text-primary-700 focus:tw-z-10 focus:tw-ring-2 focus:tw-ring-primary-700 focus:tw-text-primary-700 dark:tw-bg-cyan-200 dark:tw-text-slate-800 dark:hover:tw-text-white dark:hover:tw-bg-cyan-600 dark:focus:tw-ring-primary-500 dark:focus:tw-text-slate-800">
                 User
                 </a>
@@ -51,32 +51,40 @@
                     <tr id="admin-categories-row" class="tw-bg-white tw-border-b dark:tw-bg-cyan-50 dark:tw-border-cyan-300 hover:tw-bg-gray-50 dark:hover:tw-bg-cyan-200">
                         <td class="tw-px-6 tw-py-4">{{this.name}}</td>
 
-                        {{#if this.isSubscriber}}
+                        {{#if this.isUser}}
                             <!-- Subscriber Fields -->
                             <td class="tw-px-6 tw-py-4">{{this.email}}</td>
                             <td class="tw-px-6 tw-py-4">{{format_datetime this.birthdate}}</td>
                             <td class="tw-px-6 tw-py-4">{{format_datetime this.subscription_expiry}}</td>
                             <td class="tw-px-6 tw-py-4">{{this.role}}</td>
                             <td class="tw-px-6 tw-py-4 ">
-                                {{#if this.isExpired}}
+                                {{#if this.isExpired }}
+                                {{#if (compareStrings this.role "subscriber")}}
                                 <form action="/admin/persons/extend" method="post">
                                     <input type="hidden" name="id" value="{{this.id}}">
                                     <button type="submit" class="tw-border-none tw-bg-none tw-text-red-400 ">
                                         Extend
                                     </button>
-                                </form>
+                                </form>      
+                                {{/if}}
+
                                 {{else}}
+                                {{#if (compareStrings this.role "subscriber")}}
                                 <button  class="tw-border-none tw-bg-none tw-text-cyan-400 ">
                                     Unexpired
                                 </button>
                                 {{/if}}
+                                {{/if}}
                             </td>
                             <td class="tw-px-6 tw-py-4">
-                                <form action="/admin/persons/upgrade" method="post">
+                                {{#if (compareStrings this.status "pending")}}
+                                <form action="/admin/persons/approve" method="post">
+                                    <input type="hidden" name="id" value="{{this.id}}">
                                     <button type="submit" class="tw-border-none tw-bg-none tw-text-cyan-400 ">
-                                        Upgrade
+                                        Approve
                                     </button>
                                 </form>
+                                {{/if}}
                             </td>
                              <td class="tw-px-6 tw-py-4">
                                 <form action="/admin/persons/del" method="post">
@@ -120,7 +128,7 @@
                         <td class="tw-px-6 tw-py-4">{{#each this.category}}   {{this.category_name}},  {{/each}}</td>
                         <td class="tw-px-6 tw-py-4">{{this.role}}</td>
                         <td class="tw-px-6 tw-py-4 ">
-                        <form action="/admin/persons/del">
+                        <form action="/admin/persons/del" method="post">
                         <input type="hidden" name="id" value="{{this.id}}">
                         <button type="button"  class="popup-trigger-editor  tw-border-none tw-bg-transparent" data-id="{{this.id}}">
                             <svg  xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 48 48">
@@ -180,7 +188,7 @@
                     </div>
                     <div class="tw-col-span-2">
                         <label for="pen_name" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Pen name</label>
-                        <input type="text" name="pen_name" id="pen_name" class="tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 tw-text-sm tw-rounded-lg focus:tw-ring-primary-600 focus:tw-border-primary-600 tw-block tw-w-full tw-p-2.5 dark:tw-bg-white dark:tw-border-cyan-100 dark:tw-placeholder-gray-300 dark:tw-text-gray-700 dark:focus:tw-ring-primary-500 dark:focus:tw-border-primary-500" placeholder="name" required="">
+                        <input type="text" name="pen_name" id="pen_name" class="tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 tw-text-sm tw-rounded-lg focus:tw-ring-primary-600 focus:tw-border-primary-600 tw-block tw-w-full tw-p-2.5 dark:tw-bg-white dark:tw-border-cyan-100 dark:tw-placeholder-gray-300 dark:tw-text-gray-700 dark:focus:tw-ring-primary-500 dark:focus:tw-border-primary-500" placeholder="name" >
                     </div>
                     <div class="tw-col-span-2">
                         <label for="email" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Email</label>
@@ -236,8 +244,8 @@
                         </div>
                         <div class="tw-col-span-2">
                             <label for="birthdate" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Birthdate</label>
-                            <input type="datetime" name="birthdate" id="birthdate" class="tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 tw-text-sm tw-rounded-lg focus:tw-ring-primary-600 focus:tw-border-primary-600 tw-block tw-w-full tw-p-2.5 dark:tw-bg-white dark:tw-border-cyan-100 dark:tw-placeholder-gray-300 dark:tw-text-gray-700 dark:focus:tw-ring-primary-500 dark:focus:tw-border-primary-500" placeholder="password"
-                            value="{{format_datetime this.birthdate}}" required="">
+                            <input type="date" name="birthdate" id="birthdate" class="tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 tw-text-sm tw-rounded-lg focus:tw-ring-primary-600 focus:tw-border-primary-600 tw-block tw-w-full tw-p-2.5 dark:tw-bg-white dark:tw-border-cyan-100 dark:tw-placeholder-gray-300 dark:tw-text-gray-700 dark:focus:tw-ring-primary-500 dark:focus:tw-border-primary-500" placeholder="password"
+                            value="{{format_date this.birthdate}}" required="">
                         </div>
                         <div class="tw-col-span-2 tw-sm:col-span-1">
                             <label for="categoryID" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">
@@ -271,7 +279,7 @@
 
                     <button type="submit"
                         class="tw-text-white tw-inline-flex tw-items-center tw-bg-blue-700 tw-hover:bg-blue-800 tw-focus:ring-4 tw-focus:outline-none tw-focus:ring-blue-300 tw-font-medium tw-rounded-lg tw-text-sm tw-px-5 tw-py-2.5 tw-text-center tw-dark:bg-blue-600 tw-dark:hover:bg-blue-700 tw-dark:focus:ring-blue-800">
-                        Update {{title}}
+                        Update {{this.role}}
                     </button>
                 </form>
             </div>
@@ -288,7 +296,8 @@
                     </svg>
                 </button>
                 {{!-- Form information --}}
-                <form action="/admin/persons/update" method="post" class="tw-p-4 tw-md:p-5">
+                <form action="/admin/persons/writers/update" method="post" class="tw-p-4 tw-md:p-5">
+                    <input type="hidden" name="id" value="{{this.id}}">
                     <div class="tw-grid tw-gap-4 tw-mb-4 tw-grid-cols-2">
                         <div class="tw-col-span-2">
                             <label for="name" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Name</label>
@@ -307,16 +316,14 @@
                         </div>
                         <div class="tw-col-span-2">
                             <label for="birthdate" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Birthdate</label>
-                            <input type="datetime" name="birthdate" id="birthdate" class="tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 tw-text-sm tw-rounded-lg focus:tw-ring-primary-600 focus:tw-border-primary-600 tw-block tw-w-full tw-p-2.5 dark:tw-bg-white dark:tw-border-cyan-100 dark:tw-placeholder-gray-300 dark:tw-text-gray-700 dark:focus:tw-ring-primary-500 dark:focus:tw-border-primary-500" placeholder="password"
-                            value="{{format_datetime this.birthdate}}" required="">
+                            <input type="date" name="birthdate" id="birthdate" class="tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 tw-text-sm tw-rounded-lg focus:tw-ring-primary-600 focus:tw-border-primary-600 tw-block tw-w-full tw-p-2.5 dark:tw-bg-white dark:tw-border-cyan-100 dark:tw-placeholder-gray-300 dark:tw-text-gray-700 dark:focus:tw-ring-primary-500 dark:focus:tw-border-primary-500" placeholder="password"
+                            value="{{format_date this.birthdate}}" required="">
                         </div>
 
                     </div>
                     <button type="submit" class=" tw-text-white tw-inline-flex tw-items-center tw-bg-blue-700 tw-hover:bg-blue-800 tw-focus:ring-4 tw-focus:outline-none tw-focus:ring-blue-300 tw-font-medium tw-rounded-lg tw-text-sm tw-px-5 tw-py-2.5 tw-text-center tw-dark:bg-blue-600 tw-dark:hover:bg-blue-700 tw-dark:focus:ring-blue-800">
-                        <svg class="tw-me-1 tw-ms-1 tw-w-5 tw-h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
-                        </svg>
-                        Add {{title}}
+
+                        Update {{this.role}}
                     </button>
                 </form>
             </div>
@@ -332,7 +339,8 @@
                     </svg>
                 </button>
                 {{!-- Form information --}}
-                <form action="/admin/persons/update" method="post" class="tw-p-4 tw-md:p-5">
+                <form action="/admin/persons/users/update" method="post" class="tw-p-4 tw-md:p-5">
+                    <input type="hidden" name="id" value="{{this.id}}">
                     <div class="tw-grid tw-gap-4 tw-mb-4 tw-grid-cols-2">
                         <div class="tw-col-span-2">
                             <label for="name" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Name</label>
@@ -346,16 +354,13 @@
                         </div>
                         <div class="tw-col-span-2">
                             <label for="birthdate" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Birthdate</label>
-                            <input type="datetime" name="birthdate" id="birthdate" class="tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 tw-text-sm tw-rounded-lg focus:tw-ring-primary-600 focus:tw-border-primary-600 tw-block tw-w-full tw-p-2.5 dark:tw-bg-white dark:tw-border-cyan-100 dark:tw-placeholder-gray-300 dark:tw-text-gray-700 dark:focus:tw-ring-primary-500 dark:focus:tw-border-primary-500"
-                            value="{{format_datetime this.birthdate}}" placeholder="password" required="">
+                            <input type="date" name="birthdate" id="birthdate" class="tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 tw-text-sm tw-rounded-lg focus:tw-ring-primary-600 focus:tw-border-primary-600 tw-block tw-w-full tw-p-2.5 dark:tw-bg-white dark:tw-border-cyan-100 dark:tw-placeholder-gray-300 dark:tw-text-gray-700 dark:focus:tw-ring-primary-500 dark:focus:tw-border-primary-500"
+                            value="{{format_date this.birthdate}}" placeholder="password" required="">
                         </div>
 
                     </div>
                     <button type="submit" class=" tw-text-white tw-inline-flex tw-items-center tw-bg-blue-700 tw-hover:bg-blue-800 tw-focus:ring-4 tw-focus:outline-none tw-focus:ring-blue-300 tw-font-medium tw-rounded-lg tw-text-sm tw-px-5 tw-py-2.5 tw-text-center tw-dark:bg-blue-600 tw-dark:hover:bg-blue-700 tw-dark:focus:ring-blue-800">
-                        <svg class="tw-me-1 tw-ms-1 tw-w-5 tw-h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
-                        </svg>
-                        Add {{title}}
+                        Update {{this.role}}
                     </button>
                 </form>
             </div>

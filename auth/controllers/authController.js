@@ -31,10 +31,20 @@ const authCallback = (req, res) => {
 };
 
 const logout = (req, res) => {
-    req.session.destroy(() => {
-        res.json({ message: "Logged out successfully" });
+    req.logout((err) => {
+      if (err) {
+        return res.status(500).send("Logout failed.");
+      }
+  
+      req.session.destroy((err) => {
+        if (err) {
+          return res.status(500).send("Failed to destroy session.");
+        }
+  
+        res.clearCookie("connect.sid");
+        res.redirect("/"); // Điều hướng đến trang login hoặc home
+      });
     });
-    authCallback(req, res);
-};
-
+  };
+  
 export default { login, authCallback, logout };

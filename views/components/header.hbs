@@ -205,22 +205,42 @@
           </div>
         </div>
         <div class="client-header-navigation-login">
-          {{#if user}}
-          <button
-            class="client-header-loginButton"
-            onclick="window.location.href='/account-setting-myprofile';"
-            style="width: auto;"
-          >
-          Welcome, {{user.name}}
-          </button>
+        {{#if user}}
+          {{#if (compareStrings user.role "admin")}}
+            <button
+              class="client-header-loginButton"
+              onclick="window.location.href='/admin/persons';"
+              style="width: auto;"
+            >
+              Welcome admin, {{user.name}}
+            </button>
+          {{else if (compareStrings user.role "editor")}}
+            <button
+              class="client-header-loginButton"
+              onclick="window.location.href='/editor';"
+              style="width: auto;"
+            >
+              Welcome editor, {{user.name}}
+            </button>
           {{else}}
+            <button
+              class="client-header-loginButton"
+              onclick="window.location.href='/account-setting-myprofile';"
+              style="width: auto;"
+            >
+              Welcome, {{user.name}}
+            </button>
+          {{/if}}
+        {{else}}
           <button
             class="client-header-loginButton"
             onclick="window.location.href='/account/login';"
           >
-          Login
+            Login
           </button>
-          {{/if}}
+        {{/if}}
+
+
         </div>
       </div>
     </div>

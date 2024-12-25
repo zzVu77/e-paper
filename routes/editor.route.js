@@ -5,7 +5,7 @@ const router = express.Router();
 
 
 router.get("/", async function (req, res) {
-  const id_editor = 'a949c012-be77-11ef-9eda-0242ac130002';
+  const id_editor = req.user.id;
   
   const currentPage = parseInt(req.query.page) || 1; 
   const itemsPerPage = 5; 
@@ -63,9 +63,9 @@ router.get("/", async function (req, res) {
 
 router.post("/update", async (req, res) => {
   const { article_id, tag, categories, reason, decision, publish_date } = req.body; 
-  const admin_id = 'a949c012-be77-11ef-9eda-0242ac130002';
+  const id_editor = req.user.id;
   try {
-      await editorService.updateArticle(admin_id,article_id, tag, categories, reason, decision,publish_date);
+      await editorService.updateArticle(id_editor,article_id, tag, categories, reason, decision,publish_date);
       // update later (middleware to save url previous)
       res.redirect("/editor"); 
   } catch (error) {

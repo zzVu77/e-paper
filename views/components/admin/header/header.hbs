@@ -160,19 +160,25 @@
         {{!-- Drop down logout .... --}}
         <div>
             <button id="admin-header-dropdownActionButton" type="button" data-dropdown-toggle="language-dropdown-menu" class="tw-border-none tw-inline-flex tw-items-center tw-font-medium tw-justify-center tw-px-4 tw-py-2 tw-text-sm tw-text-gray-900 dark:tw-text-black tw-rounded-lg tw-cursor-pointer hover:tw-bg-cyan-100 dark:hover:tw-bg-blue-300  dark:hover:tw-text-white">
-                <div>Huy</div>
+                <div>{{user.name}}</div>
                 <img src="/img/avatar.png" alt="" class="tw-ml-5 tw-h-10 tw-rounded-full ">
             </button>
 
             <!-- Dropdown menu -->
-            <div id="admin-header-dropdownAction" class="tw-absolute  tw-z-10 tw-hidden tw-bg-white tw-divide-y tw-divide-gray-100 tw-rounded-lg tw-shadow tw-w-44 dark:tw-bg-cyan-100 dark:tw-divide-blue-200">
-                <a href="#" class="tw-text-gray-900 tw-block tw-px-4 tw-py-2 hover:tw-bg-cyan-100 dark:hover:tw-bg-cyan-300 dark:hover:tw-text-white">Information</a>
-                <a href="#" class="tw-text-gray-900 tw-block tw-px-4 tw-py-2 hover:tw-bg-cyan-100 dark:hover:tw-bg-cyan-300 dark:hover:tw-text-white">Log out</a>
-                
+            <div
+              id="admin-header-dropdownAction"
+              class="tw-absolute tw-z-10 tw-hidden tw-bg-white tw-divide-y tw-divide-gray-100 tw-rounded-lg tw-shadow tw-w-44 dark:tw-bg-cyan-100 dark:tw-divide-blue-200"
+            >
+              <a
+                href="javascript:void(0);"
+                onclick="logout()"
+                class="tw-text-gray-900 tw-block tw-px-4 tw-py-2 hover:tw-bg-cyan-100 dark:hover:tw-bg-cyan-300 dark:hover:tw-text-white"
+              >
+                Log out
+              </a>
             </div>
         </div>
         
-
     </div>
         
     </div>

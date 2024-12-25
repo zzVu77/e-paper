@@ -91,8 +91,8 @@ CREATE TABLE editor_assignments (
 INSERT INTO users (id, name, pen_name, email, password, birthdate, role, subscription_expiry)
 VALUES
     (1, 'Alice Johnson', 'AliceJ', 'alice@example.com', '$2a$08$kUA67J6iky3CvQivKyns3.msZZ/UNqffAHgH9VyiGPbmkkEaoTArC', '1990-05-20', 'writer', '2024-12-31 23:59:59'),
-    (2, 'Bob Smith', NULL, 'bob@example.com', 'securepass', '1985-10-15', 'writer', NULL),
-    (3, 'Charlie Brown', 'CharlieB', 'charlie@example.com', 'charliepass', '1975-03-05', 'writer', NULL);
+    (2, 'Bob Smith', NULL, 'bob@example.com', '$2a$08$kUA67J6iky3CvQivKyns3.msZZ/UNqffAHgH9VyiGPbmkkEaoTArC', '1985-10-15', 'writer', NULL),
+    (3, 'Charlie Brown', 'CharlieB', 'charlie@example.com', '$2a$08$kUA67J6iky3CvQivKyns3.msZZ/UNqffAHgH9VyiGPbmkkEaoTArC', '1975-03-05', 'writer', NULL);
 -- Dummy data for categories
 INSERT INTO categories (id, name, parent_id)
 VALUES
@@ -396,20 +396,20 @@ VALUES
     -- User
 INSERT INTO users (id, name, pen_name, email, password, birthdate, role, subscription_expiry) 
 VALUES
-    (UUID(), 'Charlie Davis', 'CharlieD', 'charlide@example.com', 'password789', '1992-03-10', 'writer', NULL),
-    (UUID(), 'Diana Green', 'DianaG', 'diana@example.com', 'password101', '1994-01-22', 'writer', NULL),
-    (UUID(), 'Eve Wilson', 'EveW', 'eve@example.com', 'password202', '1991-06-17', 'writer', NULL),
-    (UUID(), 'Frank Harris', 'FrankH', 'frank@example.com', 'password303', '1987-09-12', 'writer', NULL),
-    (UUID(), 'Grace Taylor', 'GraceT', 'grace@example.com', 'password404', '1993-04-04', 'writer', NULL),
-    (UUID(), 'Henry Brown', 'HenryB', 'henry@example.com', 'password505', '1988-11-03', 'writer', NULL),
-    (UUID(), 'Ivy White', 'IvyW', 'ivy@example.com', 'password606', '1995-12-28', 'writer', NULL),
-    (UUID(), 'Jack Black', 'JackB', 'jack@example.com', 'password707', '1989-02-19', 'writer', NULL),
-    (UUID(), 'Kathy Moore', 'KathyM', 'kathy@example.com', 'password808', '1990-10-02', 'writer', NULL),
-    (UUID(), 'Leo Martinez', 'LeoM', 'leo@example.com', 'password909', '1986-07-27', 'writer', NULL),
-    (UUID(), 'Mia Clark', 'MiaC', 'mia@example.com', 'password010', '1992-12-01', 'writer', NULL),
-    (UUID(), 'Nina Lee', 'NinaL', 'nina@example.com', 'password111', '1994-03-14', 'writer', NULL),
-    (UUID(), 'Oliver King', 'OliverK', 'oliver@example.com', 'password212', '1983-05-06', 'writer', NULL),
-    (UUID(), 'Paul Young', 'PaulY', 'paul@example.com', 'password313', '1996-07-25', 'writer', NULL);
+    (UUID(), 'Charlie Davis', 'CharlieD', 'charlide@example.com', '$2a$08$kUA67J6iky3CvQivKyns3.msZZ/UNqffAHgH9VyiGPbmkkEaoTArC', '1992-03-10', 'writer', NULL),
+    (UUID(), 'Diana Green', 'DianaG', 'diana@example.com', '$2a$08$kUA67J6iky3CvQivKyns3.msZZ/UNqffAHgH9VyiGPbmkkEaoTArC', '1994-01-22', 'writer', NULL),
+    (UUID(), 'Eve Wilson', 'EveW', 'eve@example.com', '$2a$08$kUA67J6iky3CvQivKyns3.msZZ/UNqffAHgH9VyiGPbmkkEaoTArC', '1991-06-17', 'writer', NULL),
+    (UUID(), 'Frank Harris', 'FrankH', 'frank@example.com', '$2a$08$kUA67J6iky3CvQivKyns3.msZZ/UNqffAHgH9VyiGPbmkkEaoTArC', '1987-09-12', 'writer', NULL),
+    (UUID(), 'Grace Taylor', 'GraceT', 'grace@example.com', '$2a$08$kUA67J6iky3CvQivKyns3.msZZ/UNqffAHgH9VyiGPbmkkEaoTArC', '1993-04-04', 'writer', NULL),
+    (UUID(), 'Henry Brown', 'HenryB', 'henry@example.com', '$2a$08$kUA67J6iky3CvQivKyns3.msZZ/UNqffAHgH9VyiGPbmkkEaoTArC', '1988-11-03', 'writer', NULL),
+    (UUID(), 'Ivy White', 'IvyW', 'ivy@example.com', '$2a$08$kUA67J6iky3CvQivKyns3.msZZ/UNqffAHgH9VyiGPbmkkEaoTArC', '1995-12-28', 'writer', NULL),
+    (UUID(), 'Jack Black', 'JackB', 'jack@example.com', '$2a$08$kUA67J6iky3CvQivKyns3.msZZ/UNqffAHgH9VyiGPbmkkEaoTArC', '1989-02-19', 'writer', NULL),
+    (UUID(), 'Kathy Moore', 'KathyM', 'kathy@example.com', '$2a$08$kUA67J6iky3CvQivKyns3.msZZ/UNqffAHgH9VyiGPbmkkEaoTArC', '1990-10-02', 'writer', NULL),
+    (UUID(), 'Leo Martinez', 'LeoM', 'leo@example.com', '$2a$08$kUA67J6iky3CvQivKyns3.msZZ/UNqffAHgH9VyiGPbmkkEaoTArC', '1986-07-27', 'writer', NULL),
+    (UUID(), 'Mia Clark', 'MiaC', 'mia@example.com', '$2a$08$kUA67J6iky3CvQivKyns3.msZZ/UNqffAHgH9VyiGPbmkkEaoTArC', '1992-12-01', 'writer', NULL),
+    (UUID(), 'Nina Lee', 'NinaL', 'nina@example.com', '$2a$08$kUA67J6iky3CvQivKyns3.msZZ/UNqffAHgH9VyiGPbmkkEaoTArC', '1994-03-14', 'writer', NULL),
+    (UUID(), 'Oliver King', 'OliverK', 'oliver@example.com', '$2a$08$kUA67J6iky3CvQivKyns3.msZZ/UNqffAHgH9VyiGPbmkkEaoTArC', '1983-05-06', 'writer', NULL),
+    (UUID(), 'Paul Young', 'PaulY', 'paul@example.com', '$2a$08$kUA67J6iky3CvQivKyns3.msZZ/UNqffAHgH9VyiGPbmkkEaoTArC', '1996-07-25', 'writer', NULL);
 
 -- article
 INSERT INTO articles (id, title, abstract, content, image_url, status, category_id, is_premium, views, publish_date, author)
@@ -1161,19 +1161,19 @@ VALUES
 INSERT INTO users (
     id, name, email, password, birthdate, role, subscription_expiry, created_at, updated_at
 ) VALUES
-(UUID(), 'Emily Carter', 'emily.carter@example.com', 'hashed_password_subscriber_1', '1995-02-14', 'subscriber', '2025-12-31 23:59:59', NOW(), NOW()),
-(UUID(), 'Michael Green', 'michael.green@example.com', 'hashed_password_subscriber_2', '1988-07-07', 'subscriber', '2025-06-30 23:59:59', NOW(), NOW()),
-(UUID(), 'Rachel Adams', 'rachel.adams@example.com', 'hashed_password_subscriber_3', '1992-11-25', 'subscriber', '2026-01-01 23:59:59', NOW(), NOW()),
-(UUID(), 'Oliver Smith', 'oliver.smith@example.com', 'hashed_password_subscriber_4', '1997-09-14', 'subscriber', '2024-12-31 23:59:59', NOW(), NOW());
+(UUID(), 'Emily Carter', 'emily.carter@example.com', '$2a$08$kUA67J6iky3CvQivKyns3.msZZ/UNqffAHgH9VyiGPbmkkEaoTArC', '1995-02-14', 'subscriber', '2025-12-31 23:59:59', NOW(), NOW()),
+(UUID(), 'Michael Green', 'michael.green@example.com', '$2a$08$kUA67J6iky3CvQivKyns3.msZZ/UNqffAHgH9VyiGPbmkkEaoTArC', '1988-07-07', 'subscriber', '2025-06-30 23:59:59', NOW(), NOW()),
+(UUID(), 'Rachel Adams', 'rachel.adams@example.com', '$2a$08$kUA67J6iky3CvQivKyns3.msZZ/UNqffAHgH9VyiGPbmkkEaoTArC', '1992-11-25', 'subscriber', '2026-01-01 23:59:59', NOW(), NOW()),
+(UUID(), 'Oliver Smith', 'oliver.smith@example.com', '$2a$08$kUA67J6iky3CvQivKyns3.msZZ/UNqffAHgH9VyiGPbmkkEaoTArC', '1997-09-14', 'subscriber', '2024-12-31 23:59:59', NOW(), NOW());
 
 
 INSERT INTO users (
     id, name, email, password, birthdate, role, subscription_expiry, created_at, updated_at
 ) VALUES
-(UUID(), 'Sophia Taylor', 'sophia.taylor@example.com', 'hashed_password_editor_1', '1990-03-12', 'editor', NULL, NOW(), NOW()),
-(UUID(), 'James Brown', 'james.brown@example.com', 'hashed_password_editor_2', '1982-11-20', 'editor', NULL, NOW(), NOW()),
-(UUID(), 'Charlotte Johnson', 'charlotte.johnson@example.com', 'hashed_password_editor_3', '1987-05-02', 'editor', NULL, NOW(), NOW()),
-(UUID(), 'Liam Williams', 'liam.williams@example.com', 'hashed_password_editor_4', '1991-01-18', 'editor', NULL, NOW(), NOW());
+(UUID(), 'Sophia Taylor', 'sophia.taylor@example.com', '$2a$08$kUA67J6iky3CvQivKyns3.msZZ/UNqffAHgH9VyiGPbmkkEaoTArC', '1990-03-12', 'editor', NULL, NOW(), NOW()),
+(UUID(), 'James Brown', 'james.brown@example.com', '$2a$08$kUA67J6iky3CvQivKyns3.msZZ/UNqffAHgH9VyiGPbmkkEaoTArC', '1982-11-20', 'editor', NULL, NOW(), NOW()),
+(UUID(), 'Charlotte Johnson', 'charlotte.johnson@example.com', '$2a$08$kUA67J6iky3CvQivKyns3.msZZ/UNqffAHgH9VyiGPbmkkEaoTArC', '1987-05-02', 'editor', NULL, NOW(), NOW()),
+(UUID(), 'Liam Williams', 'liam.williams@example.com', '$2a$08$kUA67J6iky3CvQivKyns3.msZZ/UNqffAHgH9VyiGPbmkkEaoTArC', '1991-01-18', 'editor', NULL, NOW(), NOW());
 
 
 INSERT INTO comments (

@@ -1,6 +1,7 @@
 import express from "express";
 import articleService from "../services/article.service.js";
 import commentService from "../services/comment.service.js";
+import authMiddleware from "../auth/middlewares/authMiddleware.js";
 import moment from 'moment';
 
 const router = express.Router();
@@ -178,6 +179,7 @@ router.get("/detail", async function (req, res) {
   );
   // console.log(relatedArticles);
   res.render("article-detail", {
+    article_id: detail.article_id,
     id: detail.article_id,
     title: detail.article_title,
     content: detail.article_content,
@@ -193,8 +195,9 @@ router.get("/detail", async function (req, res) {
   });
 });
 
-router.post("/add-comment", async function (req, res) {
-  const { articleId, userId, content, comment_date } = req.body;
+router.post("/add-comment",authMiddleware.ensureAuthenticated, async function (req, res) {
+  const userId = req.user.id;
+  const { articleId, content, comment_date } = req.body;
   console.log(articleId, userId, content, comment_date);
   const result = await commentService.addComment(
     articleId,

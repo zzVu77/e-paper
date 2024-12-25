@@ -12,6 +12,13 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       const comment_date = new Date().toLocaleString();
+      const articleDetail = document.getElementById("article-detail");
+      const articleId = articleDetail.getAttribute("data-article-id");
+
+      if (!articleId) {
+        console.error("Article ID is missing");
+        return;
+      }
 
       try {
         const response = await fetch("/posts/add-comment", {
@@ -20,8 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            articleId: "13",
-            userId: "bb8de315-c153-11ef-9ef9-0242ac120002",
+            articleId: articleId,
             content: content,
             comment_date: comment_date,
           }),

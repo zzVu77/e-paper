@@ -16,7 +16,7 @@
       alt=""
     />
   </div>
-<div class="tw-flex tw-flex-col tw-h-auto container ">
+<div class="tw-flex tw-flex-col tw-h-auto container " id="article-detail" data-article-id="{{article_id}}">
   {{! Title and Category  }}
   <div class="tw-mx-[128px]">
 
@@ -214,10 +214,26 @@
         <span class="tw-text-3xl tw-font-extrabold tw-ml-5 tw-w-full">Comments
           ({{numberofComment}})</span>
         <div class="tw-w-full tw-text-end tw-mr-5">
+          {{!-- <button
+            class="tw-w-[100px] tw-h-[40px] tw-border-none tw-rounded-[30px] tw-bg-[#53AA51] tw-text-white tw-text-center tw-font-bold text-xl"
+            type="submit"
+          >Send</button> --}}
+          {{#if user}}
           <button
             class="tw-w-[100px] tw-h-[40px] tw-border-none tw-rounded-[30px] tw-bg-[#53AA51] tw-text-white tw-text-center tw-font-bold text-xl"
             type="submit"
-          >Send</button>
+          >
+            Send
+          </button>
+          {{else}}
+            <button
+            onclick="window.location.href='/login'"
+            type="button"
+            class="tw-w-auto tw-h-[40px] tw-border-none tw-rounded-[30px] tw-bg-[#53AA51] tw-text-white tw-text-center tw-font-bold text-xl tw-inline-flex tw-items-center tw-justify-center tw-px-4"
+            >
+            Login to comment
+            </button>
+          {{/if}}
         </div>
       </div>
 

@@ -678,6 +678,7 @@ export default {
       .leftJoin("article_tags as at", "a.id", "at.article_id")
       .leftJoin("tags as t", "at.tag_id", "t.id")
       .innerJoin("categories as cat", "a.category_id", "cat.id")
+      .innerJoin("users as u", "a.author", "u.id")
       .where("a.publish_date", "<=", today)
       .groupBy("a.id")
       .orderBy([
@@ -696,7 +697,8 @@ export default {
         "a.publish_date as article_publish_date",
         db.raw("COUNT(c.id) as comment_count"),
         "cat.name as category_name",
-        db.raw("GROUP_CONCAT(t.name) as article_tags")
+        db.raw("GROUP_CONCAT(t.name) as article_tags"),
+        "u.name as author_name"
       )
       .limit(10)
       .then((rows) => {
@@ -777,6 +779,7 @@ export default {
       .leftJoin("article_tags as at", "a.id", "at.article_id")
       .leftJoin("tags as t", "at.tag_id", "t.id")
       .innerJoin("categories as c", "a.category_id", "c.id")
+      .innerJoin("users as u", "a.author", "u.id")
       .orderBy("a.publish_date", "desc")
       .select(
         "a.id as article_id",
@@ -788,6 +791,7 @@ export default {
         "a.is_premium as article_is_premium",
         "a.views as article_views",
         "a.publish_date as article_publish_date",
+        "u.name as author_name",
         "c.name as category_name",
         db.raw("GROUP_CONCAT(t.name) as article_tags")
       )
@@ -801,6 +805,7 @@ export default {
         "a.is_premium",
         "a.views",
         "a.publish_date",
+        "u.name",
         "c.name"
       )
       .limit(10)
@@ -828,6 +833,7 @@ export default {
       .leftJoin("articles as a", "c.id", "a.category_id")
       .leftJoin("article_tags as at", "a.id", "at.article_id")
       .leftJoin("tags as t", "at.tag_id", "t.id")
+      .innerJoin("users as u", "a.author", "u.id")
       .orderBy("a.publish_date", "desc")
       .select(
         "c.id as category_id",
@@ -841,6 +847,7 @@ export default {
         "a.is_premium as article_is_premium",
         "a.views as article_views",
         "a.publish_date as article_publish_date",
+        "u.name as author_name",
         db.raw("GROUP_CONCAT(t.name) as article_tags")
       )
       .groupBy(
@@ -854,7 +861,8 @@ export default {
         "a.status",
         "a.is_premium",
         "a.views",
-        "a.publish_date"
+        "a.publish_date",
+        "u.name"
       )
       .limit(10)
       .then((rows) => {

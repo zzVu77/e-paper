@@ -1,5 +1,6 @@
 import express from "express";
 import articleService from "../services/article.service.js";
+import commentService from "../services/comment.service.js";
 const router = express.Router();
 
 router.get("/", async function (req, res) {
@@ -159,15 +160,17 @@ router.get("/search", async function (req, res) {
 router.get("/detail", async function (req, res) {
   const id = req.query.id;
   console.log(id);
+  const listComment = await commentService.getCommentByArticleId(id);
+  console.log("List comment", listComment);
   const detail = await articleService.getArticleById(id);
-  console.log(detail);
-  console.log(detail.article_image_url);
+  // console.log(detail);
+  // console.log(detail.article_image_url);
   const relatedArticles = await articleService.getRelatedArticleByCategory(
     detail.category_name,
     detail.article_id,
     6
   );
-  console.log(relatedArticles);
+  // console.log(relatedArticles);
   res.render("article-detail", {
     id: detail.article_id,
     title: detail.article_title,
@@ -179,6 +182,34 @@ router.get("/detail", async function (req, res) {
     tags: detail.article_tags,
     published_date: detail.article_publish_date,
     relatedArticles: relatedArticles,
+    listComment: listComment,
+    numberofComment: listComment.length,
+  });
+});
+
+router.post("/add-comment", async function (req, res) {
+  const { articleId, userId, content, comment_date } = req.body;
+  console.log(articleId, userId, content, comment_date);
+  const result = await commentService.addComment(
+    articleId,
+    userId,
+    content,
+    comment_date
+  );
+  if (!result.success) {
+    return res.json({
+      success: false,
+      message: "Unable to add comment",
+      error: result.error,
+    });
+  }
+  res.json({
+    success: true,
+    articleId,
+    userId,
+    content,
+    comment_date,
+    userName: result.userName,
   });
 });
 export default router;

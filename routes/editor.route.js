@@ -49,6 +49,7 @@ router.get("/", async function (req, res) {
     pageNumbers.push({ value: i, active: i === currentPage });
   }
 
+  console.log(data);
   // Render the editor page with filtered articles and pagination
   res.render("editor", {
     layout: "editor",

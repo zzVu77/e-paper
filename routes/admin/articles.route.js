@@ -30,6 +30,7 @@ router.get("/", async function (req, res) {
       statusClass, 
     };
   });
+
   const totalArticles = await adminService.getTotalArticles();
   const totalItems = totalArticles.count;
   const totalPages = Math.ceil(totalItems / itemsPerPage); 
@@ -48,6 +49,10 @@ router.get("/", async function (req, res) {
     pageNumbers.push({ value: i, active: i === currentPage });
   }
 
+  if (data.article_id === 'article_id')
+  {
+    console.log(data);
+  }
   res.render("admin/articles", {
     layout: "admin",
     title: "Articles",

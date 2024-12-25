@@ -19,7 +19,9 @@ export default {
             db.raw("GROUP_CONCAT(t.name) as article_tags"),
             "rn.note as rejection_note" 
           )
-          .where("u.role", "writer")
+          .where((builder) => {
+            builder.where("u.role", "writer").orWhere("u.role", "admin");
+          })
           .groupBy(
             "a.id",
             "a.title",
@@ -46,6 +48,7 @@ export default {
             }));
           });
     },
+
     async getTotalArticles() {
         return db("articles").count("id as count").first();
     },

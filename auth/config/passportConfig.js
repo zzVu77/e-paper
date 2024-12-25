@@ -23,7 +23,10 @@ passport.use(
     {
       clientID: googleClientId,
       clientSecret: googleClientSecret,
-      callbackURL: "/auth/google/callback",
+      callbackURL:
+        process.env.NODE_ENV === "production"
+          ? "https://e-paper-production.up.railway.app/auth/google/callback"
+          : "http://localhost:3000/auth/google/callback",
       scope: [
         "profile",
         "email",
@@ -84,7 +87,10 @@ passport.use(
     {
       clientID: githubClientId,
       clientSecret: githubClientSecret,
-      callbackURL: "/auth/github/callback",
+      callbackURL:
+        process.env.NODE_ENV === "production"
+          ? "https://e-paper-production.up.railway.app/auth/github/callback"
+          : "http://localhost:3000/auth/github/callback",
       scope: ["user:email"],
     },
     async (accessToken, refreshToken, profile, done) => {

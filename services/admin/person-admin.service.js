@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 export default {
     async getPersonsRole(role, page, itemsPerPage) {
         const users = await db('users')
-            .select('id', 'name', 'pen_name', 'email', 'birthdate', 'role', 'subscription_expiry')
+            .select('id','password','name', 'pen_name', 'email', 'birthdate', 'role', 'subscription_expiry')
             .where('role', role)
             .offset((page - 1) * itemsPerPage)
             .limit(itemsPerPage);

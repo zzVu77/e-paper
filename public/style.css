@@ -668,6 +668,15 @@
   width: 100% !important;
 }
 
+.tw-w-max {
+  width: -moz-max-content !important;
+  width: max-content !important;
+}
+
+.tw-w-screen {
+  width: 100vw !important;
+}
+
 .tw-min-w-10 {
   min-width: 2.5rem !important;
 }

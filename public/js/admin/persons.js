@@ -19,10 +19,10 @@
 
 
 
-document.querySelectorAll('.popup-trigger').forEach(button => {
+document.querySelectorAll('.popup-trigger-editor').forEach(button => {
     button.addEventListener('click', function () {
         const id = this.getAttribute('data-id');
-        const popup = document.getElementById('admin-persons-popup-' + id);
+        const popup = document.getElementById('admin-editor-popup-' + id);
         const selectedCategoriesElement = popup.querySelector(`#selectedCategories-${id}`);
         const dropdownMenu = popup.querySelector(`#dropdownMenu-${id}`);
         
@@ -132,7 +132,7 @@ document.querySelectorAll('.popup-trigger').forEach(button => {
 document.querySelectorAll('.close-popup').forEach(button => {
     button.addEventListener('click', function () {
         const id = this.getAttribute('data-id');
-        const popup = document.getElementById('admin-persons-popup-' + id);
+        const popup = document.getElementById('admin-editor-popup-' + id);
         const selectedCategoriesElement = popup.querySelector(`#selectedCategories-${id}`);
         const dropdownMenu = popup.querySelector(`#dropdownMenu-${id}`);
 
@@ -148,3 +148,86 @@ document.querySelectorAll('.close-popup').forEach(button => {
         popup.classList.add('tw-invisible'); // Hide the popup
     });
 });
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Helper Function to Show Popup
+    function showPopup(trigger, prefix) {
+        const id = trigger.getAttribute("data-id");
+        const popup = document.querySelector(`#${prefix}${id}`);
+        if (popup) {
+            popup.classList.remove("tw-invisible");
+            popup.classList.add("tw-visible");
+        }
+    }
+
+    // Helper Function to Hide Popup
+    function hidePopup(trigger, prefix) {
+        const id = trigger.getAttribute("data-id");
+        const popup = document.querySelector(`#${prefix}${id}`);
+        if (popup) {
+            popup.classList.remove("tw-visible");
+            popup.classList.add("tw-invisible");
+        }
+    }
+
+    // Handle Popups for Writers
+    const popupTriggersWriter = document.querySelectorAll(".popup-trigger-writer");
+    const closeButtonsWriter = document.querySelectorAll(".close-popup-writer");
+
+    popupTriggersWriter.forEach(trigger => {
+        trigger.addEventListener("click", function (e) {
+            const button = e.target.closest(".popup-trigger-writer"); // Ensure the button is detected
+            if (button) showPopup(button, "admin-writer-popup-");
+        });
+    });
+
+    closeButtonsWriter.forEach(button => {
+        button.addEventListener("click", function () {
+            hidePopup(this, "admin-writer-popup-");
+        });
+    });
+
+    // Handle Popups for Users
+    const popupTriggersUser = document.querySelectorAll(".popup-trigger-user");
+    const closeButtonsUser = document.querySelectorAll(".close-popup-user");
+
+    popupTriggersUser.forEach(trigger => {
+        trigger.addEventListener("click", function (e) {
+            const button = e.target.closest(".popup-trigger-user"); // Ensure the button is detected
+            if (button) showPopup(button, "admin-user-popup-");
+        });
+    });
+
+    closeButtonsUser.forEach(button => {
+        button.addEventListener("click", function () {
+            hidePopup(this, "admin-user-popup-");
+        });
+    });
+
+    // Close Popups When Clicking Outside
+    document.addEventListener("click", function (event) {
+        const openPopups = document.querySelectorAll(".tw-visible");
+        openPopups.forEach(popup => {
+            if (!popup.contains(event.target) &&
+                !event.target.closest(".popup-trigger-writer") &&
+                !event.target.closest(".popup-trigger-user")) {
+                popup.classList.remove("tw-visible");
+                popup.classList.add("tw-invisible");
+            }
+        });
+    });
+
+    // Handle Backdrop Clicks
+    document.querySelectorAll(".tw-backdrop-blur-sm").forEach(overlay => {
+        overlay.addEventListener("click", function (e) {
+            if (e.target === overlay) {
+                overlay.classList.remove("tw-visible");
+                overlay.classList.add("tw-invisible");
+            }
+        });
+    });
+});
+
+

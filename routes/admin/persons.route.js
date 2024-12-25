@@ -35,7 +35,7 @@ router.get('/', async function (req, res) {
     user.isWriter = user.role === 'writer';
     user.isEditor = user.role === 'editor';
   });
-  
+  console.log(filteredUsers);
   if (role === 'editor')
   {
     const categories = await personService.getAllCategories();
@@ -47,9 +47,9 @@ router.get('/', async function (req, res) {
   };
   let tableHeaders = [];
   if (role === 'subscriber') {
-      tableHeaders = ['Name', 'Email', 'Birthdate', 'Expired date', 'Role','Subscription expiry','Status'];
+      tableHeaders = ['Name', 'Email', 'Birthdate', 'Expired date', 'Role','Subscription expiry','Status','Action'];
   } else if (role === 'writer') {
-      tableHeaders = ['Name', 'Pen name', 'Email', 'Birthdate', 'Role'];
+      tableHeaders = ['Name', 'Pen name', 'Email', 'Birthdate', 'Role','Action'];
   } else if (role === 'editor') {
       tableHeaders = ['Name', 'Email', 'Birthdate', 'Assignment', 'Role','Action'];
   }

@@ -42,7 +42,6 @@ router.get('/', async function (req, res) {
       ...category,
       categories: categories, 
     }));
-    console.log(data);
     res.render('admin/categories', {
       layout: 'admin',
       title: 'Category', 

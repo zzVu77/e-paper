@@ -127,8 +127,8 @@
                         </div>
                         <div class="tw-col-span-2">
                             <label for="publish_date" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Publish date</label>
-                            <input type="date" name="publish_date" id="publish_date-{{this.article_id}}" class="tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 tw-text-sm tw-rounded-lg focus:tw-ring-primary-600 focus:tw-border-primary-600 tw-block tw-w-full tw-p-2.5 dark:tw-bg-white dark:tw-border-cyan-100 dark:tw-placeholder-gray-300 dark:tw-text-gray-700 dark:focus:tw-ring-primary-500 dark:focus:tw-border-primary-500" 
-                            value="{{format_date this.article_publish_date}}" required="">
+                            <input type="datetime-local" name="publish_date" id="publish_date-{{this.article_id}}" class="tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 tw-text-sm tw-rounded-lg focus:tw-ring-primary-600 focus:tw-border-primary-600 tw-block tw-w-full tw-p-2.5 dark:tw-bg-white dark:tw-border-cyan-100 dark:tw-placeholder-gray-300 dark:tw-text-gray-700 dark:focus:tw-ring-primary-500 dark:focus:tw-border-primary-500" 
+                            value="{{format_datetime this.article_publish_date}}" required="">
                         </div>
                         <div class="tw-col-span-2 tw-sm:col-span-1">
                             <label for="categories" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Category</label>

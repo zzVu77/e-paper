@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import express from "express";
 import { engine } from "express-handlebars";
 import fs from "fs";
-import Redis from "ioredis";
+import redis from 'redis';
 import otp_generator from "otp-generator";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
@@ -23,18 +23,38 @@ import postsRouter from "./routes/posts.route.js";
 import articleService from "./services/article.service.js";
 import categoryService from "./services/category.service.js";
 import accountService from "./services/account.service.js";
+import Handlebars from "handlebars";
 const __dirname = dirname(fileURLToPath(import.meta.url));
+Handlebars.registerHelper('eq', function (a, b) {
+  return a === b;
+});
 const app = express();
-const redis = new Redis();
+
 import session from "express-session";
 import passport from "./auth/config/passportConfig.js";
 import cors from "cors";
 import authRoutes from "./routes/auth.route.js";
 import authMiddleware from "./auth/middlewares/authMiddleware.js";
 
-import Handlebars from "handlebars";
+
 import dotenv from "dotenv";
 dotenv.config();
+
+const decodeRedisURL = Buffer.from(
+  process.env.REDIS_URL,
+  "base64"
+).toString("utf-8");
+
+const redisClient = redis.createClient({
+  url: decodeRedisURL,
+  tls: {
+    rejectUnauthorized: false
+  }
+});
+
+redisClient.on('error', (err) => console.log('Redis Client Error', err));
+
+await redisClient.connect();
 
 app.use(cors());
 app.use(express.json());
@@ -60,6 +80,8 @@ app.use(
 Handlebars.registerHelper("json", function (context) {
   return JSON.stringify(context);
 });
+
+
 
 app.engine(
   "hbs",
@@ -218,7 +240,15 @@ app.get("/", async (req, res) => {
 app.use("/editor", authMiddleware.authEditor, editormanagementRouter);
 app.use("/account", accountmanagementRouter);
 app.use("/auth", authRoutes);
-app.post("/generate-pdf", async function (req, res) {
+
+function ensureNotGuest(req, res, next) {
+  if (req.user && req.user.role !== "guest") {
+    return next();
+  }
+  res.status(403).send("Forbidden. Guests are not allowed to download PDFs.");
+}
+
+app.post("/generate-pdf", authMiddleware.ensureAuthenticated, ensureNotGuest, async function (req, res) {
   try {
     const { content, title } = req.body;
 
@@ -235,7 +265,6 @@ app.post("/generate-pdf", async function (req, res) {
     res.download(filePath, (err) => {
       if (err) {
         console.error("Error while downloading the file:", err);
-
         // Nếu xảy ra lỗi khi gửi file, xóa file để tránh lưu trữ không cần thiết
         if (fs.existsSync(filePath)) {
           fs.unlinkSync(filePath);
@@ -270,8 +299,8 @@ app.post("/send-email", async function (req, res) {
     console.log(otpcode);
     const validTime = 10; // Thời gian hợp lệ của mã OTP (phút)
     const key = `otp:${email}`;
-    redis.set(key, otpcode, "EX", 60 * validTime); // Lưu mã OTP vào Redis với thời gian hết hạn
-    const value = await redis.get(key);
+    await redisClient.set(key, otpcode, { EX: 60 * validTime }); // Lưu mã OTP vào Redis với thời gian hết hạn
+    const value = await redisClient.get(key);
     console.log("redis: ", value);
     res.json({
       success: true,
@@ -279,19 +308,21 @@ app.post("/send-email", async function (req, res) {
       validTime: validTime,
     });
   } catch (error) {
-    alert("Failed to send email.");
+    console.error("Failed to send email.", error);
+    res.status(500).json({ success: false, message: "Failed to send email." });
   }
 });
+
 app.post("/reset-password", async function (req, res) {
   const { otp, password, email } = req.body;
   const hashPassword = await bcrypt.hash(password, 10);
-  const value = await redis.get(`otp:${email}`);
+  const value = await redisClient.get(`otp:${email}`);
   if (value === otp) {
     const result = await accountService.updatePassword(email, hashPassword);
     console.log(result);
     if (result.success) {
       console.log("Password changed successfully");
-      await redis.del(`otp:${email}`);
+      await redisClient.del(`otp:${email}`);
       res.json({
         status: "success",
         message: "Password changed successfully",

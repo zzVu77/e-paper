@@ -107,10 +107,10 @@
                     </div>
                     <div class="tw-col-span-2 tw-sm:col-span-1">
                         <label for="category" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Parent categories</label>
-                        <select id="category" class="tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 tw-text-sm tw-rounded-lg focus:tw-ring-primary-500 focus:tw-border-primary-500 tw-block tw-w-full tw-p-2.5 dark:tw-bg-white dark:tw-border-cyan-200 dark:tw-placeholder-gray-300 dark:tw-text-gray-700 dark:focus:tw-ring-primary-500 dark:focus:tw-border-primary-500">
+                        <select name="category" id="category" class="tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 tw-text-sm tw-rounded-lg focus:tw-ring-primary-500 focus:tw-border-primary-500 tw-block tw-w-full tw-p-2.5 dark:tw-bg-white dark:tw-border-cyan-200 dark:tw-placeholder-gray-300 dark:tw-text-gray-700 dark:focus:tw-ring-primary-500 dark:focus:tw-border-primary-500">
                             <option selected="">None</option>
                             {{#each this.data}}
-                                <option value="{{this.id}}">{{this.name}}</option>
+                                <option value="{{this.name}}">{{this.name}}</option>
                             {{/each}}
                         </select>
                     </div>

@@ -108,34 +108,47 @@ app.use(express.json());
 app.set("view engine", "hbs");
 app.set("views", "./views/pages");
 app.use(express.static("public"));
-// setup local data for navigation
+
+// Setup local data for navigation
 app.use(async function (req, res, next) {
   const currentCategory = req.query.categoryname || "";
-  const categories = await categoryService.getCategoryName();
-  const listCategory = [];
+  try {
+    const categories = await categoryService.getCategoryName();
+    const listCategory = [];
 
-  const parentCat = currentCategory
-    ? await categoryService.getParentCategory(currentCategory)
-    : "";
-  // const parentCat = "";
+    let parentCat = "";
+    if (currentCategory) {
+      try {
+        parentCat = await categoryService.getParentCategory(currentCategory);
+      } catch (error) {
+        console.warn(`Failed to fetch parent category for ${currentCategory}: ${error.message}`);
+        parentCat = ""; // Fallback to empty string if category not found
+      }
+    }
 
-  for (let index = 0; index < categories.length; index++) {
-    listCategory.push({
-      currentCategory: currentCategory,
-      parent_name: categories[index].parent_name,
-      child_categories: categories[index].child_categories,
-      parent_cat_active:
-        parentCat === categories[index].parent_name ||
-        currentCategory === categories[index].parent_name,
-    });
+    for (let index = 0; index < categories.length; index++) {
+      listCategory.push({
+        currentCategory: currentCategory,
+        parent_name: categories[index].parent_name,
+        child_categories: categories[index].child_categories,
+        parent_cat_active:
+          parentCat === categories[index].parent_name ||
+          currentCategory === categories[index].parent_name,
+      });
+    }
+
+    res.locals.categories = listCategory;
+    res.locals.user = req.user;
+    console.log("Session data:", req.session);
+    console.log("User data:", req.user);
+    next();
+  } catch (error) {
+    console.error("Error in navigation middleware:", error.message);
+    next(error); // Pass error to global error handler
   }
-  // console.log(listCategory);
-  res.locals.categories = listCategory;
-  res.locals.user = req.user;
-  console.log("Session data:", req.session);
-  console.log("User data:", req.user);
-  next();
 });
+
+// Routes
 app.use("/writer/article/manage", writerArticleMangeRouter);
 app.use("/writer/article/create", writerCreateArticle);
 app.use("/writer/article/edit", writerEditArticle);
@@ -160,56 +173,14 @@ app.get("/signup", function (req, res) {
   res.render("signup", { layout: "default" });
 });
 
-// app.get("/account-setting-myprofile", function (req, res) {
-//   res.render("account-setting-myprofile");
-// });
-// app.get("/account-setting-security", function (req, res) {
-//   res.render("account-setting-security", { user: req.user });
-// });
-// app.get("/account-setting-upgrade", function (req, res) {
-//   res.render("account-setting-upgrade");
-// });
-
 app.get("/forgot-password", function (req, res) {
   res.render("forgotPassword", { layout: "default" });
 });
+
 app.get("/verify-otp", function (req, res) {
   res.render("verify-otp", { layout: "default" });
 });
 
-// function groupArticlesByTags(data) {
-//   const groupedData = [];
-
-//   data.forEach((item) => {
-//     // Tìm bài viết trong danh sách groupedData
-//     const existingArticle = groupedData.find(
-//       (article) => article.id === item.id
-//     );
-
-//     if (existingArticle) {
-//       // Nếu bài viết đã tồn tại, thêm tag vào mảng tags
-//       existingArticle.tags.push(item.tag_name);
-//     } else {
-//       // Nếu chưa tồn tại, thêm bài viết mới với mảng tags
-//       groupedData.push({
-//         id: item.id,
-//         authorId: item.author,
-//         title: item.title,
-//         abstract: item.abstract,
-//         content: item.content,
-//         updated_at: item.updated_at,
-//         tags: [item.tag_name], // Mảng chứa các tag ban đầu
-//         status: item.status,
-//         is_premium: item.is_premium,
-//       });
-//     }
-//   });
-
-//   return groupedData;
-// }
-// app.get('/admin/tags', function (req, res) {
-//   res.render('admin/tags', { layout: 'admin', title: 'Tags' });
-// });
 app.use(
   "/admin/categories",
   authMiddleware.authAdmin,
@@ -221,23 +192,25 @@ app.use("/admin/articles", authMiddleware.authAdmin, articlesmanagementRouter);
 app.use("/posts", postsRouter);
 app.use("/account-setting", accountSettingRouter);
 
-// app.get("/editor", function (req, res) {
-//   res.render("editor", { layout: "admin", title: "Editor" });
-// });
-
 app.get("/", async (req, res) => {
-  res.render("home", {
-    popularPosts: await articleService.getTopTrendingArticles(),
-    mostViewed: await articleService.getMostViewedArticles(),
-    latestPosts: await articleService.getLatestArticles(),
-    topCategories: await articleService.getLatestArticleOfTopCategories(),
-    slideshow: await articleService.getImageUrlOfTop3Article(),
-  });
+  try {
+    res.render("home", {
+      popularPosts: await articleService.getTopTrendingArticles(),
+      mostViewed: await articleService.getMostViewedArticles(),
+      latestPosts: await articleService.getLatestArticles(),
+      topCategories: await articleService.getLatestArticleOfTopCategories(),
+      slideshow: await articleService.getImageUrlOfTop3Article(),
+    });
+  } catch (error) {
+    console.error("Error rendering home page:", error.message);
+    res.status(500).render("error", { message: "Internal server error" });
+  }
 });
 
 app.use("/editor", authMiddleware.authEditor, editormanagementRouter);
 app.use("/account", accountmanagementRouter);
 app.use("/auth", authRoutes);
+
 app.post("/generate-pdf", async function (req, res) {
   try {
     const { content, title } = req.body;
@@ -246,17 +219,12 @@ app.post("/generate-pdf", async function (req, res) {
       return res.status(400).send("Content is required");
     }
 
-    // Tạo PDF
     await genPDF(content, title);
-
     const filePath = `${title}.pdf`;
 
-    // Gửi file cho client
     res.download(filePath, (err) => {
       if (err) {
         console.error("Error while downloading the file:", err);
-
-        // Nếu xảy ra lỗi khi gửi file, xóa file để tránh lưu trữ không cần thiết
         if (fs.existsSync(filePath)) {
           fs.unlinkSync(filePath);
           console.log("File deleted after download error:", filePath);
@@ -264,7 +232,6 @@ app.post("/generate-pdf", async function (req, res) {
         return res.status(500).send("Error downloading PDF");
       }
 
-      // Xóa file sau khi gửi thành công
       if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
         console.log("File successfully sent and deleted:", filePath);
@@ -279,60 +246,71 @@ app.post("/generate-pdf", async function (req, res) {
 app.post("/send-email", async function (req, res) {
   try {
     const { email } = req.body;
-    console.log("Demo email", email);
+    console.log("Sending email to:", email);
     const otpcode = otp_generator.generate(6, {
       digits: true,
       upperCaseAlphabets: false,
       lowerCaseAlphabets: false,
       specialChars: false,
-      alphabets: false, // Loại bỏ ký tự chữ, chỉ giữ chữ số
+      alphabets: false,
     });
-    console.log(otpcode);
-    const validTime = 10; // Thời gian hợp lệ của mã OTP (phút)
+    const validTime = 10; // OTP valid for 10 minutes
     const key = `otp:${email}`;
-    redis.set(key, otpcode, "EX", 60 * validTime); // Lưu mã OTP vào Redis với thời gian hết hạn
+    await redis.set(key, otpcode, "EX", 60 * validTime);
     const value = await redis.get(key);
-    console.log("redis: ", value);
+    console.log("Generated OTP:", value);
     res.json({
       success: true,
       otp: otpcode,
       validTime: validTime,
     });
   } catch (error) {
-    alert("Failed to send email.");
+    console.error("Error sending email:", error);
+    res.status(500).json({ success: false, message: "Failed to send email" });
   }
 });
+
 app.post("/reset-password", async function (req, res) {
-  const { otp, password, email } = req.body;
-  const hashPassword = await bcrypt.hash(password, 10);
-  const value = await redis.get(`otp:${email}`);
-  if (value === otp) {
-    const result = await accountService.updatePassword(email, hashPassword);
-    console.log(result);
-    if (result.success) {
-      console.log("Password changed successfully");
-      await redis.del(`otp:${email}`);
-      res.json({
-        status: "success",
-        message: "Password changed successfully",
-      });
+  try {
+    const { otp, password, email } = req.body;
+    const hashPassword = await bcrypt.hash(password, 10);
+    const value = await redis.get(`otp:${email}`);
+    
+    if (value === otp) {
+      const result = await accountService.updatePassword(email, hashPassword);
+      if (result.success) {
+        console.log("Password changed successfully");
+        await redis.del(`otp:${email}`);
+        res.json({
+          status: "success",
+          message: "Password changed successfully",
+        });
+      } else {
+        console.log("Password update failed:", result.errorMessage);
+        res.json({
+          status: "failed",
+          message: result.errorMessage,
+        });
+      }
     } else {
-      console.log(result.errorMessage);
+      console.log("OTP is incorrect");
       res.json({
         status: "failed",
-        message: result.errorMessage,
+        message: "OTP is incorrect",
       });
     }
-  } else {
-    console.log("OTP is incorrect");
-    res.json({
-      status: "failed",
-      message: "OTP is incorrect",
-    });
+  } catch (error) {
+    console.error("Error resetting password:", error);
+    res.status(500).json({ status: "failed", message: "Internal server error" });
   }
 });
 
-// app.listen(3000, '0.0.0.0', () => {
-//   console.log('Server running on port 3000');
-// });
-
+// Global error-handling middleware
+app.use((err, req, res, next) => {
+  console.error("Unhandled error:", err.stack);
+  res.status(500).render("error", {
+    layout: "default",
+    message: "Internal server error",
+    error: process.env.NODE_ENV === "development" ? err.message : undefined,
+  });
+});

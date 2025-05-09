@@ -1,4 +1,5 @@
 import express from "express";
+import { query, body, validationResult } from "express-validator";
 import articleService from "../../services/article.service.js";
 import tagService from "../../services/tag.service.js";
 import articleTagsService from "../../services/articleTag.service.js";
@@ -6,19 +7,36 @@ import authMiddleware from "../../auth/middlewares/authMiddleware.js";
 import userService from "../../services/user.service.js";
 
 const router = express.Router();
+
+// Middleware to handle validation errors
+const handleValidationErrors = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      success: false,
+      errors: errors.array(),
+    });
+  }
+  next();
+};
+
+// GET /AllArticle - Fetch all articles by author
 router.get(
   "/AllArticle",
   authMiddleware.ensureAuthenticated,
   authMiddleware.ensureWriter,
+  [
+    query("page")
+      .optional()
+      .isInt({ min: 1 })
+      .withMessage("Page must be a positive integer")
+      .toInt(),
+  ],
+  handleValidationErrors,
   async function (req, res) {
     const user = await userService.getById(req.user.id);
-    // const list = await articleService.findAll();
     const limit = 5;
     let current_page = req.query.page || 1;
-    if (isNaN(current_page) || current_page < 1) {
-      // Nếu current_page không phải là một số hợp lệ hoặc nhỏ hơn 1
-      current_page = 1; // Gán giá trị mặc định là 1
-    }
     const offset = (current_page - 1) * limit;
 
     const nRows = await articleService.countAllArticlesByAuthorID(user[0].id);
@@ -37,17 +55,14 @@ router.get(
       offset,
       user[0].id
     );
-    // Lặp qua từng bài viết trong list
     for (let article of list) {
-      // Kiểm tra nếu tags có tồn tại và là một chuỗi
       if (article.tags && typeof article.tags === "string") {
-        // Tách chuỗi tags thành mảng, loại bỏ khoảng trắng thừa nếu có
         article.tags = article.tags.split(",").map((tag) => tag.trim());
       }
     }
 
-    const nextPage = Number(current_page) + Number(1);
-    const previousPage = Number(current_page) - Number(1);
+    const nextPage = Number(current_page) + 1;
+    const previousPage = Number(current_page) - 1;
     res.render("writer/article-manage-all", {
       list: list,
       empty: list.length === 0,
@@ -60,20 +75,25 @@ router.get(
     });
   }
 );
+
+// GET /DraftArticle - Fetch draft articles by author
 router.get(
   "/DraftArticle",
   authMiddleware.ensureAuthenticated,
   authMiddleware.ensureWriter,
+  [
+    query("page")
+      .optional()
+      .isInt({ min: 1 })
+      .withMessage("Page must be a positive integer")
+      .toInt(),
+  ],
+  handleValidationErrors,
   async function (req, res) {
     const user = await userService.getById(req.user.id);
-    // const list = await articleService.findAll();
     const limit = 5;
     const status = "draft";
     let current_page = req.query.page || 1;
-    if (isNaN(current_page) || current_page < 1) {
-      // Nếu current_page không phải là một số hợp lệ hoặc nhỏ hơn 1
-      current_page = 1; // Gán giá trị mặc định là 1
-    }
     const offset = (current_page - 1) * limit;
 
     const nRows = await articleService.countByStatusAndAuthorID(
@@ -96,42 +116,44 @@ router.get(
       status,
       user[0].id
     );
-    // Lặp qua từng bài viết trong list
     for (let article of list) {
-      // Kiểm tra nếu tags có tồn tại và là một chuỗi
       if (article.tags && typeof article.tags === "string") {
-        // Tách chuỗi tags thành mảng, loại bỏ khoảng trắng thừa nếu có
         article.tags = article.tags.split(",").map((tag) => tag.trim());
       }
     }
 
-    const nextPage = Number(current_page) + Number(1);
-    const previousPage = Number(current_page) - Number(1);
+    const nextPage = Number(current_page) + 1;
+    const previousPage = Number(current_page) - 1;
     res.render("writer/article-manage-draft", {
       list: list,
       empty: list.length === 0,
       pageNumbers: pageNumbers,
       isFirstPage: previousPage < 1,
       isLastPage: Number(current_page) === Number(nPages),
-      nextLink: `/writer/article/manage/ApprovedArticle?page=${nextPage}`,
-      previousLink: `/writer/article/manage/ApprovedArticle?page=${previousPage}`,
+      nextLink: `/writer/article/manage/DraftArticle?page=${nextPage}`,
+      previousLink: `/writer/article/manage/DraftArticle?page=${previousPage}`,
     });
   }
 );
+
+// GET /PublishedArticle - Fetch published articles by author
 router.get(
   "/PublishedArticle",
   authMiddleware.ensureAuthenticated,
   authMiddleware.ensureWriter,
+  [
+    query("page")
+      .optional()
+      .isInt({ min: 1 })
+      .withMessage("Page must be a positive integer")
+      .toInt(),
+  ],
+  handleValidationErrors,
   async function (req, res) {
     const user = await userService.getById(req.user.id);
-    // const list = await articleService.findAll();
     const limit = 5;
     const status = "published";
     let current_page = req.query.page || 1;
-    if (isNaN(current_page) || current_page < 1) {
-      // Nếu current_page không phải là một số hợp lệ hoặc nhỏ hơn 1
-      current_page = 1; // Gán giá trị mặc định là 1
-    }
     const offset = (current_page - 1) * limit;
 
     const nRows = await articleService.countByStatusAndAuthorID(
@@ -154,17 +176,14 @@ router.get(
       status,
       user[0].id
     );
-    // Lặp qua từng bài viết trong list
     for (let article of list) {
-      // Kiểm tra nếu tags có tồn tại và là một chuỗi
       if (article.tags && typeof article.tags === "string") {
-        // Tách chuỗi tags thành mảng, loại bỏ khoảng trắng thừa nếu có
         article.tags = article.tags.split(",").map((tag) => tag.trim());
       }
     }
 
-    const nextPage = Number(current_page) + Number(1);
-    const previousPage = Number(current_page) - Number(1);
+    const nextPage = Number(current_page) + 1;
+    const previousPage = Number(current_page) - 1;
     res.render("writer/article-manage-published", {
       list: list,
       empty: list.length === 0,
@@ -176,20 +195,25 @@ router.get(
     });
   }
 );
+
+// GET /RejectedArticle - Fetch rejected articles by author
 router.get(
   "/RejectedArticle",
   authMiddleware.ensureAuthenticated,
   authMiddleware.ensureWriter,
+  [
+    query("page")
+      .optional()
+      .isInt({ min: 1 })
+      .withMessage("Page must be a positive integer")
+      .toInt(),
+  ],
+  handleValidationErrors,
   async function (req, res) {
     const user = await userService.getById(req.user.id);
-    // const list = await articleService.findAll();
     const limit = 5;
     const status = "rejected";
     let current_page = req.query.page || 1;
-    if (isNaN(current_page) || current_page < 1) {
-      // Nếu current_page không phải là một số hợp lệ hoặc nhỏ hơn 1
-      current_page = 1; // Gán giá trị mặc định là 1
-    }
     const offset = (current_page - 1) * limit;
 
     const nRows = await articleService.countByStatusAndAuthorID(
@@ -212,17 +236,14 @@ router.get(
       status,
       user[0].id
     );
-    // Lặp qua từng bài viết trong list
     for (let article of list) {
-      // Kiểm tra nếu tags có tồn tại và là một chuỗi
       if (article.tags && typeof article.tags === "string") {
-        // Tách chuỗi tags thành mảng, loại bỏ khoảng trắng thừa nếu có
         article.tags = article.tags.split(",").map((tag) => tag.trim());
       }
     }
 
-    const nextPage = Number(current_page) + Number(1);
-    const previousPage = Number(current_page) - Number(1);
+    const nextPage = Number(current_page) + 1;
+    const previousPage = Number(current_page) - 1;
     res.render("writer/article-manage-rejected", {
       list: list,
       empty: list.length === 0,
@@ -234,19 +255,25 @@ router.get(
     });
   }
 );
+
+// GET /PendingArticle - Fetch pending articles by author
 router.get(
   "/PendingArticle",
   authMiddleware.ensureAuthenticated,
   authMiddleware.ensureWriter,
+  [
+    query("page")
+      .optional()
+      .isInt({ min: 1 })
+      .withMessage("Page must be a positive integer")
+      .toInt(),
+  ],
+  handleValidationErrors,
   async function (req, res) {
     const user = await userService.getById(req.user.id);
     const limit = 5;
     const status = "pending";
     let current_page = req.query.page || 1;
-    if (isNaN(current_page) || current_page < 1) {
-      // Nếu current_page không phải là một số hợp lệ hoặc nhỏ hơn 1
-      current_page = 1; // Gán giá trị mặc định là 1
-    }
     const offset = (current_page - 1) * limit;
 
     const nRows = await articleService.countByStatusAndAuthorID(
@@ -269,17 +296,14 @@ router.get(
       status,
       user[0].id
     );
-    // Lặp qua từng bài viết trong list
     for (let article of list) {
-      // Kiểm tra nếu tags có tồn tại và là một chuỗi
       if (article.tags && typeof article.tags === "string") {
-        // Tách chuỗi tags thành mảng, loại bỏ khoảng trắng thừa nếu có
         article.tags = article.tags.split(",").map((tag) => tag.trim());
       }
     }
 
-    const nextPage = Number(current_page) + Number(1);
-    const previousPage = Number(current_page) - Number(1);
+    const nextPage = Number(current_page) + 1;
+    const previousPage = Number(current_page) - 1;
     res.render("writer/article-manage-pending", {
       list: list,
       empty: list.length === 0,
@@ -291,71 +315,67 @@ router.get(
     });
   }
 );
-// Hàm kiểm tra tính hợp lệ của ngày
-function isValidDate(dateString) {
-  const date = new Date(dateString);
-  return !isNaN(date.getTime()); // Kiểm tra nếu ngày hợp lệ
-}
-// Hàm tách searchKeyWord khỏi phần ?page nếu có
-function extractSearchKeyWord(searchKeyWord) {
-  // Giải mã searchKeyWord để xử lý các ký tự đặc biệt (như + -> khoảng trắng)
-  searchKeyWord = decodeURIComponent(searchKeyWord);
 
-  // Kiểm tra nếu searchKeyWord chứa '?page='
-  if (searchKeyWord && searchKeyWord.includes("?page=")) {
-    // Tách searchKeyWord khỏi tham số page
-    const keyword = searchKeyWord.split("?page=")[0];
-    return keyword.trim(); // Xóa khoảng trắng thừa
-  }
-
-  return searchKeyWord; // Nếu không có '?page=', trả về giá trị ban đầu
-}
-
+// GET /AllArticle-filter - Fetch filtered articles by author
 router.get(
   "/AllArticle-filter",
   authMiddleware.ensureAuthenticated,
   authMiddleware.ensureWriter,
+  [
+    query("page")
+      .optional()
+      .isInt({ min: 1 })
+      .withMessage("Page must be a positive integer")
+      .toInt(),
+    query("tags")
+      .optional()
+      .isString()
+      .trim()
+      .withMessage("Tags must be a comma-separated string"),
+    query("startCreateDate")
+      .optional()
+      .isISO8601()
+      .withMessage("Start date must be a valid ISO 8601 date"),
+    query("endCreateDate")
+      .optional()
+      .isISO8601()
+      .withMessage("End date must be a valid ISO 8601 date"),
+    query("searchKeyWord")
+      .optional()
+      .isString()
+      .trim()
+      .isLength({ max: 255 })
+      .withMessage("Search keyword must not exceed 255 characters"),
+  ],
+  handleValidationErrors,
   async function (req, res) {
     const tags = req.query.tags;
-    // Xử lý startDate và endDate
-    const startDate = isValidDate(req.query.startCreateDate)
-      ? req.query.startCreateDate
-      : null;
-    const endDate = isValidDate(req.query.endCreateDate)
-      ? req.query.endCreateDate
-      : null;
-    const tagsArray = tags ? tags.split(",") : [];
-    const rawSearchKeyWord = req.query.searchKeyWord;
-    const searchKeyWord = extractSearchKeyWord(rawSearchKeyWord);
+    const startDate = req.query.startCreateDate || null;
+    const endDate = req.query.endCreateDate || null;
+    const tagsArray = tags ? tags.split(",").map(tag => tag.trim()) : [];
+    const rawSearchKeyWord = req.query.searchKeyWord || "";
+    const searchKeyWord = decodeURIComponent(rawSearchKeyWord).split("?page=")[0].trim();
     const status = "all";
     const user = await userService.getById(req.user.id);
+
     try {
-      //pagnition
       const limit = 3;
       let current_page = req.query.page || 1;
-      if (isNaN(current_page) || current_page < 1) {
-        // Nếu current_page không phải là một số hợp lệ hoặc nhỏ hơn 1
-        current_page = 1; // Gán giá trị mặc định là 1
-      }
       const offset = (current_page - 1) * limit;
 
-      // Lấy danh sách tagIDs tương ứng với các tags
       const tagIDs = await Promise.all(
         tagsArray.map(async (tag) => {
-          const tagData = await tagService.getTagByName(tag.trim()); // Lấy tagID từ tên tag
-          return tagData ? tagData.id : null; // Trả về null nếu tag không tồn tại
+          const tagData = await tagService.getTagByName(tag);
+          return tagData ? tagData.id : null;
         })
       );
-
-      // Loại bỏ các giá trị null (nếu có tags không tồn tại)
       const validTagIDs = tagIDs.filter((id) => id !== null);
 
-      // Lấy danh sách bài viết dựa trên các tagIDs hợp lệ và khoảng thời gian
       let list = [];
-      if ((startDate != null) & (endDate != null)) {
+      if (startDate && endDate) {
         list = await articleService.getArticlesByFilter(
           validTagIDs,
-          new Date(startDate), // Chuyển đổi sang đối tượng Date
+          new Date(startDate),
           new Date(endDate),
           searchKeyWord,
           limit,
@@ -366,7 +386,7 @@ router.get(
       } else {
         list = await articleService.getArticlesByFilter(
           validTagIDs,
-          startDate, // Chuyển đổi sang đối tượng Date
+          startDate,
           endDate,
           searchKeyWord,
           limit,
@@ -377,16 +397,14 @@ router.get(
       }
 
       for (let article of list) {
-        // Kiểm tra nếu tags có tồn tại và là một chuỗi
         if (article.tags && typeof article.tags === "string") {
-          // Tách chuỗi tags thành mảng, loại bỏ khoảng trắng thừa nếu có
           article.tags = article.tags.split(",").map((tag) => tag.trim());
         }
       }
 
       const nRows = await articleService.countArticlesByFilter(
         validTagIDs,
-        startDate, // Chuyển đổi sang đối tượng Date
+        startDate,
         endDate,
         searchKeyWord,
         user[0].id,
@@ -394,23 +412,17 @@ router.get(
       );
       const nPages = Math.ceil(nRows / limit);
       const pageNumbers = [];
-      console.log(searchKeyWord);
 
       for (let i = 0; i < nPages; i++) {
         pageNumbers.push({
           value: i + 1,
           active: i + 1 === +current_page,
-          link: `/writer/article/manage/AllArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${tags}&searchKeyWord=${encodeURIComponent(
-            searchKeyWord
-          )}&page=${i + 1}`,
+          link: `/writer/article/manage/AllArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${tags}&searchKeyWord=${encodeURIComponent(searchKeyWord)}&page=${i + 1}`,
         });
       }
 
-      // console.log(list);
-      // console.log(nRows);
-      // console.log(pageNumbers);
-      const nextPage = Number(current_page) + Number(1);
-      const previousPage = Number(current_page) - Number(1);
+      const nextPage = Number(current_page) + 1;
+      const previousPage = Number(current_page) - 1;
       res.render("writer/article-manage-all", {
         list: list,
         empty: list.length === 0,
@@ -418,8 +430,8 @@ router.get(
         isFirstPage: previousPage < 1,
         isLastPage: Number(current_page) === Number(nPages),
         pagnitionName: "AllArticle-filter",
-        nextLink: `/writer/article/manage/AllArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${validTagIDs}&searchKeyWord=${searchKeyWord}&page=${nextPage}`,
-        previousLink: `/writer/article/manage/AllArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${validTagIDs}&searchKeyWord=${searchKeyWord}&page=${previousPage}`,
+        nextLink: `/writer/article/manage/AllArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${tags}&searchKeyWord=${encodeURIComponent(searchKeyWord)}&page=${nextPage}`,
+        previousLink: `/writer/article/manage/AllArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${tags}&searchKeyWord=${encodeURIComponent(searchKeyWord)}&page=${previousPage}`,
       });
     } catch (error) {
       console.error("Error:", error);
@@ -428,52 +440,66 @@ router.get(
   }
 );
 
+// GET /PublishedArticle-filter - Fetch filtered published articles
 router.get(
   "/PublishedArticle-filter",
   authMiddleware.ensureAuthenticated,
   authMiddleware.ensureWriter,
+  [
+    query("page")
+      .optional()
+      .isInt({ min: 1 })
+      .withMessage("Page must be a positive integer")
+      .toInt(),
+    query("tags")
+      .optional()
+      .isString()
+      .trim()
+      .withMessage("Tags must be a comma-separated string"),
+    query("startCreateDate")
+      .optional()
+      .isISO8601()
+      .withMessage("Start date must be a valid ISO 8601 date"),
+    query("endCreateDate")
+      .optional()
+      .isISO8601()
+      .withMessage("End date must be a valid ISO 8601 date"),
+    query("searchKeyWord")
+      .optional()
+      .isString()
+      .trim()
+      .isLength({ max: 255 })
+      .withMessage("Search keyword must not exceed 255 characters"),
+  ],
+  handleValidationErrors,
   async function (req, res) {
     const tags = req.query.tags;
-    // Xử lý startDate và endDate
-    const startDate = isValidDate(req.query.startCreateDate)
-      ? req.query.startCreateDate
-      : null;
-    const endDate = isValidDate(req.query.endCreateDate)
-      ? req.query.endCreateDate
-      : null;
-    const tagsArray = tags ? tags.split(",") : [];
-    const rawSearchKeyWord = req.query.searchKeyWord;
-    const searchKeyWord = extractSearchKeyWord(rawSearchKeyWord);
+    const startDate = req.query.startCreateDate || null;
+    const endDate = req.query.endCreateDate || null;
+    const tagsArray = tags ? tags.split(",").map(tag => tag.trim()) : [];
+    const rawSearchKeyWord = req.query.searchKeyWord || "";
+    const searchKeyWord = decodeURIComponent(rawSearchKeyWord).split("?page=")[0].trim();
     const status = "published";
     const user = await userService.getById(req.user.id);
 
     try {
-      //pagnition
       const limit = 5;
       let current_page = req.query.page || 1;
-      if (isNaN(current_page) || current_page < 1) {
-        // Nếu current_page không phải là một số hợp lệ hoặc nhỏ hơn 1
-        current_page = 1; // Gán giá trị mặc định là 1
-      }
       const offset = (current_page - 1) * limit;
 
-      // Lấy danh sách tagIDs tương ứng với các tags
       const tagIDs = await Promise.all(
         tagsArray.map(async (tag) => {
-          const tagData = await tagService.getTagByName(tag.trim()); // Lấy tagID từ tên tag
-          return tagData ? tagData.id : null; // Trả về null nếu tag không tồn tại
+          const tagData = await tagService.getTagByName(tag);
+          return tagData ? tagData.id : null;
         })
       );
-
-      // Loại bỏ các giá trị null (nếu có tags không tồn tại)
       const validTagIDs = tagIDs.filter((id) => id !== null);
 
-      // Lấy danh sách bài viết dựa trên các tagIDs hợp lệ và khoảng thời gian
       let list = [];
-      if ((startDate != null) & (endDate != null)) {
+      if (startDate && endDate) {
         list = await articleService.getArticlesByFilter(
           validTagIDs,
-          new Date(startDate), // Chuyển đổi sang đối tượng Date
+          new Date(startDate),
           new Date(endDate),
           searchKeyWord,
           limit,
@@ -484,7 +510,7 @@ router.get(
       } else {
         list = await articleService.getArticlesByFilter(
           validTagIDs,
-          startDate, // Chuyển đổi sang đối tượng Date
+          startDate,
           endDate,
           searchKeyWord,
           limit,
@@ -495,16 +521,14 @@ router.get(
       }
 
       for (let article of list) {
-        // Kiểm tra nếu tags có tồn tại và là một chuỗi
         if (article.tags && typeof article.tags === "string") {
-          // Tách chuỗi tags thành mảng, loại bỏ khoảng trắng thừa nếu có
           article.tags = article.tags.split(",").map((tag) => tag.trim());
         }
       }
 
       const nRows = await articleService.countArticlesByFilter(
         validTagIDs,
-        startDate, // Chuyển đổi sang đối tượng Date
+        startDate,
         endDate,
         searchKeyWord,
         user[0].id,
@@ -517,16 +541,12 @@ router.get(
         pageNumbers.push({
           value: i + 1,
           active: i + 1 === +current_page,
-          link: `/writer/article/manage/PublishedArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${tags}&searchKeyWord=${searchKeyWord}&page=${
-            i + 1
-          }`,
+          link: `/writer/article/manage/PublishedArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${tags}&searchKeyWord=${encodeURIComponent(searchKeyWord)}&page=${i + 1}`,
         });
       }
 
-      // console.log(list);
-      // console.log(pageNumbers);
-      const nextPage = Number(current_page) + Number(1);
-      const previousPage = Number(current_page) - Number(1);
+      const nextPage = Number(current_page) + 1;
+      const previousPage = Number(current_page) - 1;
       res.render("writer/article-manage-published", {
         list: list,
         empty: list.length === 0,
@@ -534,8 +554,8 @@ router.get(
         isFirstPage: previousPage < 1,
         isLastPage: Number(current_page) === Number(nPages),
         pagnitionName: "AllArticle-filter",
-        nextLink: `/writer/article/manage/PublishedArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${validTagIDs}&searchKeyWord=${searchKeyWord}&page=${nextPage}`,
-        previousLink: `/writer/article/manage/PublishedArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${validTagIDs}&searchKeyWord=${searchKeyWord}&page=${previousPage}`,
+        nextLink: `/writer/article/manage/PublishedArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${tags}&searchKeyWord=${encodeURIComponent(searchKeyWord)}&page=${nextPage}`,
+        previousLink: `/writer/article/manage/PublishedArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${tags}&searchKeyWord=${encodeURIComponent(searchKeyWord)}&page=${previousPage}`,
       });
     } catch (error) {
       console.error("Error:", error);
@@ -544,51 +564,66 @@ router.get(
   }
 );
 
+// GET /DraftArticle-filter - Fetch filtered draft articles
 router.get(
   "/DraftArticle-filter",
   authMiddleware.ensureAuthenticated,
   authMiddleware.ensureWriter,
+  [
+    query("page")
+      .optional()
+      .isInt({ min: 1 })
+      .withMessage("Page must be a positive integer")
+      .toInt(),
+    query("tags")
+      .optional()
+      .isString()
+      .trim()
+      .withMessage("Tags must be a comma-separated string"),
+    query("startCreateDate")
+      .optional()
+      .isISO8601()
+      .withMessage("Start date must be a valid ISO 8601 date"),
+    query("endCreateDate")
+      .optional()
+      .isISO8601()
+      .withMessage("End date must be a valid ISO 8601 date"),
+    query("searchKeyWord")
+      .optional()
+      .isString()
+      .trim()
+      .isLength({ max: 255 })
+      .withMessage("Search keyword must not exceed 255 characters"),
+  ],
+  handleValidationErrors,
   async function (req, res) {
     const tags = req.query.tags;
-    // Xử lý startDate và endDate
-    const startDate = isValidDate(req.query.startCreateDate)
-      ? req.query.startCreateDate
-      : null;
-    const endDate = isValidDate(req.query.endCreateDate)
-      ? req.query.endCreateDate
-      : null;
-    const tagsArray = tags ? tags.split(",") : [];
-    const rawSearchKeyWord = req.query.searchKeyWord;
-    const searchKeyWord = extractSearchKeyWord(rawSearchKeyWord);
+    const startDate = req.query.startCreateDate || null;
+    const endDate = req.query.endCreateDate || null;
+    const tagsArray = tags ? tags.split(",").map(tag => tag.trim()) : [];
+    const rawSearchKeyWord = req.query.searchKeyWord || "";
+    const searchKeyWord = decodeURIComponent(rawSearchKeyWord).split("?page=")[0].trim();
     const status = "draft";
     const user = await userService.getById(req.user.id);
+
     try {
-      //pagnition
       const limit = 5;
       let current_page = req.query.page || 1;
-      if (isNaN(current_page) || current_page < 1) {
-        // Nếu current_page không phải là một số hợp lệ hoặc nhỏ hơn 1
-        current_page = 1; // Gán giá trị mặc định là 1
-      }
       const offset = (current_page - 1) * limit;
 
-      // Lấy danh sách tagIDs tương ứng với các tags
       const tagIDs = await Promise.all(
         tagsArray.map(async (tag) => {
-          const tagData = await tagService.getTagByName(tag.trim()); // Lấy tagID từ tên tag
-          return tagData ? tagData.id : null; // Trả về null nếu tag không tồn tại
+          const tagData = await tagService.getTagByName(tag);
+          return tagData ? tagData.id : null;
         })
       );
-
-      // Loại bỏ các giá trị null (nếu có tags không tồn tại)
       const validTagIDs = tagIDs.filter((id) => id !== null);
 
-      // Lấy danh sách bài viết dựa trên các tagIDs hợp lệ và khoảng thời gian
       let list = [];
-      if ((startDate != null) & (endDate != null)) {
+      if (startDate && endDate) {
         list = await articleService.getArticlesByFilter(
           validTagIDs,
-          new Date(startDate), // Chuyển đổi sang đối tượng Date
+          new Date(startDate),
           new Date(endDate),
           searchKeyWord,
           limit,
@@ -599,7 +634,7 @@ router.get(
       } else {
         list = await articleService.getArticlesByFilter(
           validTagIDs,
-          startDate, // Chuyển đổi sang đối tượng Date
+          startDate,
           endDate,
           searchKeyWord,
           limit,
@@ -610,16 +645,14 @@ router.get(
       }
 
       for (let article of list) {
-        // Kiểm tra nếu tags có tồn tại và là một chuỗi
         if (article.tags && typeof article.tags === "string") {
-          // Tách chuỗi tags thành mảng, loại bỏ khoảng trắng thừa nếu có
           article.tags = article.tags.split(",").map((tag) => tag.trim());
         }
       }
 
       const nRows = await articleService.countArticlesByFilter(
         validTagIDs,
-        startDate, // Chuyển đổi sang đối tượng Date
+        startDate,
         endDate,
         searchKeyWord,
         user[0].id,
@@ -632,13 +665,12 @@ router.get(
         pageNumbers.push({
           value: i + 1,
           active: i + 1 === +current_page,
-          link: `/writer/article/manage/DraftArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${tags}&searchKeyWord=${searchKeyWord}&page=${
-            i + 1
-          }`,
+          link: `/writer/article/manage/DraftArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${tags}&searchKeyWord=${encodeURIComponent(searchKeyWord)}&page=${i + 1}`,
         });
       }
-      const nextPage = Number(current_page) + Number(1);
-      const previousPage = Number(current_page) - Number(1);
+
+      const nextPage = Number(current_page) + 1;
+      const previousPage = Number(current_page) - 1;
       res.render("writer/article-manage-draft", {
         list: list,
         empty: list.length === 0,
@@ -646,8 +678,8 @@ router.get(
         isFirstPage: previousPage < 1,
         isLastPage: Number(current_page) === Number(nPages),
         pagnitionName: "AllArticle-filter",
-        nextLink: `/writer/article/manage/DraftArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${validTagIDs}&searchKeyWord=${searchKeyWord}&page=${nextPage}`,
-        previousLink: `/writer/article/manage/DraftArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${validTagIDs}&searchKeyWord=${searchKeyWord}&page=${previousPage}`,
+        nextLink: `/writer/article/manage/DraftArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${tags}&searchKeyWord=${encodeURIComponent(searchKeyWord)}&page=${nextPage}`,
+        previousLink: `/writer/article/manage/DraftArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${tags}&searchKeyWord=${encodeURIComponent(searchKeyWord)}&page=${previousPage}`,
       });
     } catch (error) {
       console.error("Error:", error);
@@ -656,52 +688,66 @@ router.get(
   }
 );
 
+// GET /PendingArticle-filter - Fetch filtered pending articles
 router.get(
   "/PendingArticle-filter",
   authMiddleware.ensureAuthenticated,
   authMiddleware.ensureWriter,
+  [
+    query("page")
+      .optional()
+      .isInt({ min: 1 })
+      .withMessage("Page must be a positive integer")
+      .toInt(),
+    query("tags")
+      .optional()
+      .isString()
+      .trim()
+      .withMessage("Tags must be a comma-separated string"),
+    query("startCreateDate")
+      .optional()
+      .isISO8601()
+      .withMessage("Start date must be a valid ISO 8601 date"),
+    query("endCreateDate")
+      .optional()
+      .isISO8601()
+      .withMessage("End date must be a valid ISO 8601 date"),
+    query("searchKeyWord")
+      .optional()
+      .isString()
+      .trim()
+      .isLength({ max: 255 })
+      .withMessage("Search keyword must not exceed 255 characters"),
+  ],
+  handleValidationErrors,
   async function (req, res) {
     const tags = req.query.tags;
-    // Xử lý startDate và endDate
-    const startDate = isValidDate(req.query.startCreateDate)
-      ? req.query.startCreateDate
-      : null;
-    const endDate = isValidDate(req.query.endCreateDate)
-      ? req.query.endCreateDate
-      : null;
-    const tagsArray = tags ? tags.split(",") : [];
-    const rawSearchKeyWord = req.query.searchKeyWord;
-    const searchKeyWord = extractSearchKeyWord(rawSearchKeyWord);
+    const startDate = req.query.startCreateDate || null;
+    const endDate = req.query.endCreateDate || null;
+    const tagsArray = tags ? tags.split(",").map(tag => tag.trim()) : [];
+    const rawSearchKeyWord = req.query.searchKeyWord || "";
+    const searchKeyWord = decodeURIComponent(rawSearchKeyWord).split("?page=")[0].trim();
     const status = "pending";
     const user = await userService.getById(req.user.id);
 
     try {
-      //pagnition
       const limit = 5;
       let current_page = req.query.page || 1;
-      if (isNaN(current_page) || current_page < 1) {
-        // Nếu current_page không phải là một số hợp lệ hoặc nhỏ hơn 1
-        current_page = 1; // Gán giá trị mặc định là 1
-      }
       const offset = (current_page - 1) * limit;
 
-      // Lấy danh sách tagIDs tương ứng với các tags
       const tagIDs = await Promise.all(
         tagsArray.map(async (tag) => {
-          const tagData = await tagService.getTagByName(tag.trim()); // Lấy tagID từ tên tag
-          return tagData ? tagData.id : null; // Trả về null nếu tag không tồn tại
+          const tagData = await tagService.getTagByName(tag);
+          return tagData ? tagData.id : null;
         })
       );
-
-      // Loại bỏ các giá trị null (nếu có tags không tồn tại)
       const validTagIDs = tagIDs.filter((id) => id !== null);
 
-      // Lấy danh sách bài viết dựa trên các tagIDs hợp lệ và khoảng thời gian
       let list = [];
-      if ((startDate != null) & (endDate != null)) {
+      if (startDate && endDate) {
         list = await articleService.getArticlesByFilter(
           validTagIDs,
-          new Date(startDate), // Chuyển đổi sang đối tượng Date
+          new Date(startDate),
           new Date(endDate),
           searchKeyWord,
           limit,
@@ -712,7 +758,7 @@ router.get(
       } else {
         list = await articleService.getArticlesByFilter(
           validTagIDs,
-          startDate, // Chuyển đổi sang đối tượng Date
+          startDate,
           endDate,
           searchKeyWord,
           limit,
@@ -722,18 +768,15 @@ router.get(
         );
       }
 
-      console.log(list);
       for (let article of list) {
-        // Kiểm tra nếu tags có tồn tại và là một chuỗi
         if (article.tags && typeof article.tags === "string") {
-          // Tách chuỗi tags thành mảng, loại bỏ khoảng trắng thừa nếu có
           article.tags = article.tags.split(",").map((tag) => tag.trim());
         }
       }
 
       const nRows = await articleService.countArticlesByFilter(
         validTagIDs,
-        startDate, // Chuyển đổi sang đối tượng Date
+        startDate,
         endDate,
         searchKeyWord,
         user[0].id,
@@ -746,16 +789,12 @@ router.get(
         pageNumbers.push({
           value: i + 1,
           active: i + 1 === +current_page,
-          link: `/writer/article/manage/PendingArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${tags}&searchKeyWord=${searchKeyWord}&page=${
-            i + 1
-          }`,
+          link: `/writer/article/manage/PendingArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${tags}&searchKeyWord=${encodeURIComponent(searchKeyWord)}&page=${i + 1}`,
         });
       }
 
-      // console.log(list);
-      // console.log(pageNumbers);
-      const nextPage = Number(current_page) + Number(1);
-      const previousPage = Number(current_page) - Number(1);
+      const nextPage = Number(current_page) + 1;
+      const previousPage = Number(current_page) - 1;
       res.render("writer/article-manage-pending", {
         list: list,
         empty: list.length === 0,
@@ -763,8 +802,8 @@ router.get(
         isFirstPage: previousPage < 1,
         isLastPage: Number(current_page) === Number(nPages),
         pagnitionName: "AllArticle-filter",
-        nextLink: `/writer/article/manage/PendingArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${validTagIDs}&searchKeyWord=${searchKeyWord}&page=${nextPage}`,
-        previousLink: `/writer/article/manage/PendingArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${validTagIDs}&searchKeyWord=${searchKeyWord}&page=${previousPage}`,
+        nextLink: `/writer/article/manage/PendingArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${tags}&searchKeyWord=${encodeURIComponent(searchKeyWord)}&page=${nextPage}`,
+        previousLink: `/writer/article/manage/PendingArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${tags}&searchKeyWord=${encodeURIComponent(searchKeyWord)}&page=${previousPage}`,
       });
     } catch (error) {
       console.error("Error:", error);
@@ -773,51 +812,66 @@ router.get(
   }
 );
 
+// GET /RejectedArticle-filter - Fetch filtered rejected articles
 router.get(
   "/RejectedArticle-filter",
   authMiddleware.ensureAuthenticated,
   authMiddleware.ensureWriter,
+  [
+    query("page")
+      .optional()
+      .isInt({ min: 1 })
+      .withMessage("Page must be a positive integer")
+      .toInt(),
+    query("tags")
+      .optional()
+      .isString()
+      .trim()
+      .withMessage("Tags must be a comma-separated string"),
+    query("startCreateDate")
+      .optional()
+      .isISO8601()
+      .withMessage("Start date must be a valid ISO 8601 date"),
+    query("endCreateDate")
+      .optional()
+      .isISO8601()
+      .withMessage("End date must be a valid ISO 8601 date"),
+    query("searchKeyWord")
+      .optional()
+      .isString()
+      .trim()
+      .isLength({ max: 255 })
+      .withMessage("Search keyword must not exceed 255 characters"),
+  ],
+  handleValidationErrors,
   async function (req, res) {
     const tags = req.query.tags;
-    // Xử lý startDate và endDate
-    const startDate = isValidDate(req.query.startCreateDate)
-      ? req.query.startCreateDate
-      : null;
-    const endDate = isValidDate(req.query.endCreateDate)
-      ? req.query.endCreateDate
-      : null;
-    const tagsArray = tags ? tags.split(",") : [];
-    const rawSearchKeyWord = req.query.searchKeyWord;
-    const searchKeyWord = extractSearchKeyWord(rawSearchKeyWord);
+    const startDate = req.query.startCreateDate || null;
+    const endDate = req.query.endCreateDate || null;
+    const tagsArray = tags ? tags.split(",").map(tag => tag.trim()) : [];
+    const rawSearchKeyWord = req.query.searchKeyWord || "";
+    const searchKeyWord = decodeURIComponent(rawSearchKeyWord).split("?page=")[0].trim();
     const status = "rejected";
     const user = await userService.getById(req.user.id);
+
     try {
-      //pagnition
       const limit = 5;
       let current_page = req.query.page || 1;
-      if (isNaN(current_page) || current_page < 1) {
-        // Nếu current_page không phải là một số hợp lệ hoặc nhỏ hơn 1
-        current_page = 1; // Gán giá trị mặc định là 1
-      }
       const offset = (current_page - 1) * limit;
 
-      // Lấy danh sách tagIDs tương ứng với các tags
       const tagIDs = await Promise.all(
         tagsArray.map(async (tag) => {
-          const tagData = await tagService.getTagByName(tag.trim()); // Lấy tagID từ tên tag
-          return tagData ? tagData.id : null; // Trả về null nếu tag không tồn tại
+          const tagData = await tagService.getTagByName(tag);
+          return tagData ? tagData.id : null;
         })
       );
-
-      // Loại bỏ các giá trị null (nếu có tags không tồn tại)
       const validTagIDs = tagIDs.filter((id) => id !== null);
 
-      // Lấy danh sách bài viết dựa trên các tagIDs hợp lệ và khoảng thời gian
       let list = [];
-      if ((startDate != null) & (endDate != null)) {
+      if (startDate && endDate) {
         list = await articleService.getArticlesByFilter(
           validTagIDs,
-          new Date(startDate), // Chuyển đổi sang đối tượng Date
+          new Date(startDate),
           new Date(endDate),
           searchKeyWord,
           limit,
@@ -828,7 +882,7 @@ router.get(
       } else {
         list = await articleService.getArticlesByFilter(
           validTagIDs,
-          startDate, // Chuyển đổi sang đối tượng Date
+          startDate,
           endDate,
           searchKeyWord,
           limit,
@@ -839,16 +893,14 @@ router.get(
       }
 
       for (let article of list) {
-        // Kiểm tra nếu tags có tồn tại và là một chuỗi
         if (article.tags && typeof article.tags === "string") {
-          // Tách chuỗi tags thành mảng, loại bỏ khoảng trắng thừa nếu có
           article.tags = article.tags.split(",").map((tag) => tag.trim());
         }
       }
 
       const nRows = await articleService.countArticlesByFilter(
         validTagIDs,
-        startDate, // Chuyển đổi sang đối tượng Date
+        startDate,
         endDate,
         searchKeyWord,
         user[0].id,
@@ -861,16 +913,12 @@ router.get(
         pageNumbers.push({
           value: i + 1,
           active: i + 1 === +current_page,
-          link: `/writer/article/manage/RejectedArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${tags}&searchKeyWord=${searchKeyWord}&page=${
-            i + 1
-          }`,
+          link: `/writer/article/manage/RejectedArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${tags}&searchKeyWord=${encodeURIComponent(searchKeyWord)}&page=${i + 1}`,
         });
       }
 
-      // console.log(list);
-      // console.log(pageNumbers);
-      const nextPage = Number(current_page) + Number(1);
-      const previousPage = Number(current_page) - Number(1);
+      const nextPage = Number(current_page) + 1;
+      const previousPage = Number(current_page) - 1;
       res.render("writer/article-manage-rejected", {
         list: list,
         empty: list.length === 0,
@@ -878,8 +926,8 @@ router.get(
         isFirstPage: previousPage < 1,
         isLastPage: Number(current_page) === Number(nPages),
         pagnitionName: "AllArticle-filter",
-        nextLink: `/writer/article/manage/RejectedArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${validTagIDs}&searchKeyWord=${searchKeyWord}&page=${nextPage}`,
-        previousLink: `/writer/article/manage/RejectedArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${validTagIDs}&searchKeyWord=${searchKeyWord}&page=${previousPage}`,
+        nextLink: `/writer/article/manage/RejectedArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${tags}&searchKeyWord=${encodeURIComponent(searchKeyWord)}&page=${nextPage}`,
+        previousLink: `/writer/article/manage/RejectedArticle-filter?startCreateDate=${startDate}&endCreateDate=${endDate}&tags=${tags}&searchKeyWord=${encodeURIComponent(searchKeyWord)}&page=${previousPage}`,
       });
     } catch (error) {
       console.error("Error:", error);
@@ -888,15 +936,30 @@ router.get(
   }
 );
 
-router.post("/del",   authMiddleware.ensureWriter,  async function (req, res) {
-  const id = req.body.id;
-  // console.log("hell");
-  // console.log(id);
-  if (id != null) {
-    await articleService.deleteById(id);
-    await articleTagsService.deleteByArticleId(id);
+// POST /del - Delete an article
+router.post(
+  "/del",
+  authMiddleware.ensureAuthenticated,
+  authMiddleware.ensureWriter,
+  [
+    body("id")
+      .exists()
+      .isUUID()
+      .withMessage("Article ID must be a valid UUID"),
+  ],
+  handleValidationErrors,
+  async function (req, res) {
+    const id = req.body.id;
+    try {
+      await articleService.deleteById(id);
+      await articleTagsService.deleteByArticleId(id);
+      const refererUrl = req.get("Referer") || "/";
+      res.redirect(refererUrl);
+    } catch (error) {
+      console.error("Error:", error);
+      res.status(500).json({ message: "Failed to delete article" });
+    }
   }
-  const refererUrl = req.get("Referer") || "/"; // Mặc định về trang chủ nếu không có Referer
-  res.redirect(refererUrl);
-});
+);
+
 export default router;

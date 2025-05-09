@@ -34,6 +34,26 @@ import authMiddleware from "./auth/middlewares/authMiddleware.js";
 
 import Handlebars from "handlebars";
 import dotenv from "dotenv";
+import https from "https";
+import path from 'path';
+
+// Đường dẫn đến key và cert
+const sslKey = fs.readFileSync(path.join(__dirname, 'cert', 'key.pem'));
+const sslCert = fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem'));
+
+const httpsOptions = {
+  key: sslKey,
+  cert: sslCert,
+};
+
+// Tạo server HTTPS
+const httpsServer = https.createServer(httpsOptions, app);
+
+// Chạy server trên cổng 443 hoặc cổng bạn muốn
+const PORT = process.env.PORT || 3000;
+httpsServer.listen(PORT, () => {
+  console.log(`HTTPS Server running on https://localhost:${PORT}`);
+});
 dotenv.config();
 
 app.use(cors());
@@ -312,6 +332,7 @@ app.post("/reset-password", async function (req, res) {
   }
 });
 
-app.listen(3000, function () {
-  console.log("ecApp is running at http://localhost:3000");
-});
+// app.listen(3000, '0.0.0.0', () => {
+//   console.log('Server running on port 3000');
+// });
+

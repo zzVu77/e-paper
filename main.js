@@ -23,6 +23,9 @@ import postsRouter from "./routes/posts.route.js";
 import articleService from "./services/article.service.js";
 import categoryService from "./services/category.service.js";
 import accountService from "./services/account.service.js";
+import helmet from "helmet"; // Fix: 5.1, 5.2, 5.3, 5.4, 5.6 - Added for CSP and anti-clickjacking
+import csurf from "csurf"; // Fix: 5.7 - Added for CSRF protection
+import crypto from "crypto"; // Fix: 5.2, 5.3 - Added for nonce generation
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 const redis = new Redis();
@@ -56,7 +59,40 @@ httpsServer.listen(PORT, () => {
 });
 dotenv.config();
 
-app.use(cors());
+// Fix: 5.5 - Cross-Domain Misconfiguration (Restrict CORS to specific origin)
+app.use(cors({
+  origin: 'https://localhost:3000',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
+
+// Fix: 5.1 - CSP Wildcard Directive, 5.4 - CSP Header Not Set, 5.6 - Missing Anti-Clickjacking Header
+// Note: 5.2 and 5.3 (unsafe-inline) require template changes; nonce added here for future use
+const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
+app.use((req, res, next) => {
+  res.locals.nonce = nonce;
+  next();
+});
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    defaultSrc: ["'self'"],
+    scriptSrc: ["'self'", "https://kit.fontawesome.com"], // Fix: 5.2 - Removed 'unsafe-inline'; requires template nonce
+    styleSrc: ["'self'", "https://fonts.googleapis.com"], // Fix: 5.3 - Removed 'unsafe-inline'; requires template nonce
+    frameAncestors: ["'self'"], // Fix: 5.1, 5.6 - Restrict framing
+    formAction: ["'self'"], // Fix: 5.1 - Restrict form submissions
+    imgSrc: ["'self'", "data:"],
+    fontSrc: ["'self'", "https://fonts.gstatic.com"],
+    connectSrc: ["'self'"],
+    baseUri: ["'self'"],
+    objectSrc: ["'none'"],
+    scriptSrcAttr: ["'none'"],
+    upgradeInsecureRequests: []
+  }
+}));
+app.use(helmet.frameguard({ action: 'deny' })); // Fix: 5.6 - Additional anti-clickjacking protection
+app.use(helmet.xssFilter()); // Enable XSS filter
+app.use(helmet.noSniff()); // Prevent MIME-type sniffing
+
 app.use(express.json());
 app.use(
   session({
@@ -64,11 +100,21 @@ app.use(
     resave: true,
     saveUninitialized: true,
     cookie: {
-      secure: false,
+      secure: true, // Fix: Ensure HTTPS-only cookies
+      sameSite: 'strict', // Fix: Prevent CSRF
+      httpOnly: true, // Fix: Prevent client-side access
       maxAge: 1000 * 60 * 60 * 24,
     },
   })
 );
+
+// Fix: 5.7 - Absence of Anti-CSRF Tokens
+app.use(csurf());
+app.use((req, res, next) => {
+  res.locals.csrfToken = req.csrfToken();
+  next();
+});
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(
@@ -166,7 +212,7 @@ app.get("/admin", function (req, res) {
 });
 
 app.get("/login", function (req, res) {
-  res.render("login", { layout: "default" });
+  res.render("login", { layout: "default", csrfToken: res.locals.csrfToken }); // Fix: 5.7 - Pass CSRF token to login template
 });
 
 app.get("/signup", function (req, res) {

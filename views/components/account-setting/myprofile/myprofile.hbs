@@ -63,8 +63,9 @@
         {{/if}}
     {{/if}}
 
-    <form class="accountsetting-myprofile-form-input" method="post">
+    <form class="accountsetting-myprofile-form-input" method="post" action="/account-setting/myprofile">
         <input type="hidden" name="_csrf" value="{{csrfToken}}">
+        <input type="hidden" name="role" value="{{user.role}}">
         <div class="form-group">
             <label for="email">Email Address</label>
             <input type="email" class="form-control" id="accountsetting-myprofile-email" placeholder="name@example.com" value="{{user.email}}" name="email">

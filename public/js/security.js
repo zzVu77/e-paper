@@ -55,7 +55,25 @@ document.addEventListener('DOMContentLoaded', function() {
             },
           }).then((result) => {
             if (result.dismiss === Swal.DismissReason.timer) {
-              document.querySelector('.accountsetting-security-form-input').submit();
+              const form = document.querySelector('.accountsetting-security-form-input');
+              // Kiểm tra xem form đã có CSRF token chưa
+              const csrfInput = form.querySelector('input[name="_csrf"]');
+              if (csrfInput) {
+                // Cập nhật giá trị CSRF token từ meta tag nếu có
+                const metaToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                if (metaToken) {
+                  csrfInput.value = metaToken;
+                }
+                // Tiến hành submit form
+                form.submit();
+              } else {
+                // Hiển thị thông báo lỗi nếu không tìm thấy CSRF token
+                Swal.fire({
+                  title: "Lỗi!",
+                  text: "Không thể xác thực yêu cầu. Vui lòng tải lại trang và thử lại.",
+                  icon: "error",
+                });
+              }
             }
           });
         }
@@ -118,7 +136,26 @@ document.addEventListener('DOMContentLoaded', function() {
             },
           }).then((result) => {
             if (result.dismiss === Swal.DismissReason.timer) {
-              document.querySelector('.accountsetting-security-createPasswordForm-input').submit();
+// Đảm bảo CSRF token được gửi đúng cách
+              const form = document.querySelector('.accountsetting-security-createPasswordForm-input');
+              // Kiểm tra xem form đã có CSRF token chưa
+              const csrfInput = form.querySelector('input[name="_csrf"]');
+              if (csrfInput) {
+                // Cập nhật giá trị CSRF token từ meta tag nếu có
+                const metaToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                if (metaToken) {
+                  csrfInput.value = metaToken;
+                }
+                // Tiến hành submit form
+                form.submit();
+              } else {
+                // Hiển thị thông báo lỗi nếu không tìm thấy CSRF token
+                Swal.fire({
+                  title: "Lỗi!",
+                  text: "Không thể xác thực yêu cầu. Vui lòng tải lại trang và thử lại.",
+                  icon: "error",
+                });
+              }
             }
           });
         }

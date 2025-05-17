@@ -57,7 +57,9 @@ router.post("/myprofile", [
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const userUpdate = req.body;
+  // Tạo object mới chỉ chứa các trường cần thiết
+  const { _csrf, ...userUpdate } = req.body; // Loại bỏ _csrf token
+  
   await userService.patch(req.body.id, userUpdate);
   res.redirect("/account-setting/myprofile");
 });

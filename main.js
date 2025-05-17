@@ -132,21 +132,22 @@ app.use(
   })
 );
 
+
+
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.json());
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
 // Fix: 5.7 - Absence of Anti-CSRF Tokens
 app.use(csurf());
 app.use((req, res, next) => {
   res.locals.csrfToken = req.csrfToken();
   next();
 });
-
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(
-  express.urlencoded({
-    extended: true,
-  })
-);
-
 Handlebars.registerHelper("json", function (context) {
   return JSON.stringify(context);
 });
@@ -174,7 +175,6 @@ app.engine(
     },
   })
 );
-app.use(express.json());
 app.set("view engine", "hbs");
 app.set("views", "./views/pages");
 app.use(express.static("public"));

@@ -1,0 +1,98 @@
+/* Sidebar styles */
+.navbar-toggler.second-button {
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+.animated-icon2 {
+  width: 30px;
+  height: 20px;
+  position: relative;
+  margin: 0px;
+  transform: rotate(0deg);
+  transition: .5s ease-in-out;
+  cursor: pointer;
+}
+
+.animated-icon2 span {
+  display: block;
+  position: absolute;
+  height: 3px;
+  width: 100%;
+  border-radius: 9px;
+  opacity: 1;
+  left: 0;
+  transform: rotate(0deg);
+  transition: .25s ease-in-out;
+  background: #000;
+}
+
+.animated-icon2 span:nth-child(1) {
+  top: 0px;
+}
+
+.animated-icon2 span:nth-child(2) {
+  top: 10px;
+}
+
+.animated-icon2 span:nth-child(3) {
+  top: 20px;
+}
+
+.animated-icon2.open span:nth-child(1) {
+  top: 11px;
+  transform: rotate(135deg);
+}
+
+.animated-icon2.open span:nth-child(2) {
+  opacity: 0;
+  left: -60px;
+}
+
+.animated-icon2.open span:nth-child(3) {
+  top: 11px;
+  transform: rotate(-135deg);
+}
+
+/* Sidebar menu styles */
+#navbarToggleExternalContent10 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 250px;
+  background: white;
+  z-index: 1000;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+#navbarToggleExternalContent10.show {
+  transform: translateX(0);
+}
+
+.btn-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #333;
+  padding: 10px 15px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: none;
+  transition: background-color 0.2s;
+}
+
+.btn-link:hover {
+  background-color: #f8f9fa;
+  color: #0d6efd;
+}
+
+.btn-link svg {
+  width: 20px;
+  height: 20px;
+} 

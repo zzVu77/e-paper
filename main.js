@@ -81,32 +81,33 @@ app.use((req, res, next) => {
       scriptSrc: [
         "'self'",
         "https://kit.fontawesome.com",
-        "https://cdn.jsdelivr.net", // Cho phép bootstrap.bundle.min.js
-        "https://www.google.com", // ✅ Cho phép reCAPTCHA script
-        "https://www.gstatic.com", // ✅ Cho phép reCAPTCHA script
-        // Thêm nonce động cho inline script
-        // (req, res) => `'nonce-${res.locals.nonce}'`
+        "https://cdn.jsdelivr.net",
+        "https://www.google.com",
+        "https://www.gstatic.com",
+        "https://cdnjs.cloudflare.com",
+        "https://unpkg.com",
+        (req, res) => `'nonce-${res.locals.nonce}'` // Cho phép inline scripts với nonce
       ],
       styleSrc: [
         "'self'",
         "https://fonts.googleapis.com",
-        "https://cdn.jsdelivr.net" // Cho phép bootstrap.min.css
+        "https://cdn.jsdelivr.net",
+        "https://cdnjs.cloudflare.com",
+        "https://unpkg.com"
       ],
       frameSrc: [
-          "https://www.google.com", // reCAPTCHA iframe
-          "https://www.gstatic.com", // reCAPTCHA resources
+        "https://www.google.com",
+        "https://www.gstatic.com",
       ],
       frameAncestors: ["'self'"],
       formAction: ["'self'"],
       imgSrc: ["*", "data:"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdnjs.cloudflare.com"],
       connectSrc: ["'self'"],
       baseUri: ["'self'"],
       objectSrc: ["'none'"],
-      styleSrcAttr: ["'none'"],
-      scriptSrcAttr: ["'none'"],
-// scriptSrcAttr: ["'unsafe-inline'"],
-
+      styleSrcAttr: ["'none'"], // Không cho phép inline styles
+      scriptSrcAttr: ["'none'"], // Không cho phép inline scripts
       upgradeInsecureRequests: []
     }
   })(req, res, next);

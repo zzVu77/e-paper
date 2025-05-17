@@ -9,7 +9,6 @@
     border-radius: 5px;
     transition: background-color 0.3s ease;
   }
-  
   .explore-now-btn:hover {
     background-color: #449e43; /* Darker shade for hover effect */
   }
@@ -152,4 +151,10 @@
       max-width: 90%;
     }
   }
-  
+
+  /* Override Bootstrap's w-100 for carousel images */
+.carousel-img {
+    width: 800px !important;
+    height: 400px !important;
+    object-fit: cover !important;
+  }

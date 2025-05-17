@@ -12,7 +12,8 @@
         {{#each slideshow}}
         <div class="carousel-item {{#if @first}}active{{/if}}">
             <div class="carousel-overlay">
-            <img src="{{this.article_image_url}}" class="d-block w-100" alt="..." style="width: 800px; height: 400px; object-fit: cover;">
+            {{!-- <img src="{{this.article_image_url}}" class="d-block w-100" alt="..." style="width: 800px; height: 400px; object-fit: cover;"> --}}
+            <img src="{{this.article_image_url}}" class="d-block w-100 carousel-img" alt="...">
             <div class="dark-overlay"></div>
             <div class="carousel-caption">
                 <h5>{{this.article_title}}</h5>

@@ -1,4 +1,5 @@
 <link href="/header.css" rel="stylesheet" />
+<meta name="csrf-token" content="{{csrfToken}}" />
 <div class="client-header tw-z-10">
 
   <div class="client-header tw-z-10">
@@ -484,7 +485,7 @@
                 <ul class="submenu tw-absolute tw-py-2 tw-border-none  ">
                   <a class="tw-no-underline">
                     <li
-                      class="tw-text-black tw-right-[50px] tw-border-none tw-w-[150px] tw-text-left tw-h-[35px]"
+                      class="tw-text-black tw-right-[50px] tw-border-none tw-w-[150px] tw-text-left tw-h-[35px] admin-dashboard"
                       onclick="window.location.href='/admin/categories';"
                     >
                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-kanban" viewBox="0 0 16 16" style="margin-bottom: 3px;">
@@ -525,10 +526,7 @@
               {{/if}}      
               {{else}}
                  
-            <button
-              class="client-header-loginButton"
-              onclick="window.location.href='/account/login';"
-            >
+            <button class="client-header-loginButton">
               Login
             </button>
           {{/if}}
@@ -546,4 +544,5 @@
   } .child-active-true{ text-decoration: underline; } .child-active-false{
   color: black; }
 </style>
-<script src="/js/header-logout.js"></script>
+<script src="/js/header-login.js" nonce="{{nonce}}"></script>
+<script src="/js/header-logout.js" nonce="{{nonce}}"></script>

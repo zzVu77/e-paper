@@ -14,11 +14,11 @@ function isValidUUID(id) {
 
 // GET /admin/categories
 router.get('/', async function (req, res) {
-  const currentPage = parseInt(req.query.page);
+  let currentPage = parseInt(req.query.page);
   const itemsPerPage = 5;
 
   if (isNaN(currentPage) || currentPage < 1) {
-    return res.status(400).json({ message: 'Invalid page number' });
+    currentPage=1;
   }
 
   const offset = (currentPage - 1) * itemsPerPage;

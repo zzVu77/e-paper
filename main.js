@@ -68,27 +68,50 @@ app.use(cors({
 
 // Fix: 5.1 - CSP Wildcard Directive, 5.4 - CSP Header Not Set, 5.6 - Missing Anti-Clickjacking Header
 // Note: 5.2 and 5.3 (unsafe-inline) require template changes; nonce added here for future use
-const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
 app.use((req, res, next) => {
-  res.locals.nonce = nonce;
+  // Tạo nonce mới cho mỗi request để tăng bảo mật
+  res.locals.nonce = Buffer.from(crypto.randomUUID()).toString('base64');
   next();
 });
-app.use(helmet.contentSecurityPolicy({
-  directives: {
-    defaultSrc: ["'self'"],
-    scriptSrc: ["'self'", "https://kit.fontawesome.com"], // Fix: 5.2 - Removed 'unsafe-inline'; requires template nonce
-    styleSrc: ["'self'", "https://fonts.googleapis.com"], // Fix: 5.3 - Removed 'unsafe-inline'; requires template nonce
-    frameAncestors: ["'self'"], // Fix: 5.1, 5.6 - Restrict framing
-    formAction: ["'self'"], // Fix: 5.1 - Restrict form submissions
-    imgSrc: ["'self'", "data:"],
-    fontSrc: ["'self'", "https://fonts.gstatic.com"],
-    connectSrc: ["'self'"],
-    baseUri: ["'self'"],
-    objectSrc: ["'none'"],
-    scriptSrcAttr: ["'none'"],
-    upgradeInsecureRequests: []
-  }
-}));
+
+app.use((req, res, next) => {
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: [
+        "'self'",
+        "https://kit.fontawesome.com",
+        "https://cdn.jsdelivr.net", // Cho phép bootstrap.bundle.min.js
+        "https://www.google.com", // ✅ Cho phép reCAPTCHA script
+        "https://www.gstatic.com", // ✅ Cho phép reCAPTCHA script
+        // Thêm nonce động cho inline script
+        // (req, res) => `'nonce-${res.locals.nonce}'`
+      ],
+      styleSrc: [
+        "'self'",
+        "https://fonts.googleapis.com",
+        "https://cdn.jsdelivr.net" // Cho phép bootstrap.min.css
+      ],
+      frameSrc: [
+          "https://www.google.com", // reCAPTCHA iframe
+          "https://www.gstatic.com", // reCAPTCHA resources
+      ],
+      frameAncestors: ["'self'"],
+      formAction: ["'self'"],
+      imgSrc: ["*", "data:"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      connectSrc: ["'self'"],
+      baseUri: ["'self'"],
+      objectSrc: ["'none'"],
+      styleSrcAttr: ["'none'"],
+      scriptSrcAttr: ["'none'"],
+// scriptSrcAttr: ["'unsafe-inline'"],
+
+      upgradeInsecureRequests: []
+    }
+  })(req, res, next);
+});
+
 app.use(helmet.frameguard({ action: 'deny' })); // Fix: 5.6 - Additional anti-clickjacking protection
 app.use(helmet.xssFilter()); // Enable XSS filter
 app.use(helmet.noSniff()); // Prevent MIME-type sniffing
@@ -212,19 +235,19 @@ app.get("/admin", function (req, res) {
 });
 
 app.get("/login", function (req, res) {
-  res.render("login", { layout: "default", csrfToken: res.locals.csrfToken }); // Fix: 5.7 - Pass CSRF token to login template
+  res.render("login", { layout: "default", csrfToken: res.locals.csrfToken, nonce: res.locals.nonce });
 });
 
 app.get("/signup", function (req, res) {
-  res.render("signup", { layout: "default" });
+  res.render("signup", { layout: "default", csrfToken: res.locals.csrfToken, nonce: res.locals.nonce });
 });
 
 app.get("/forgot-password", function (req, res) {
-  res.render("forgotPassword", { layout: "default" });
+  res.render("forgotPassword", { layout: "default", csrfToken: res.locals.csrfToken, nonce: res.locals.nonce });
 });
 
 app.get("/verify-otp", function (req, res) {
-  res.render("verify-otp", { layout: "default" });
+  res.render("verify-otp", { layout: "default", csrfToken: res.locals.csrfToken, nonce: res.locals.nonce });
 });
 
 app.use(

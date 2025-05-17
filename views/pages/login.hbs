@@ -113,6 +113,7 @@
         action="/auth/local/login"
         method="POST"
       >
+        <input type="hidden" name="_csrf" value="{{csrfToken}}" />
         <div class="flex-column">
           <label>Email </label></div>
         <div class="inputForm">
@@ -165,5 +166,5 @@
       </form>
     </div>
   </div>
-  <script src="/js/login.js"></script>
+<script src="/js/header-login.js"></script>
 </div>

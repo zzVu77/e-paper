@@ -1,8 +1,9 @@
 <link rel="stylesheet" href="/css/article-writer-textEditor.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.js" nonce="{{nonce}}"></script>
 
 <form id="article-writer-textEditor-createForm" action="" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="_csrf" value="{{csrfToken}}">
   <div class="article-writer-textEditor-container">
       <div class="article-writer-textEditor-title">
         <textarea name="title" class="form-control" id="article-writer-textEditor-title" rows="1" placeholder="Title"></textarea>
@@ -69,15 +70,13 @@
   </div>
 </form>
 
-<script>
-  const categories = {{{categoryListName}}};
-</script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/public/js/article-writer-textEditor.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" nonce="{{nonce}}"></script>
+<script src="/js/article-writer-textEditor.js" nonce="{{nonce}}"></script>
 
-<script>
-var input = document.getElementById("article-writer-textEditor-categoryName");
-new Awesomplete(input, {list: "#categoryList"});
+<script nonce="{{nonce}}">
+  const categories = {{{categoryListName}}};
+  var input = document.getElementById("article-writer-textEditor-categoryName");
+  new Awesomplete(input, {list: "#categoryList"});
 </script>
 
 <style>

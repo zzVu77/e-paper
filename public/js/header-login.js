@@ -42,12 +42,40 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
+    // Navigation handlers for admin menu
+    const home = document.querySelector('.home');
+    if (home) {
+        home.addEventListener('click', function() {
+            window.location.href = '/';
+        });
+    }
     // Navigation handlers for admin menu
     const adminDashboard = document.querySelector('.admin-dashboard');
     if (adminDashboard) {
         adminDashboard.addEventListener('click', function() {
             window.location.href = '/admin/categories';
+        });
+    }
+
+    // Navigation handlers for writer menu
+    const writerProfile = document.querySelector('.profile');
+    if (writerProfile) {
+        writerProfile.addEventListener('click', function() {
+            window.location.href = '/account-setting/myprofile';
+        });
+    }
+
+    const writerArticles = document.querySelector('.writer-articles');
+    if (writerArticles) {
+        writerArticles.addEventListener('click', function() {
+            window.location.href = '/writer/article/manage/AllArticle';
+        });
+    }
+
+    const writerCreate = document.querySelector('.writer-create');
+    if (writerCreate) {
+        writerCreate.addEventListener('click', function() {
+            window.location.href = '/writer/article/create';
         });
     }
 

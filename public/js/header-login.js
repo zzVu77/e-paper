@@ -79,34 +79,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // // Navigation handlers for editor menu
-    // const editorDashboard = document.querySelector('.editor-dashboard');
-    // if (editorDashboard) {
-    //     editorDashboard.addEventListener('click', function() {
-    //         window.location.href = '/editor';
-    //     });
-    // }
-
-    // // Navigation handlers for writer menu
-    // const writerArticles = document.querySelector('.writer-articles');
-    // if (writerArticles) {
-    //     writerArticles.addEventListener('click', function() {
-    //         window.location.href = '/writer/article/manage/AllArticle';
-    //     });
-    // }
-
-    // const writerCreate = document.querySelector('.writer-create');
-    // if (writerCreate) {
-    //     writerCreate.addEventListener('click', function() {
-    //         window.location.href = '/writer/article/create';
-    //     });
-    // }
-
-    // // Profile navigation for all roles
-    // const profileLinks = document.querySelectorAll('.profile-link');
-    // profileLinks.forEach(link => {
-    //     link.addEventListener('click', function() {
-    //         window.location.href = '/account-setting/myprofile';
-    //     });
-    // });
+    // Navigation handlers for editor menu
+    const editorDashboard = document.querySelector('.editor-dashboard');
+    if (editorDashboard) {
+        editorDashboard.addEventListener('click', function() {
+            window.location.href = '/editor';
+        });
+    }
 }); 

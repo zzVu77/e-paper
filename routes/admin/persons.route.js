@@ -121,8 +121,8 @@ router.post(
   [
     body('id')
       .exists()
-      .isUUID()
-      .withMessage('Subscriber ID must be a valid UUID'),
+      .isString()
+      .withMessage('Subscriber ID must be a valid string'),
   ],
   handleValidationErrors,
   async function (req, res) {
@@ -148,15 +148,15 @@ router.post(
   [
     body('id')
       .exists()
-      .isUUID()
-      .withMessage('Editor ID must be a valid UUID'),
+      .isString()
+      .withMessage('Editor ID must be a valid string'),
     body('categoryID')
       .optional()
       .isArray()
       .withMessage('Category IDs must be an array')
       .custom((value) => {
         if (value && value.some(id => !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id))) {
-          throw new Error('All category IDs must be valid UUIDs');
+          throw new Error('All category IDs must be valid strings');
         }
         return true;
       }),
@@ -215,8 +215,8 @@ router.get(
   [
     param('id')
       .exists()
-      .isUUID()
-      .withMessage('Editor ID must be a valid UUID'),
+      .isString()
+      .withMessage('Editor ID must be a valid string'),
   ],
   handleValidationErrors,
   async (req, res) => {
@@ -293,8 +293,8 @@ router.post(
   [
     body('id')
       .exists()
-      .isUUID()
-      .withMessage('User ID must be a valid UUID'),
+      .isString()
+      .withMessage('User ID must be a valid string'),
   ],
   handleValidationErrors,
   async (req, res) => {
@@ -315,8 +315,8 @@ router.post(
   [
     body('id')
       .exists()
-      .isUUID()
-      .withMessage('Writer ID must be a valid UUID'),
+      .isString()
+      .withMessage('Writer ID must be a valid string'),
     body('name')
       .exists()
       .isString()
@@ -359,8 +359,8 @@ router.post(
   [
     body('id')
       .exists()
-      .isUUID()
-      .withMessage('User ID must be a valid UUID'),
+      .isString()
+      .withMessage('User ID must be a valid string'),
     body('name')
       .exists()
       .isString()
@@ -401,8 +401,8 @@ router.post(
   [
     body('id')
       .exists()
-      .isUUID()
-      .withMessage('User ID must be a valid UUID'),
+      .isString()
+      .withMessage('User ID must be a valid string'),
   ],
   handleValidationErrors,
   async (req, res) => {

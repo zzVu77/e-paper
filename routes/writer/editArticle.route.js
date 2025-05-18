@@ -40,8 +40,8 @@ router.get(
   [
     query("id")
       .optional()
-      .isUUID()
-      .withMessage("Article ID must be a valid UUID"),
+      .isString()
+      .withMessage("Article ID must be a valid string"),
   ],
   handleValidationErrors,
   async function (req, res) {
@@ -132,8 +132,8 @@ router.post(
   [
     body("id")
       .exists()
-      .isUUID()
-      .withMessage("Article ID must be a valid UUID"),
+      .isString()
+      .withMessage("Article ID must be a valid string"),
     body("category")
       .exists()
       .isString()
@@ -172,8 +172,8 @@ router.post(
       .withMessage("Premium must be 'on' or undefined"),
     body("author")
       .exists()
-      .isUUID()
-      .withMessage("Author ID must be a valid UUID"),
+      .isString()
+      .withMessage("Author ID must be a valid string"),
     body("current_image_url")
       .optional()
       .isString()

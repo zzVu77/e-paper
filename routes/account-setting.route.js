@@ -45,7 +45,7 @@ router.get("/myprofile", authMiddleware.ensureAuthenticated, async function (req
 });
 
 router.post("/myprofile", [
-  body('id').isUUID().withMessage('ID phải là UUID hợp lệ'),
+  body('id').isString().withMessage('ID phải là string'),
   body('name').isLength({ min: 1 }).withMessage('Tên không được để trống'),
   body('email').isEmail().withMessage('Email không hợp lệ'),
   body('birthdate').optional().isDate().withMessage('Ngày sinh không hợp lệ'),
@@ -65,7 +65,7 @@ router.post("/myprofile", [
 });
 
 router.post("/myprofile/subscription", [
-  body('id').isUUID().withMessage('ID phải là UUID hợp lệ')
+  body('id').isString().withMessage('ID phải là string')
 ], async function (req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {

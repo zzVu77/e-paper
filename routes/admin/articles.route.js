@@ -24,7 +24,7 @@ router.get(
       .withMessage("Page must be a positive integer"),
     query("id")
       .optional()
-      .isUUID()
+      .isString()
       .withMessage("Invalid category ID"),
     handleValidationErrors,
   ],
@@ -97,7 +97,7 @@ router.get(
 router.post(
   "/update",
   [
-    body("article_id").isUUID().withMessage("Invalid article ID"),
+    body("article_id").isString().withMessage("Invalid article ID"),
     body("categories").optional().isArray().withMessage("Categories must be an array"),
     body("tag").optional().isString().trim().escape(),
     body("reason").optional().isString().trim().escape(),
@@ -121,7 +121,7 @@ router.post(
 router.post(
   "/del",
   [
-    body("id").isUUID().withMessage("Invalid article ID"),
+    body("id").isString().withMessage("Invalid article ID"),
     handleValidationErrors,
   ],
   async (req, res) => {

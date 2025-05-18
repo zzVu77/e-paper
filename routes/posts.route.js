@@ -295,8 +295,8 @@ router.get(
   [
     query("id")
       .exists()
-      .isUUID()
-      .withMessage("Article ID must be a valid UUID"),
+      .isString()
+      .withMessage("Article ID must be a valid string"),
   ],
   handleValidationErrors,
   async function (req, res) {
@@ -366,8 +366,8 @@ router.post(
   [
     body("articleId")
       .exists()
-      .isUUID()
-      .withMessage("Article ID must be a valid UUID"),
+      .isString()
+      .withMessage("Article ID must be a valid string"),
     body("content")
       .exists()
       .isString()

@@ -9,7 +9,7 @@ function isValidCategoryName(name) {
 }
 
 function isValidUUID(id) {
-  return typeof id === 'string' && isUUID(id);
+  return typeof id === 'string';
 }
 
 // GET /admin/categories

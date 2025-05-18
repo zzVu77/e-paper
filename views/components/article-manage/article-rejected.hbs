@@ -83,7 +83,7 @@
                       >Edit</a></li>
                     <li>
                       <form action="/writer/article/manage/del" method="post">
-                      <input type="hidden" name="_csrf" value="{{csrfToken}}">
+                      <input type="hidden" name="_csrf" value="{{../csrfToken}}">
                         <input type="hidden" name="id" value="{{id}}" />
                         <button type="submit" class="dropdown-item" id="article-manage-delBtn">Delete</button>
                       </form>

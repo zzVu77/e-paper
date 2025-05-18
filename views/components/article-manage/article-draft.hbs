@@ -22,7 +22,7 @@
       </div>
       
       <form id ="article-manage-filterForm"method ="GET" action="/writer/article/manage/PendingArticle-filter">
-      <input type="hidden" name="_csrf" value="{{csrfToken}}">
+      <input type="hidden" name="_csrf" value="{{../csrfToken}}">
       <div class="article-manage-search">
         <div class="article-manage-filter">
           <div class="article-manage-filterDate">
@@ -88,7 +88,7 @@
                         >Edit</a></li>
                       <li>
                         <form action="/writer/article/manage/del" method="post">
-                        <input type="hidden" name="_csrf" value="{{csrfToken}}">
+                        <input type="hidden" name="_csrf" value="{{../csrfToken}}">
                           <input type="hidden" name="id" value="{{id}}" />
                           <button type="submit" class="dropdown-item" id="article-manage-delBtn">Delete</button>
                         </form>

@@ -56,7 +56,8 @@ router.get('/', async function (req, res) {
       categories: categories,
     }));
 
-    console.log(res.locals.csrfToken)
+    console.log('refreshToken =', res.locals.csrfToken);
+
     res.render('admin/categories', {
       layout: 'admin',
       title: 'Category',

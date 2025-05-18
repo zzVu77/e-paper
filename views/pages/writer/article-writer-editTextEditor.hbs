@@ -4,6 +4,7 @@
 
 
 <form id ="article-writer-textEditor-createForm" action="" method="post" enctype="multipart/form-data">
+<input type="hidden" name="_csrf" value="{{csrfToken}}">
   <div class="article-writer-textEditor-container">
     {{#if (isEqual rejectionNotes null)}}
     {{else}}

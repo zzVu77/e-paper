@@ -26,6 +26,7 @@
         method="GET"
         action="/writer/article/manage/PendingArticle-filter"
       >
+      <input type="hidden" name="_csrf" value="{{csrfToken}}">
         <div class="article-manage-search">
           <div class="article-manage-filter">
             <div class="article-manage-filterDate">

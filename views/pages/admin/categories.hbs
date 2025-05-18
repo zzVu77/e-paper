@@ -45,6 +45,7 @@
                     <td class="tw-px-6 tw-py-4">{{format_datetime this.updated_at}}</td>
                     <td class="tw-px-6 tw-py-4 tw-justify-center">
                         <form action="/admin/categories/del" method="post">
+                        <input type="hidden" name="_csrf" value="{{csrfToken}}">
                             <input type="hidden" name="id" value="{{this.id}}">
                             <button type="button" class="popup-trigger  tw-border-none tw-bg-transparent" data-id="{{this.id}}">
                                 <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 48 48">
@@ -100,6 +101,7 @@
             </button>
             {{!-- Form information --}}
             <form action="/admin/categories/add" method="post" class="tw-p-4 tw-md:p-5">
+            <input type="hidden" name="_csrf" value="{{csrfToken}}">
                 <div class="tw-grid tw-gap-4 tw-mb-4 tw-grid-cols-2">
                     <div class="tw-col-span-2">
                         <label for="name" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Category </label>
@@ -135,6 +137,7 @@
                     </svg>
                 </button>
                 <form action="/admin/categories/update" method="post" class="tw-p-4 tw-md:p-5">
+                <input type="hidden" name="_csrf" value="{{csrfToken}}">
                     <input type="hidden" name="id" value="{{this.id}}">
                     <div class="tw-grid tw-gap-4 tw-mb-4 tw-grid-cols-2">
                         <div class="tw-col-span-2">

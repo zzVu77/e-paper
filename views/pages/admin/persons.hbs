@@ -61,6 +61,7 @@
                                 {{#if this.isExpired }}
                                 {{#if (compareStrings this.role "subscriber")}}
                                 <form action="/admin/persons/extend" method="post">
+                                <input type="hidden" name="_csrf" value="{{csrfToken}}">
                                     <input type="hidden" name="id" value="{{this.id}}">
                                     <button type="submit" class="tw-border-none tw-bg-none tw-text-red-400 ">
                                         Extend
@@ -79,6 +80,7 @@
                             <td class="tw-px-6 tw-py-4">
                                 {{#if (compareStrings this.status "pending")}}
                                 <form action="/admin/persons/approve" method="post">
+                                <input type="hidden" name="_csrf" value="{{csrfToken}}">
                                     <input type="hidden" name="id" value="{{this.id}}">
                                     <button type="submit" class="tw-border-none tw-bg-none tw-text-cyan-400 ">
                                         Approve
@@ -88,6 +90,7 @@
                             </td>
                              <td class="tw-px-6 tw-py-4">
                                 <form action="/admin/persons/del" method="post">
+                                <input type="hidden" name="_csrf" value="{{csrfToken}}">
                                 <input type="hidden" name="id" value="{{this.id}}">
                                 <button type="button"  class="popup-trigger-user  tw-border-none tw-bg-transparent" data-id="{{this.id}}">
                                     <svg  xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 48 48">
@@ -108,6 +111,7 @@
                             <td class="tw-px-6 tw-py-4">{{this.role}}</td>
                             <td class="tw-px-6 tw-py-4">
                                 <form action="/admin/persons/del" method="post">
+                                <input type="hidden" name="_csrf" value="{{csrfToken}}">
                                 <input type="hidden" name="id" value="{{this.id}}">
                                 <button type="button"  class="popup-trigger-writer  tw-border-none tw-bg-transparent" data-id="{{this.id}}">
                                     <svg  xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 48 48">
@@ -129,6 +133,7 @@
                         <td class="tw-px-6 tw-py-4">{{this.role}}</td>
                         <td class="tw-px-6 tw-py-4 ">
                         <form action="/admin/persons/del" method="post">
+                        <input type="hidden" name="_csrf" value="{{csrfToken}}">
                         <input type="hidden" name="id" value="{{this.id}}">
                         <button type="button"  class="popup-trigger-editor  tw-border-none tw-bg-transparent" data-id="{{this.id}}">
                             <svg  xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 48 48">
@@ -181,6 +186,7 @@
             </button>
             {{!-- Form information --}}
             <form action="/admin/persons/add" method="post" class="tw-p-4 tw-md:p-5">
+            <input type="hidden" name="_csrf" value="{{csrfToken}}">
                 <div class="tw-grid tw-gap-4 tw-mb-4 tw-grid-cols-2">
                     <div class="tw-col-span-2">
                         <label for="name" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Name</label>
@@ -230,6 +236,7 @@
                     </svg>
                 </button>
                 <form action="/admin/persons/assignment" method="post" class="tw-p-4 tw-md:p-5">
+                <input type="hidden" name="_csrf" value="{{csrfToken}}">
                     <input type="hidden" name="id" value="{{this.id}}">
                     <div class="tw-grid tw-gap-4 tw-mb-4 tw-grid-cols-2">
                         <div class="tw-col-span-2">
@@ -297,6 +304,7 @@
                 </button>
                 {{!-- Form information --}}
                 <form action="/admin/persons/writers/update" method="post" class="tw-p-4 tw-md:p-5">
+                <input type="hidden" name="_csrf" value="{{csrfToken}}">
                     <input type="hidden" name="id" value="{{this.id}}">
                     <div class="tw-grid tw-gap-4 tw-mb-4 tw-grid-cols-2">
                         <div class="tw-col-span-2">
@@ -340,6 +348,7 @@
                 </button>
                 {{!-- Form information --}}
                 <form action="/admin/persons/users/update" method="post" class="tw-p-4 tw-md:p-5">
+                <input type="hidden" name="_csrf" value="{{csrfToken}}">
                     <input type="hidden" name="id" value="{{this.id}}">
                     <div class="tw-grid tw-gap-4 tw-mb-4 tw-grid-cols-2">
                         <div class="tw-col-span-2">

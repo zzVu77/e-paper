@@ -140,6 +140,7 @@
   >
     {{! Place for user comment }}
     <form action="" class="form">
+      <input type="hidden" name="_csrf" value="{{csrfToken}}">
       <div class="tw-flex tw-justify-start tw-items-baseline">
         <div class="comment-icon tw-ml-5">
           <svg

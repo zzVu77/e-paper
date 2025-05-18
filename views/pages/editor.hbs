@@ -119,6 +119,7 @@
                     </svg>
                 </button>
                 <form  action="/editor/update" method="POST"  class="tw-p-4 tw-md:p-5">
+                <input type="hidden" name="_csrf" value="{{csrfToken}}">
                     <input type="hidden" name="article_id" value="{{this.article_id}}">
                     <div class="tw-grid tw-gap-4 tw-mb-4 tw-grid-cols-2">
                         <div class="tw-col-span-2">

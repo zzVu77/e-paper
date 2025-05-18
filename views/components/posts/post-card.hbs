@@ -27,20 +27,14 @@
     {{/if}}
 
     {{! Title }}
-    <div class="post-card-title tw-mt-2 tw-ml-2 tw-w-[420px] tw-h-[110px]">
+    <div
+      class="post-card-title tw-mt-2 tw-ml-2 tw-w-[420px] tw-h-[110px] tw-line-clamp-3"
+    >
       <span
         class="tw-text-3xl tw-font-bold truncated-title tw-px-1"
       >{{article_title}}</span>
     </div>
 
-    <style>
-      .truncated-title { display: -webkit-box; /* Hiển thị dưới dạng box */
-      -webkit-line-clamp: 3; /* Giới hạn 3 dòng */ -webkit-box-orient: vertical;
-      /* Định hướng box theo chiều dọc */ overflow: hidden; /* Ẩn phần văn bản
-      thừa */ text-overflow: ellipsis; /* Hiển thị dấu ba chấm */ line-height:
-      1.5; /* Điều chỉnh khoảng cách dòng nếu cần */ max-height: 4.5em; /* Giới
-      hạn chiều cao của phần tử (3 dòng x 1.5em mỗi dòng) */ }
-    </style>
     {{! Abstract }}
     <div
       class="post-card-content tw-overflow-hidden tw-text-ellipsis tw-mt-3 tw-ml-2 tw-font-extralight tw-text-gray-700 tw-h-[750px]"

@@ -126,7 +126,8 @@ app.use((req, res, next) => {
     }
   })(req, res, next);
 });
-
+app.use(helmet.hsts({ maxAge: 31536000, includeSubDomains: true, preload: true }));
+app.disable('x-powered-by');
 app.use(helmet.frameguard({ action: 'deny' })); // Fix: 5.6 - Additional anti-clickjacking protection
 app.use(helmet.xssFilter()); // Enable XSS filter
 app.use(helmet.noSniff()); // Prevent MIME-type sniffing
